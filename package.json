@@ -1,0 +1,21 @@
+{
+  "name": "playlister507",
+  "version": "1.0.0",
+  "description": "Auto-updating Spotify playlists — Fresh Florida Wave, Unstoppable Gaming, The Slept On Underground",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "auth": "node src/auth.js",
+    "update": "node src/update.js",
+    "update:florida": "node src/update.js floridaWave",
+    "update:gaming": "node src/update.js gaming",
+    "update:underground": "node src/update.js underground"
+  },
+  "dependencies": {
+    "axios": "^1.7.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "node-cron": "^3.0.3",
+    "open": "^10.1.0"
+  }
+}
