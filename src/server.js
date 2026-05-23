@@ -36,6 +36,7 @@ app.get('/api/status', (req, res) => {
   res.json({
     lastRun: store.getLastRun(),
     spotifyConfigured: !!(process.env.SPOTIFY_CLIENT_ID && process.env.SPOTIFY_CLIENT_SECRET && process.env.SPOTIFY_REFRESH_TOKEN),
+    lastUpdateError: global.__lastUpdateError || null,
     playlists,
   });
 });
@@ -77,9 +78,12 @@ app.get('/api/trigger-update', async (req, res) => {
   // Run async after response is sent — detached so errors never crash the server
   setImmediate(() => {
     const { runAll } = require('./update');
-    runAll(key === 'all' ? null : key).catch(e => {
-      console.error('[trigger-update] Error:', e.message);
-    });
+    runAll(key === 'all' ? null : key)
+      .then(() => { global.__lastUpdateError = null; })
+      .catch(e => {
+        console.error('[trigger-update] Error:', e.message, e.stack);
+        global.__lastUpdateError = { message: e.message, stack: e.stack, time: new Date().toISOString() };
+      });
   });
 });
 
