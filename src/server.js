@@ -60,13 +60,13 @@ app.get('/api/trigger-update', async (req, res) => {
     return res.status(400).json({ error: `playlist must be one of: ${allowed.join(', ')}` });
   }
   res.json({ ok: true, message: `Update started for: ${key}. Check back in ~60 seconds.` });
-  // Run async after response is sent
-  try {
+  // Run async after response is sent — detached so errors never crash the server
+  setImmediate(() => {
     const { runAll } = require('./update');
-    await runAll(key === 'all' ? null : key);
-  } catch (e) {
-    console.error('[trigger-update] Error:', e.message);
-  }
+    runAll(key === 'all' ? null : key).catch(e => {
+      console.error('[trigger-update] Error:', e.message);
+    });
+  });
 });
 
 app.get('/api/submissions', (req, res) => {
