@@ -26,6 +26,20 @@ app.get('/api/health', (req, res) => {
   res.json({ ok: true, lastRun: store.getLastRun() });
 });
 
+app.get('/api/status', (req, res) => {
+  const keys = ['floridaWave', 'gaming', 'underground', 'workout', 'study', 'summer'];
+  const playlists = {};
+  keys.forEach(k => {
+    const p = store.getPlaylist(k);
+    playlists[k] = p ? { id: p.id || null, tracks: p.tracks?.length || 0, lastUpdated: p.lastUpdated || null } : null;
+  });
+  res.json({
+    lastRun: store.getLastRun(),
+    spotifyConfigured: !!(process.env.SPOTIFY_CLIENT_ID && process.env.SPOTIFY_CLIENT_SECRET && process.env.SPOTIFY_REFRESH_TOKEN),
+    playlists,
+  });
+});
+
 app.post('/api/submit', (req, res) => {
   try {
     const submission = { ...req.body, submittedAt: new Date().toISOString() };
