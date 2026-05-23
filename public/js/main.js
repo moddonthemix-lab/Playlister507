@@ -45,6 +45,25 @@ window.addEventListener('scroll', () => {
   nav?.classList.toggle('scrolled', window.scrollY > 60);
 }, { passive: true });
 
+// ── Mobile menu ─────────────────────────────────────────────────────
+const mobileMenu  = document.getElementById('mobileMenu');
+const hamburger   = document.getElementById('hamburger');
+
+function toggleMobileMenu() {
+  const open = mobileMenu?.classList.toggle('open');
+  hamburger?.classList.toggle('open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+function closeMobileMenu() {
+  mobileMenu?.classList.remove('open');
+  hamburger?.classList.remove('open');
+  document.body.style.overflow = '';
+}
+// Close on outside tap
+mobileMenu?.addEventListener('click', e => {
+  if (e.target === mobileMenu) closeMobileMenu();
+});
+
 // ── Scroll reveal ───────────────────────────────────────────────────
 const revealObserver = new IntersectionObserver(
   entries => entries.forEach(e => {

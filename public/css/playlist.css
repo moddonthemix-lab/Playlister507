@@ -134,5 +134,17 @@
 
 @media (max-width: 768px) {
   .other-cards { grid-template-columns: 1fr; }
-  .pl-detail-action-row { flex-direction: column; align-items: flex-start; }
+  .pl-detail-action-row { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .other-playlists { padding: 60px 20px; }
+}
+
+@media (max-width: 600px) {
+  .pl-detail-action-row .pl-btn { width: 100%; justify-content: center; }
+  .pl-detail-badges { width: 100%; }
+  .traction-badge { font-size: 10px; }
+  .tracks-refresh-note { font-size: 11px; }
+  .track-skeleton { height: 44px; }
+  .other-card { padding: 24px 20px; }
+  .other-card__title { font-size: 26px; }
+  .other-card__arrow { top: 20px; right: 20px; }
 }

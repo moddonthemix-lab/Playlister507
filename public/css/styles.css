@@ -140,6 +140,67 @@ button:hover ~ .cursor { width: 60px; height: 60px; }
 }
 .nav__spotify:hover { background: rgba(29,185,84,0.1); border-color: #1DB954; }
 
+/* Hamburger */
+.nav__hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.nav__hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.nav__hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav__hamburger.open span:nth-child(2) { opacity: 0; }
+.nav__hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile menu overlay */
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  background: rgba(8,8,8,0.97);
+  backdrop-filter: blur(20px);
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.mobile-menu.open { opacity: 1; pointer-events: all; }
+.mobile-menu a {
+  font-family: var(--font-display);
+  font-size: 48px;
+  letter-spacing: 2px;
+  color: var(--white-60);
+  transition: color 0.2s;
+  padding: 8px 0;
+}
+.mobile-menu a:hover { color: var(--white); }
+.mobile-menu__spotify {
+  font-family: var(--font-body) !important;
+  font-size: 14px !important;
+  color: #1DB954 !important;
+  margin-top: 24px;
+  border: 1px solid rgba(29,185,84,0.4);
+  padding: 12px 24px !important;
+  border-radius: 100px;
+}
+
 /* ── Scroll Reveal ────────────────────────────────────────────────── */
 .reveal {
   opacity: 0;
@@ -858,25 +919,126 @@ button:hover ~ .cursor { width: 60px; height: 60px; }
 }
 
 /* ── Responsive ──────────────────────────────────────────────────── */
+
+/* Tablet */
 @media (max-width: 900px) {
-  .nav__links { display: none; }
-  .pl-section__inner { padding: 100px 32px; max-width: 100%; }
-  .pl-section__inner--right { margin-left: 0; }
-  .hero__stats { gap: 28px; }
-  .footer__inner { grid-template-columns: 1fr; gap: 40px; }
-  .pl-detail-body { grid-template-columns: 1fr; }
-  .pl-detail-embed, .pl-detail-tracks { padding: 40px 24px; }
-  .pl-detail-hero { padding: 120px 32px 60px; }
-  .pl-detail-hero__back { left: 32px; }
   .cursor, .cursor-dot { display: none; }
   body { cursor: auto; }
+
+  /* Nav */
+  .nav { padding: 0 24px; }
+  .nav__links { display: none; }
+  .nav__hamburger { display: flex; }
+  .nav__spotify { display: none; }
+
+  /* Hero */
+  .hero__stats { gap: 20px; bottom: 32px; }
+  .stat__num { font-size: 24px; }
+  .hero__scroll { display: none; }
+  .hero__content { padding: 0 24px; }
+
+  /* Playlist sections */
+  .pl-section__inner { padding: 100px 32px 80px; max-width: 100%; }
+  .pl-section__inner--right { margin-left: 0; }
+  .pl-section__embed { max-width: 100%; }
+
+  /* Features */
+  .features { padding: 80px 24px; }
+  .features__grid { grid-template-columns: 1fr 1fr; }
+
+  /* Footer */
+  .footer { padding: 60px 24px 0; }
+  .footer__inner { grid-template-columns: 1fr; gap: 32px; }
+
+  /* Playlist detail */
+  .pl-detail-hero { padding: 100px 24px 48px; }
+  .pl-detail-hero__back { left: 24px; top: 80px; }
+  .pl-detail-hero__meta { gap: 20px; }
+  .pl-detail-body { grid-template-columns: 1fr; }
+  .pl-detail-embed { padding: 32px 24px; }
+  .pl-detail-tracks { padding: 32px 24px; }
 }
 
+/* Mobile */
 @media (max-width: 600px) {
-  .hero__title { font-size: clamp(64px, 18vw, 120px); }
-  .pl-section__title { font-size: clamp(52px, 14vw, 90px); }
-  .hero__scroll { display: none; }
-  .pl-detail-hero__title { font-size: clamp(52px, 14vw, 90px); }
+  /* Nav */
+  .nav { height: 60px; padding: 0 20px; }
+  .nav__logo { font-size: 18px; }
+  .nav__spotify { font-size: 12px; padding: 6px 12px; }
+  .nav__spotify svg { display: none; }
+
+  /* Hero */
+  .hero__title {
+    font-size: clamp(72px, 20vw, 120px);
+    gap: 0;
+  }
+  .hero__eyebrow { font-size: 11px; letter-spacing: 2px; margin-bottom: 20px; }
+  .hero__sub { font-size: 15px; margin-bottom: 32px; }
+  .hero__cta { font-size: 13px; padding: 14px 24px; }
+  .hero__stats {
+    gap: 16px;
+    bottom: 24px;
+    width: 100%;
+    justify-content: center;
+    padding: 0 20px;
+  }
+  .stat__num { font-size: 20px; }
+  .stat__label { font-size: 9px; }
+  .stat__divider { height: 28px; }
+
+  /* Playlist sections */
+  .pl-section__inner { padding: 80px 20px 60px; }
+  .pl-section__title { font-size: clamp(56px, 16vw, 90px); }
+  .pl-section__desc { font-size: 15px; }
+  .pl-section__actions { flex-direction: column; gap: 12px; }
+  .pl-btn { justify-content: center; width: 100%; text-align: center; }
+  .pl-section__meta { gap: 8px; }
+  .pl-tag { font-size: 10px; padding: 5px 10px; }
+
+  /* Embed placeholder */
+  .embed-placeholder { padding: 32px 20px; }
+
+  /* Features */
+  .features { padding: 60px 20px; }
+  .features__title { margin-bottom: 40px; }
+  .features__grid { grid-template-columns: 1fr; }
+  .feature-card { padding: 32px 24px; }
+  .feature-card__num { font-size: 40px; }
+
+  /* Footer */
+  .footer { padding: 48px 20px 0; }
+  .footer__inner { gap: 28px; padding-bottom: 40px; }
+  .footer__logo { font-size: 22px; }
+  .footer__bottom { font-size: 12px; }
+
+  /* Playlist detail hero */
+  .pl-detail-hero { padding: 90px 20px 40px; min-height: 50vh; }
+  .pl-detail-hero__back { left: 20px; top: 70px; font-size: 12px; }
+  .pl-detail-hero__title { font-size: clamp(48px, 14vw, 80px); }
+  .pl-detail-hero__desc { font-size: 14px; margin-bottom: 24px; }
+  .pl-detail-hero__meta { gap: 16px; flex-wrap: wrap; }
+  .pl-detail-meta-item strong { font-size: 22px; }
+
+  /* Playlist detail body */
+  .pl-detail-embed { padding: 24px 20px; gap: 20px; }
+  .pl-detail-tracks { padding: 24px 20px; }
+  .pl-detail-tracks h3 { font-size: 11px; }
+  .track-item { padding: 12px 8px; gap: 12px; }
+  .track-name { font-size: 13px; }
+  .track-artist { font-size: 11px; }
+
+  /* Other playlists */
+  .other-playlists { padding: 60px 20px; }
+  .other-card { padding: 28px 24px; }
+  .other-card__title { font-size: 28px; }
+}
+
+/* Small phones */
+@media (max-width: 380px) {
+  .hero__title { font-size: clamp(60px, 22vw, 90px); }
+  .pl-section__title { font-size: clamp(48px, 18vw, 72px); }
+  .hero__stats { display: none; }
+  .nav__spotify span { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
