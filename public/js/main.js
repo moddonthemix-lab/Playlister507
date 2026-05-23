@@ -122,7 +122,7 @@ function injectEmbed(containerId, playlist, linkId) {
   iframe.id = `iframe-${containerId}`;
   iframe.src = `https://open.spotify.com/embed/playlist/${playlist.id}?utm_source=generator&theme=0`;
   iframe.width = '100%';
-  iframe.height = '352';
+  iframe.height = '232';
   iframe.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
   iframe.loading = 'lazy';
   iframe.style.borderRadius = '16px';

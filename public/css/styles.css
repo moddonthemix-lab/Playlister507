@@ -1109,7 +1109,13 @@ button:hover ~ .cursor { width: 60px; height: 60px; }
   margin-bottom: 24px;
 }
 .pl-new-card__actions { display: flex; flex-direction: column; gap: 12px; }
-.pl-new-card__embed { margin-bottom: 8px; }
+.pl-new-card__embed {
+  margin-bottom: 8px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+}
+.pl-new-card__embed iframe { display: block; border-radius: 16px; }
 .pl-btn--ghost {
   background: transparent;
   border: 1px solid rgba(255,255,255,0.2);
