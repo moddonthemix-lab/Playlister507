@@ -12,7 +12,8 @@
     "update:florida": "node src/update.js floridaWave",
     "update:gaming": "node src/update.js gaming",
     "update:underground": "node src/update.js underground",
-    "auth:youtube": "node src/youtube/auth.js"
+    "auth:youtube": "node src/youtube/auth.js",
+    "auth:deezer": "node src/deezer/auth.js"
   },
   "dependencies": {
     "axios": "^1.7.2",

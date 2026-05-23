@@ -1,6 +1,7 @@
 const spotify = require('../spotify/client');
 const store = require('../store');
 const { syncToYouTube } = require('../youtube/sync');
+const { syncToDeezer } = require('../deezer/sync');
 
 // ── Traction measurement ────────────────────────────────────────────────────────
 // Re-fetches popularity for each track from the previous cycle and computes the gain.
@@ -73,11 +74,13 @@ async function updatePlaylist(key, generator, userId) {
   await spotify.replacePlaylistTracks(playlistId, uris);
   await spotify.updatePlaylistDescription(playlistId, result.description);
 
-  // Persist new track state (keep any existing youtubeId)
+  // Persist new track state (keep any existing youtubeId / deezer fields)
   const existingStored = store.getPlaylist(key) || {};
   store.setPlaylist(key, {
     id: playlistId,
     youtubeId: existingStored.youtubeId || null,
+    deezerUserId: existingStored.deezerUserId || null,
+    deezerId: existingStored.deezerId || null,
     tracks: result.tracks,
     lastUpdated: new Date().toISOString(),
   });
@@ -94,6 +97,22 @@ async function updatePlaylist(key, generator, userId) {
       console.log(`[Playlists] ✓ YouTube sync complete for "${result.name}" (${youtubeId})`);
     } catch (e) {
       console.warn(`[Playlists] YouTube sync failed for "${result.name}":`, e.message);
+    }
+  }
+
+  // Optional: sync to Deezer if access token is configured
+  if (process.env.DEEZER_ACCESS_TOKEN) {
+    try {
+      const stored = store.getPlaylist(key) || {};
+      const storedDeezerIds = stored.deezerId
+        ? { userId: stored.deezerUserId, playlistId: stored.deezerId }
+        : null;
+      const { userId: deezerUserId, playlistId: deezerId } = await syncToDeezer(key, result, storedDeezerIds);
+      // Persist the Deezer user ID and playlist ID
+      store.setPlaylist(key, { ...store.getPlaylist(key), deezerUserId, deezerId });
+      console.log(`[Playlists] ✓ Deezer sync complete for "${result.name}" (${deezerId})`);
+    } catch (e) {
+      console.warn(`[Playlists] Deezer sync failed for "${result.name}":`, e.message);
     }
   }
 
