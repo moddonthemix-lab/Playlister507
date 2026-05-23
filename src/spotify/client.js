@@ -89,24 +89,12 @@ async function getTrack(trackId) {
   return api('GET', `/tracks/${trackId}`, { params: { market: 'US' } });
 }
 
-async function getTracks(trackIds) {
-  const chunks = chunkArray(trackIds, 50);
-  const results = [];
-  for (const chunk of chunks) {
-    const res = await api('GET', '/tracks', { params: { ids: chunk.join(','), market: 'US' } });
-    results.push(...res.tracks);
-  }
-  return results;
+async function getTracks() {
+  return [];
 }
 
-async function getAudioFeatures(trackIds) {
-  const chunks = chunkArray(trackIds, 100);
-  const results = [];
-  for (const chunk of chunks) {
-    const res = await api('GET', '/audio-features', { params: { ids: chunk.join(',') } });
-    results.push(...(res.audio_features || []));
-  }
-  return results;
+async function getAudioFeatures() {
+  return [];
 }
 
 async function createPlaylist(userId, name, description) {
@@ -118,16 +106,16 @@ async function createPlaylist(userId, name, description) {
 async function replacePlaylistTracks(playlistId, uris) {
   // PUT replaces all tracks; max 100 per request
   const first100 = uris.slice(0, 100);
-  await api('PUT', `/playlists/${playlistId}/tracks`, { data: { uris: first100 } });
+  await api('PUT', `/playlists/${playlistId}/items`, { data: { uris: first100 } });
 }
 
 async function updatePlaylistDescription(playlistId, description) {
   await api('PUT', `/playlists/${playlistId}`, { data: { description } });
 }
 
-async function getUserPlaylists(userId) {
+async function getUserPlaylists() {
   const playlists = [];
-  let url = `/users/${userId}/playlists`;
+  let url = `/me/playlists`;
   while (url) {
     const res = await api('GET', url, { params: { limit: 50 } });
     playlists.push(...res.items);
@@ -167,6 +155,7 @@ module.exports = {
   getArtistTopTracks,
   getRecommendations,
   searchTracks,
+  searchArtistTracks,
   getNewReleases,
   getAlbumTracks,
   getTrack,

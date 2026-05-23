@@ -5,30 +5,10 @@ const { syncToDeezer } = require('../deezer/sync');
 const { syncToAudiomack } = require('../audiomack/sync');
 
 // ── Traction measurement ────────────────────────────────────────────────────────
-// Re-fetches popularity for each track from the previous cycle and computes the gain.
-// Higher popularityGain → that track pulled more listeners → seed the next cycle with it.
 
 async function measureTraction(previousTracks = []) {
-  if (!previousTracks.length) return [];
-
-  const ids = previousTracks.map(t => t.id).filter(Boolean);
-  if (!ids.length) return previousTracks;
-
-  try {
-    const freshData = await spotify.getTracks(ids);
-    return previousTracks.map((prev, i) => {
-      const fresh = freshData.find(f => f && f.id === prev.id);
-      const freshPop = fresh?.popularity ?? prev.popularity;
-      return {
-        ...prev,
-        popularityGain: freshPop - (prev.popularity || 0),
-        popularity: freshPop,
-      };
-    });
-  } catch (e) {
-    console.warn('[Traction] Could not measure traction:', e.message);
-    return previousTracks.map(t => ({ ...t, popularityGain: 0 }));
-  }
+  // Popularity data removed from Spotify API (Feb 2026) — traction tracking paused
+  return previousTracks.map(t => ({ ...t, popularityGain: 0 }));
 }
 
 // ── Ensure playlist exists (create once, reuse forever) ────────────────────────

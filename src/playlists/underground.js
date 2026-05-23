@@ -1,4 +1,3 @@
-require('dotenv').config();
 const spotify = require('../spotify/client');
 const { resolveFeaturedTracks } = require('../utils/featured');
 
@@ -7,10 +6,6 @@ const PLAYLIST_DESC_TEMPLATE = (date) =>
   `Rising artists. Hidden gems. The ones growing right now — updated ${date}. 🔥`;
 
 const TARGET_COUNT = 20;
-
-// Popularity band: not too obscure, not mainstream (0-100 scale)
-const MIN_POPULARITY = 20;
-const MAX_POPULARITY = 65;
 
 const UNDERGROUND_SEARCHES = [
   'underground hip hop 2025',
