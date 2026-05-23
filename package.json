@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
+    "web": "node src/server.js",
     "auth": "node src/auth.js",
     "update": "node src/update.js",
     "update:florida": "node src/update.js floridaWave",

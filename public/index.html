@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Playlister 507 — Curated. Evolved. Always Fresh.</title>
+  <meta name="description" content="Three auto-curated Spotify playlists that evolve every two weeks based on what listeners actually respond to." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- Custom cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <a href="/" class="nav__logo">PLAYLISTER<span>507</span></a>
+    <div class="nav__links">
+      <a href="#florida-wave">Florida Wave</a>
+      <a href="#gaming">Gaming</a>
+      <a href="#underground">Underground</a>
+    </div>
+    <a href="https://open.spotify.com" target="_blank" rel="noopener" class="nav__spotify">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+      Open Spotify ↗
+    </a>
+  </nav>
+
+  <!-- ── HERO ─────────────────────────────────────────────────────── -->
+  <section class="hero" id="home">
+    <div class="hero__mesh"></div>
+    <div class="hero__noise"></div>
+    <div class="hero__content">
+      <p class="hero__eyebrow reveal">— AUTO-CURATED PLAYLISTS —</p>
+      <h1 class="hero__title">
+        <span class="hero__word reveal delay-1">THE</span>
+        <span class="hero__word hero__word--outline reveal delay-2">SOUND</span>
+        <span class="hero__word reveal delay-3">OF</span>
+        <span class="hero__word hero__word--accent reveal delay-4">507</span>
+      </h1>
+      <p class="hero__sub reveal delay-5">Three playlists. Powered by real listener data.<br>Refreshed every two weeks. Never the same twice.</p>
+      <a href="#florida-wave" class="hero__cta reveal delay-6">
+        <span>Explore Playlists</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+      </a>
+    </div>
+    <div class="hero__stats reveal delay-6">
+      <div class="stat"><span class="stat__num">3</span><span class="stat__label">Playlists</span></div>
+      <div class="stat__divider"></div>
+      <div class="stat"><span class="stat__num">60</span><span class="stat__label">Total Tracks</span></div>
+      <div class="stat__divider"></div>
+      <div class="stat"><span class="stat__num">2WK</span><span class="stat__label">Auto Refresh</span></div>
+    </div>
+    <div class="hero__scroll">
+      <div class="hero__scroll-line"></div>
+      <span>SCROLL</span>
+    </div>
+  </section>
+
+  <!-- ── FRESH FLORIDA WAVE ─────────────────────────────────────────── -->
+  <section class="pl-section pl-section--florida" id="florida-wave">
+    <div class="pl-section__bg">
+      <div class="florida__sky"></div>
+      <div class="florida__sun"></div>
+      <div class="florida__ocean"></div>
+      <div class="florida__waves">
+        <svg class="wave wave--1" viewBox="0 0 1440 120" preserveAspectRatio="none"><path d="M0,60 C360,120 1080,0 1440,60 L1440,120 L0,120 Z" fill="rgba(0,100,160,0.4)"/></svg>
+        <svg class="wave wave--2" viewBox="0 0 1440 120" preserveAspectRatio="none"><path d="M0,80 C480,20 960,100 1440,40 L1440,120 L0,120 Z" fill="rgba(0,60,120,0.6)"/></svg>
+      </div>
+    </div>
+    <div class="pl-section__inner">
+      <div class="pl-section__meta reveal">
+        <span class="pl-tag">Florida Rap Only</span>
+        <span class="pl-tag">20 Tracks</span>
+        <span class="pl-tag">Bi-Weekly</span>
+      </div>
+      <h2 class="pl-section__title reveal">
+        <span>FRESH</span>
+        <span>FLORIDA</span>
+        <span>WAVE</span>
+      </h2>
+      <p class="pl-section__desc reveal">Only Florida MCs. The Sunshine State's finest — from Rick Ross to Rod Wave, Denzel Curry to Kodak Black. The hottest tracks seeded by real traction data, rotating every two weeks.</p>
+      <div class="pl-section__embed reveal" id="embed-florida">
+        <div class="embed-placeholder">
+          <div class="embed-placeholder__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+          </div>
+          <p>Playlist loads after setup</p>
+          <span>Run <code>npm run update</code> to generate</span>
+        </div>
+      </div>
+      <div class="pl-section__actions reveal">
+        <a class="pl-btn pl-btn--primary" id="open-florida" href="https://open.spotify.com" target="_blank">Open in Spotify ↗</a>
+        <a class="pl-btn pl-btn--ghost" href="playlist.html?id=florida-wave">Full Page →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── UNSTOPPABLE GAMING ─────────────────────────────────────────── -->
+  <section class="pl-section pl-section--gaming" id="gaming">
+    <div class="pl-section__bg">
+      <div class="gaming__grid"></div>
+      <div class="gaming__glow gaming__glow--purple"></div>
+      <div class="gaming__glow gaming__glow--cyan"></div>
+      <div class="gaming__scanlines"></div>
+    </div>
+    <div class="pl-section__inner pl-section__inner--right">
+      <div class="pl-section__meta reveal">
+        <span class="pl-tag">All Genres</span>
+        <span class="pl-tag">20 Tracks</span>
+        <span class="pl-tag">High Energy</span>
+      </div>
+      <h2 class="pl-section__title pl-section__title--gaming reveal">
+        <span>UNSTOPPABLE</span>
+        <span>GAMING</span>
+      </h2>
+      <p class="pl-section__desc reveal">All genres. All levels. EDM, metal, trap, synthwave — whatever hits hardest when you need to win. The soundtrack to your victories, evolved from what listeners actually play on repeat.</p>
+      <div class="pl-section__embed reveal" id="embed-gaming">
+        <div class="embed-placeholder embed-placeholder--gaming">
+          <div class="embed-placeholder__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+          </div>
+          <p>Playlist loads after setup</p>
+          <span>Run <code>npm run update</code> to generate</span>
+        </div>
+      </div>
+      <div class="pl-section__actions reveal">
+        <a class="pl-btn pl-btn--primary pl-btn--gaming" id="open-gaming" href="https://open.spotify.com" target="_blank">Open in Spotify ↗</a>
+        <a class="pl-btn pl-btn--ghost pl-btn--ghost-gaming" href="playlist.html?id=gaming">Full Page →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── THE SLEPT ON UNDERGROUND ──────────────────────────────────── -->
+  <section class="pl-section pl-section--underground" id="underground">
+    <div class="pl-section__bg">
+      <div class="underground__texture"></div>
+      <div class="underground__light"></div>
+      <div class="underground__spray underground__spray--1"></div>
+      <div class="underground__spray underground__spray--2"></div>
+    </div>
+    <div class="pl-section__inner">
+      <div class="pl-section__meta reveal">
+        <span class="pl-tag">Rising Artists</span>
+        <span class="pl-tag">20 Tracks</span>
+        <span class="pl-tag">All Genres</span>
+      </div>
+      <h2 class="pl-section__title pl-section__title--underground reveal">
+        <span>THE</span>
+        <span>SLEPT ON</span>
+        <span>UNDERGROUND</span>
+      </h2>
+      <p class="pl-section__desc reveal">The ones growing right now. Emerging artists from everywhere, trending before the world catches on. We track the traction — so by the time everyone else hears it, you already had it on repeat.</p>
+      <div class="pl-section__embed reveal" id="embed-underground">
+        <div class="embed-placeholder embed-placeholder--underground">
+          <div class="embed-placeholder__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+          </div>
+          <p>Playlist loads after setup</p>
+          <span>Run <code>npm run update</code> to generate</span>
+        </div>
+      </div>
+      <div class="pl-section__actions reveal">
+        <a class="pl-btn pl-btn--primary pl-btn--underground" id="open-underground" href="https://open.spotify.com" target="_blank">Open in Spotify ↗</a>
+        <a class="pl-btn pl-btn--ghost pl-btn--ghost-underground" href="playlist.html?id=underground">Full Page →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HOW IT WORKS ───────────────────────────────────────────────── -->
+  <section class="features" id="about">
+    <div class="features__inner">
+      <p class="features__eyebrow reveal">— THE SYSTEM —</p>
+      <h2 class="features__title reveal">Playlists that learn.</h2>
+      <div class="features__grid">
+        <div class="feature-card reveal delay-1">
+          <div class="feature-card__num">01</div>
+          <h3>Auto-Curated</h3>
+          <p>Each playlist is built from Spotify's search and recommendation engine, seeded with genre-specific artists and trending keywords. No manual picking.</p>
+        </div>
+        <div class="feature-card reveal delay-2">
+          <div class="feature-card__num">02</div>
+          <h3>Traction Tracking</h3>
+          <p>Every track's popularity is measured between cycles. Songs that gained listeners get used as seeds for the next update — so the playlist evolves toward what works.</p>
+        </div>
+        <div class="feature-card reveal delay-3">
+          <div class="feature-card__num">03</div>
+          <h3>Bi-Weekly Fresh</h3>
+          <p>Every two weeks on Monday the playlists refresh automatically. Same playlist links, always new music. Follow once, never miss a drop.</p>
+        </div>
+        <div class="feature-card reveal delay-4">
+          <div class="feature-card__num">04</div>
+          <h3>Always 20 Deep</h3>
+          <p>Exactly 20 tracks per playlist. Tight enough to listen through, curated enough that every song earns its spot. No filler, no padding.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <span class="footer__logo">PLAYLISTER<strong>507</strong></span>
+        <p>Curated. Evolved. Always Fresh.</p>
+      </div>
+      <div class="footer__playlists">
+        <p class="footer__label">Playlists</p>
+        <a href="#florida-wave">Fresh Florida Wave</a>
+        <a href="#gaming">Unstoppable Gaming</a>
+        <a href="#underground">The Slept On Underground</a>
+      </div>
+      <div class="footer__right">
+        <p class="footer__label">Powered by</p>
+        <a href="https://spotify.com" target="_blank" rel="noopener" class="footer__spotify">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+          Spotify Web API
+        </a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© 2025 Playlister507. Music fuels everything.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+/* Playlist detail page extras */
+
+.pl-detail-action-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.pl-detail-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tracks-refresh-note {
+  font-size: 12px;
+  color: rgba(255,255,255,0.3);
+  margin-top: 24px;
+  letter-spacing: 0.5px;
+}
+
+/* Skeleton loader */
+.track-skeleton {
+  height: 52px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite;
+  margin-bottom: 2px;
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* Other playlists section */
+.other-playlists {
+  padding: 100px 40px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+.other-playlists__inner { max-width: 1200px; margin: 0 auto; }
+.other-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.other-card {
+  display: block;
+  background: var(--surface);
+  padding: 40px 36px;
+  transition: background 0.3s, transform 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.other-card::before {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  right: -40px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.3;
+  transition: opacity 0.3s;
+}
+.other-card:hover { background: var(--surface-2); }
+.other-card:hover::before { opacity: 0.6; }
+.other-card--florida::before { background: var(--florida-1); }
+.other-card--gaming::before  { background: var(--gaming-1); }
+.other-card--underground::before { background: var(--underground-1); }
+
+.other-card__label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--white-60);
+  margin-bottom: 16px;
+}
+.other-card__title {
+  font-family: var(--font-display);
+  font-size: 36px;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+.other-card__desc {
+  font-size: 13px;
+  color: var(--white-60);
+  line-height: 1.6;
+}
+.other-card__arrow {
+  position: absolute;
+  top: 36px;
+  right: 36px;
+  font-size: 20px;
+  color: var(--white-30);
+  transition: color 0.2s, transform 0.2s;
+}
+.other-card:hover .other-card__arrow { color: var(--white); transform: translate(4px, -4px); }
+
+/* Hero bg variants */
+#detail-hero.florida  { background: linear-gradient(160deg, #061a2e, #0d3a5e, #c06020, #1a0808); }
+#detail-hero.gaming   { background: linear-gradient(135deg, #04000f, #1a0040, #0d0020); }
+#detail-hero.underground { background: linear-gradient(160deg, #0a0803, #1a1200, #0a0803); }
+
+/* Traction badge */
+.traction-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  padding: 6px 12px;
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--white-60);
+}
+.traction-badge__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #1DB954;
+  animation: dotPulse 2s ease-in-out infinite;
+}
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+@media (max-width: 768px) {
+  .other-cards { grid-template-columns: 1fr; }
+  .pl-detail-action-row { flex-direction: column; align-items: flex-start; }
+}
