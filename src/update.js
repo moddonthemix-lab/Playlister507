@@ -8,11 +8,17 @@ const store = require('./store');
 const floridaWave = require('./playlists/floridaWave');
 const gaming = require('./playlists/gaming');
 const underground = require('./playlists/underground');
+const workout = require('./playlists/workout');
+const study = require('./playlists/study');
+const summer = require('./playlists/summer');
 
 const PLAYLISTS = {
   floridaWave,
   gaming,
   underground,
+  workout,
+  study,
+  summer,
 };
 
 async function runAll(targetKey = null) {

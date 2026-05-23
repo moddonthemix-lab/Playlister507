@@ -16,6 +16,9 @@ app.get('/api/playlists', (req, res) => {
     floridaWave: store.getPlaylist('floridaWave'),
     gaming:      store.getPlaylist('gaming'),
     underground: store.getPlaylist('underground'),
+    workout:     store.getPlaylist('workout'),
+    study:       store.getPlaylist('study'),
+    summer:      store.getPlaylist('summer'),
   });
 });
 
