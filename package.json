@@ -4,7 +4,8 @@
   "description": "Auto-updating Spotify playlists — Fresh Florida Wave, Unstoppable Gaming, The Slept On Underground",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node src/server.js",
+    "scheduler": "node src/index.js",
     "web": "node src/server.js",
     "auth": "node src/auth.js",
     "update": "node src/update.js",
