@@ -51,58 +51,31 @@ async function searchArtist(name) {
   return res.artists.items[0] || null;
 }
 
-async function getArtistTopTracks(artistId) {
-  const res = await api('GET', `/artists/${artistId}/top-tracks`, {
-    params: { market: 'US' },
-  });
-  return res.tracks;
+async function getArtistTopTracks() {
+  return [];
 }
 
-async function getRecommendations({ seedArtists = [], seedTracks = [], seedGenres = [], limit = 20, extra = {} }) {
-  const params = {
-    limit,
-    market: 'US',
-    ...extra,
-  };
-  if (seedArtists.length) params.seed_artists = seedArtists.slice(0, 5).join(',');
-  if (seedTracks.length) params.seed_tracks = seedTracks.slice(0, 5).join(',');
-  if (seedGenres.length) params.seed_genres = seedGenres.slice(0, 5).join(',');
-
-  const totalSeeds = (params.seed_artists ? params.seed_artists.split(',').length : 0)
-    + (params.seed_tracks ? params.seed_tracks.split(',').length : 0)
-    + (params.seed_genres ? params.seed_genres.split(',').length : 0);
-
-  if (totalSeeds > 5) {
-    // Trim to 5 total by prioritising tracks > artists > genres
-    const ta = (params.seed_tracks || '').split(',').filter(Boolean);
-    const aa = (params.seed_artists || '').split(',').filter(Boolean);
-    const ga = (params.seed_genres || '').split(',').filter(Boolean);
-    const combined = [...ta.slice(0, 2), ...aa.slice(0, 2), ...ga.slice(0, 1)];
-    delete params.seed_artists;
-    delete params.seed_tracks;
-    delete params.seed_genres;
-    params.seed_tracks = ta.slice(0, 2).join(',') || undefined;
-    params.seed_artists = aa.slice(0, 2).join(',') || undefined;
-    params.seed_genres = ga.slice(0, 1).join(',') || undefined;
-    Object.keys(params).forEach(k => params[k] === undefined && delete params[k]);
-  }
-
-  const res = await api('GET', '/recommendations', { params });
-  return res.tracks;
+async function getRecommendations() {
+  return [];
 }
 
-async function searchTracks(query, limit = 50) {
+async function searchTracks(query, limit = 10) {
+  limit = Math.min(limit, 10);
   const res = await api('GET', '/search', {
     params: { q: query, type: 'track', limit, market: 'US' },
   });
   return res.tracks.items;
 }
 
-async function getNewReleases(limit = 50) {
-  const res = await api('GET', '/browse/new-releases', {
-    params: { limit, country: 'US' },
+async function searchArtistTracks(artistName, limit = 10) {
+  const res = await api('GET', '/search', {
+    params: { q: `artist:"${artistName}"`, type: 'track', limit: Math.min(limit, 10), market: 'US' },
   });
-  return res.albums.items;
+  return res.tracks?.items || [];
+}
+
+async function getNewReleases() {
+  return [];
 }
 
 async function getAlbumTracks(albumId) {
