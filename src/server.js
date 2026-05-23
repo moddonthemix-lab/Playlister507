@@ -48,6 +48,27 @@ app.post('/api/submit', (req, res) => {
   }
 });
 
+// One-time manual trigger: /api/trigger-update?playlist=workout&token=SECRET
+app.get('/api/trigger-update', async (req, res) => {
+  const secret = process.env.UPDATE_TOKEN;
+  if (!secret || req.query.token !== secret) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  const key = req.query.playlist;
+  const allowed = ['floridaWave', 'gaming', 'underground', 'workout', 'study', 'summer', 'all'];
+  if (!key || !allowed.includes(key)) {
+    return res.status(400).json({ error: `playlist must be one of: ${allowed.join(', ')}` });
+  }
+  res.json({ ok: true, message: `Update started for: ${key}. Check back in ~60 seconds.` });
+  // Run async after response is sent
+  try {
+    const { runAll } = require('./update');
+    await runAll(key === 'all' ? null : key);
+  } catch (e) {
+    console.error('[trigger-update] Error:', e.message);
+  }
+});
+
 app.get('/api/submissions', (req, res) => {
   // Simple admin view — in production this should be auth-protected
   const filePath = path.join(__dirname, '..', 'data', 'submissions.json');
