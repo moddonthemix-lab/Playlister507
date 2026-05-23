@@ -137,7 +137,7 @@ async function getAudioFeatures(trackIds) {
 }
 
 async function createPlaylist(userId, name, description) {
-  return api('POST', `/users/${userId}/playlists`, {
+  return api('POST', `/me/playlists`, {
     data: { name, description, public: true },
   });
 }
