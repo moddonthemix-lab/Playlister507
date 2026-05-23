@@ -2,6 +2,7 @@ const spotify = require('../spotify/client');
 const store = require('../store');
 const { syncToYouTube } = require('../youtube/sync');
 const { syncToDeezer } = require('../deezer/sync');
+const { syncToAudiomack } = require('../audiomack/sync');
 
 // ── Traction measurement ────────────────────────────────────────────────────────
 // Re-fetches popularity for each track from the previous cycle and computes the gain.
@@ -74,13 +75,14 @@ async function updatePlaylist(key, generator, userId) {
   await spotify.replacePlaylistTracks(playlistId, uris);
   await spotify.updatePlaylistDescription(playlistId, result.description);
 
-  // Persist new track state (keep any existing youtubeId / deezer fields)
+  // Persist new track state (keep any existing youtubeId / deezer / audiomack fields)
   const existingStored = store.getPlaylist(key) || {};
   store.setPlaylist(key, {
     id: playlistId,
     youtubeId: existingStored.youtubeId || null,
     deezerUserId: existingStored.deezerUserId || null,
     deezerId: existingStored.deezerId || null,
+    audiomackId: existingStored.audiomackId || null,
     tracks: result.tracks,
     lastUpdated: new Date().toISOString(),
   });
@@ -113,6 +115,20 @@ async function updatePlaylist(key, generator, userId) {
       console.log(`[Playlists] ✓ Deezer sync complete for "${result.name}" (${deezerId})`);
     } catch (e) {
       console.warn(`[Playlists] Deezer sync failed for "${result.name}":`, e.message);
+    }
+  }
+
+  // Optional: sync to Audiomack if access token is configured
+  if (process.env.AUDIOMACK_ACCESS_TOKEN) {
+    try {
+      const stored = store.getPlaylist(key) || {};
+      const storedAudiomackIds = stored.audiomackId ? { playlistId: stored.audiomackId } : null;
+      const { playlistId: audiomackId } = await syncToAudiomack(key, result, storedAudiomackIds);
+      // Persist the Audiomack playlist ID
+      store.setPlaylist(key, { ...store.getPlaylist(key), audiomackId });
+      console.log(`[Playlists] ✓ Audiomack sync complete for "${result.name}" (${audiomackId})`);
+    } catch (e) {
+      console.warn(`[Playlists] Audiomack sync failed for "${result.name}":`, e.message);
     }
   }
 
