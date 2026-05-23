@@ -1,13 +1,13 @@
 // Manual trigger: `npm run update` — runs all three playlists immediately.
 // Also used internally by the scheduler.
 require('dotenv').config();
-const spotify = require('./spotify');
-const { updatePlaylist } = require('./playlists');
+const spotify = require('./spotify/client');
+const { updatePlaylist } = require('./playlists/manager');
 const store = require('./store');
 
-const floridaWave = require('./generators/floridaWave');
-const gaming = require('./generators/gaming');
-const underground = require('./generators/underground');
+const floridaWave = require('./playlists/floridaWave');
+const gaming = require('./playlists/gaming');
+const underground = require('./playlists/underground');
 
 const PLAYLISTS = {
   floridaWave,
