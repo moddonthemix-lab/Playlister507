@@ -76,14 +76,34 @@ app.get('/api/trigger-update', async (req, res) => {
   }
   res.json({ ok: true, message: `Update started for: ${key}. Check back in ~60 seconds.` });
   // Run async after response is sent — detached so errors never crash the server
-  setImmediate(() => {
-    const { runAll } = require('./update');
-    runAll(key === 'all' ? null : key)
-      .then(() => { global.__lastUpdateError = null; })
-      .catch(e => {
-        console.error('[trigger-update] Error:', e.message, e.stack);
-        global.__lastUpdateError = { message: e.message, stack: e.stack, time: new Date().toISOString() };
-      });
+  setImmediate(async () => {
+    try {
+      const spotify = require('./spotify/client');
+      const { updatePlaylist } = require('./playlists/manager');
+      const generators = {
+        floridaWave: require('./playlists/floridaWave'),
+        gaming:      require('./playlists/gaming'),
+        underground: require('./playlists/underground'),
+        workout:     require('./playlists/workout'),
+        study:       require('./playlists/study'),
+        summer:      require('./playlists/summer'),
+      };
+      const me = await spotify.getMe();
+      const keys = key === 'all' ? Object.keys(generators) : [key];
+      for (const k of keys) {
+        try {
+          const result = await updatePlaylist(k, generators[k], me.id);
+          global.__lastUpdateError = null;
+          console.log(`[trigger] ✓ ${k} updated: ${result.trackCount} tracks`);
+        } catch (e) {
+          console.error(`[trigger] ✗ ${k} failed:`, e.message, e.stack);
+          global.__lastUpdateError = { key: k, message: e.message, time: new Date().toISOString() };
+        }
+      }
+    } catch (e) {
+      console.error('[trigger] Auth/init error:', e.message);
+      global.__lastUpdateError = { key: 'auth', message: e.message, time: new Date().toISOString() };
+    }
   });
 });
 
