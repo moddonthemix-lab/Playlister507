@@ -107,6 +107,31 @@ app.get('/api/trigger-update', async (req, res) => {
   });
 });
 
+// Live playlist stats — follower counts from Spotify
+app.get('/api/stats', async (req, res) => {
+  const secret = process.env.UPDATE_TOKEN;
+  if (!secret || req.query.token !== secret) return res.status(401).json({ error: 'Unauthorized' });
+  try {
+    const spotify = require('./spotify/client');
+    const keys = ['floridaWave', 'gaming', 'underground', 'workout', 'study', 'summer'];
+    const stats = {};
+    for (const k of keys) {
+      const p = store.getPlaylist(k);
+      if (p?.id) {
+        try {
+          const s = await spotify.getPlaylistStats(p.id);
+          stats[k] = { id: p.id, name: k, followers: s.followers, tracks: s.tracks };
+        } catch { stats[k] = { id: p.id, followers: 'error' }; }
+      } else {
+        stats[k] = null;
+      }
+    }
+    res.json({ fetchedAt: new Date().toISOString(), playlists: stats });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // Spotify re-auth flow — visit /auth/spotify to get a fresh refresh token
 app.get('/auth/spotify', (req, res) => {
   const token = req.query.token;

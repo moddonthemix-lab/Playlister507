@@ -97,6 +97,13 @@ async function getAudioFeatures() {
   return [];
 }
 
+async function getPlaylistStats(playlistId) {
+  const res = await api('GET', `/playlists/${playlistId}`, {
+    params: { fields: 'id,name,followers(total),tracks(total)' },
+  });
+  return { followers: res.followers?.total || 0, tracks: res.tracks?.total || 0 };
+}
+
 async function createPlaylist(userId, name, description) {
   return api('POST', `/me/playlists`, {
     data: { name, description, public: true },
@@ -161,6 +168,7 @@ module.exports = {
   getTrack,
   getTracks,
   getAudioFeatures,
+  getPlaylistStats,
   createPlaylist,
   replacePlaylistTracks,
   updatePlaylistDescription,
