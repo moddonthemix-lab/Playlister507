@@ -7,45 +7,129 @@
     "audiomackId": null,
     "tracks": [
       {
-        "uri": "spotify:track:4PrbQ4jbUhLyqcYCYqzVl7",
-        "id": "4PrbQ4jbUhLyqcYCYqzVl7",
+        "uri": "spotify:track:1UFCw2ZU50ZXdjHUtKg9mp",
+        "id": "1UFCw2ZU50ZXdjHUtKg9mp",
         "name": "Florida Water (feat. Luh Tyler)",
         "artist": "Danny Towers",
         "popularityGain": 0
       },
       {
-        "uri": "spotify:track:1q8DwZtQen5fvyB7cKbShC",
-        "id": "1q8DwZtQen5fvyB7cKbShC",
-        "name": "Walkin",
-        "artist": "Denzel Curry",
-        "popularityGain": 0
-      },
-      {
-        "uri": "spotify:track:1x1dUTGzdFeYKhIi5qCmB6",
-        "id": "1x1dUTGzdFeYKhIi5qCmB6",
-        "name": "If It Don’t Make Money",
+        "uri": "spotify:track:62oLxos6R04SVYL1lXidvu",
+        "id": "62oLxos6R04SVYL1lXidvu",
+        "name": "2 Slippery (feat. BossMan Dlow)",
         "artist": "Luh Tyler",
         "popularityGain": 0
       },
       {
-        "uri": "spotify:track:4j5cQ2vydFCpmR8PnBy7yG",
-        "id": "4j5cQ2vydFCpmR8PnBy7yG",
-        "name": "CNTNRS (feat. Jake La Furia, Emis Killa, Kid Yugi, Tony Boy, Rasty Kilo, Guè, Paky, Nerissima Serpe & Papa V)",
-        "artist": "Night Skinny",
+        "uri": "spotify:track:17GrYupgCRqjoy98xW080s",
+        "id": "17GrYupgCRqjoy98xW080s",
+        "name": "Adapting",
+        "artist": "Slimelife Shawty",
         "popularityGain": 0
       },
       {
-        "uri": "spotify:track:3kfhS2L56Wj8fBcu7xE47H",
-        "id": "3kfhS2L56Wj8fBcu7xE47H",
-        "name": "Turks & Caicos (feat. 21 Savage)",
-        "artist": "Rod Wave",
+        "uri": "spotify:track:6FgezH4bh0IXOAcYDJyuIM",
+        "id": "6FgezH4bh0IXOAcYDJyuIM",
+        "name": "Don't Need Time",
+        "artist": "Hotboii",
         "popularityGain": 0
       },
       {
-        "uri": "spotify:track:0HBqoVCPtB8VkFOixWrBS3",
-        "id": "0HBqoVCPtB8VkFOixWrBS3",
-        "name": "I Promise",
-        "artist": "Lil Baby",
+        "uri": "spotify:track:7mrvTHm27E9xjQrARqr5iN",
+        "id": "7mrvTHm27E9xjQrARqr5iN",
+        "name": "Dead Opps Pt. 2",
+        "artist": "Foolio",
+        "popularityGain": 0
+      },
+      {
+        "uri": "spotify:track:29ZXwWOOLz9t5fa3eT3i7T",
+        "id": "29ZXwWOOLz9t5fa3eT3i7T",
+        "name": "223's (feat. 9lokknine)",
+        "artist": "YNW Melly",
+        "popularityGain": 0
+      },
+      {
+        "uri": "spotify:track:7Lbuvj2QDW80Jb6HiGs8jX",
+        "id": "7Lbuvj2QDW80Jb6HiGs8jX",
+        "name": "Voo Doo",
+        "artist": "Foolio",
+        "popularityGain": 0
+      },
+      {
+        "uri": "spotify:track:0hSm364pD3c3LLNqVgkUIg",
+        "id": "0hSm364pD3c3LLNqVgkUIg",
+        "name": "Ruthless",
+        "artist": "Spottemgottem",
+        "popularityGain": 0
+      },
+      {
+        "uri": "spotify:track:4USfXKG6KJmTVEYOLGS8Ld",
+        "id": "4USfXKG6KJmTVEYOLGS8Ld",
+        "name": "Crayola",
+        "artist": "9lokknine",
+        "popularityGain": 0
+      },
+      {
+        "uri": "spotify:track:11apTwSARwc2Le8U8RogE0",
+        "id": "11apTwSARwc2Le8U8RogE0",
+        "name": "Jax",
+        "artist": "Spottemgottem",
+        "popularityGain": 0
+      },
+      {
+        "uri": "spotify:track:6LU2Kbm1QiNx3LgFNwQEbH",
+        "id": "6LU2Kbm1QiNx3LgFNwQEbH",
+        "name": "Alicia (with Lil Baby)",
+        "artist": "Hotboii",
+        "popularityGain": 0
+      },
+      {
+        "uri": "spotify:track:4sQlsXTcBxe6s0WVqSgXFT",
+        "id": "4sQlsXTcBxe6s0WVqSgXFT",
+        "name": "Undercover Pressure",
+        "artist": "Killumantii",
+        "popularityGain": 0
+      },
+      {
+        "uri": "spotify:track:3TEtGpmiymgVmA0D27dAse",
+        "id": "3TEtGpmiymgVmA0D27dAse",
+        "name": "Rules",
+        "artist": "Killumantii",
+        "popularityGain": 0
+      },
+      {
+        "uri": "spotify:track:1A8KZG8xcLMicmCW6vTxFb",
+        "id": "1A8KZG8xcLMicmCW6vTxFb",
+        "name": "Feel Good (feat. Kevin Gates)",
+        "artist": "Stitches",
+        "popularityGain": 0
+      },
+      {
+        "uri": "spotify:track:3A2yGHWIzmGEIolwonU69h",
+        "id": "3A2yGHWIzmGEIolwonU69h",
+        "name": "Act Up",
+        "artist": "City Girls",
+        "popularityGain": 0
+      },
+      {
+        "uri": "spotify:track:3LN41NUdHkyNqQhi9gExMm",
+        "id": "3LN41NUdHkyNqQhi9gExMm",
+        "name": "Hypnotized (feat. Akon)",
+        "artist": "Plies",
+        "popularityGain": 0
+      },
+      {
+        "uri": "spotify:track:4a17WC0Cf5hSKFD6ts57mk",
+        "id": "4a17WC0Cf5hSKFD6ts57mk",
+        "name": "Molly Cyrus",
+        "artist": "Stitches",
+        "popularityGain": 0
+      },
+      {
+        "uri": "spotify:track:64lIeZ420Tvhr6QprCXbhm",
+        "id": "64lIeZ420Tvhr6QprCXbhm",
+        "name": "In The Pool",
+        "artist": "Luh Tyler",
         "popularityGain": 0
       },
       {
@@ -56,98 +140,14 @@
         "popularityGain": 0
       },
       {
-        "uri": "spotify:track:3V3JxDpiUg0RAt1Mfbn6Ht",
-        "id": "3V3JxDpiUg0RAt1Mfbn6Ht",
-        "name": "Cross Me (feat. Lil Baby and Plies)",
-        "artist": "YoungBoy Never Broke Again",
-        "popularityGain": 0
-      },
-      {
-        "uri": "spotify:track:1iSqfoUFnQwV0QW1EfUit8",
-        "id": "1iSqfoUFnQwV0QW1EfUit8",
-        "name": "Suicidal",
-        "artist": "YNW Melly",
-        "popularityGain": 0
-      },
-      {
-        "uri": "spotify:track:7lO4lOEZh0bzvM7SweVu3c",
-        "id": "7lO4lOEZh0bzvM7SweVu3c",
-        "name": "First Quarter 2.0",
-        "artist": "W1ZZY",
-        "popularityGain": 0
-      },
-      {
-        "uri": "spotify:track:4y55RuZphxa8JlQqiRv2gX",
-        "id": "4y55RuZphxa8JlQqiRv2gX",
-        "name": "Flute",
-        "artist": "9lokknine",
-        "popularityGain": 0
-      },
-      {
-        "uri": "spotify:track:5Jdob8VuV2VzvOx1IUn5jm",
-        "id": "5Jdob8VuV2VzvOx1IUn5jm",
-        "name": "Opps",
-        "artist": "JayDaYoungan",
-        "popularityGain": 0
-      },
-      {
-        "uri": "spotify:track:2lHRuImyzXNKwzy4pau98R",
-        "id": "2lHRuImyzXNKwzy4pau98R",
-        "name": "God's Eyes",
-        "artist": "Dax",
-        "popularityGain": 0
-      },
-      {
-        "uri": "spotify:track:2MA6YoaFF7fnWqkuOAWjUg",
-        "id": "2MA6YoaFF7fnWqkuOAWjUg",
-        "name": "Tokyo Drifting",
-        "artist": "Glass Animals",
-        "popularityGain": 0
-      },
-      {
-        "uri": "spotify:track:4XVoOlgRCYC8yssdOBmLPF",
-        "id": "4XVoOlgRCYC8yssdOBmLPF",
-        "name": "Sunshine",
-        "artist": "Young Dolph",
-        "popularityGain": 0
-      },
-      {
-        "uri": "spotify:track:7eBqSVxrzQZtK2mmgRG6lC",
-        "id": "7eBqSVxrzQZtK2mmgRG6lC",
-        "name": "Murder on My Mind",
-        "artist": "YNW Melly",
-        "popularityGain": 0
-      },
-      {
-        "uri": "spotify:track:6dspR2AgRVXU2zYNXZPYIl",
-        "id": "6dspR2AgRVXU2zYNXZPYIl",
-        "name": "Friday Night With The Neighbours",
-        "artist": "Cody Lawless",
-        "popularityGain": 0
-      },
-      {
-        "uri": "spotify:track:2DtS8ukCJ4OyoBvbMwLeLj",
-        "id": "2DtS8ukCJ4OyoBvbMwLeLj",
-        "name": "Pain Pill",
-        "artist": "Austin Tolliver",
-        "popularityGain": 0
-      },
-      {
-        "uri": "spotify:track:2rOHWqSE9brJZbBIuPAKm6",
-        "id": "2rOHWqSE9brJZbBIuPAKm6",
-        "name": "Sunshine State of Mind (90s Rap)",
-        "artist": "Frequently Obtuse",
-        "popularityGain": 0
-      },
-      {
-        "uri": "spotify:track:496GZe7MxLloHgUQTmY2Ch",
-        "id": "496GZe7MxLloHgUQTmY2Ch",
-        "name": "$outh $ide $uicide",
-        "artist": "$uicideboy$",
+        "uri": "spotify:track:3KLZL7nnA2g7Pvp49C2aEc",
+        "id": "3KLZL7nnA2g7Pvp49C2aEc",
+        "name": "Single (feat.Omeretta The Great)",
+        "artist": "Killumantii",
         "popularityGain": 0
       }
     ],
-    "lastUpdated": "2026-05-23T06:25:42.601Z"
+    "lastUpdated": "2026-05-23T06:39:32.981Z"
   },
   "gaming": {
     "id": "55JMCnSxV0v8VALWHgbpeq",
@@ -449,5 +449,5 @@
     ],
     "lastUpdated": "2026-05-23T06:26:07.155Z"
   },
-  "lastRun": "2026-05-23T06:26:12.912Z"
+  "lastRun": "2026-05-23T06:39:44.225Z"
 }

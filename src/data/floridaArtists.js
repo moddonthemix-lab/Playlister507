@@ -1,40 +1,47 @@
 // Verified Florida rap/hip-hop artists. Names must match Spotify exactly.
 module.exports = [
-  // Miami / South Florida legends
+  // Miami / Carol City / Opa-locka
   'Rick Ross',
   'Trick Daddy',
   'Trina',
   'Flo Rida',
   'Pitbull',
-  'Saucy Santana',
-  'JT',
-  // Broward County
+  'Denzel Curry',
+  'Lil Pump',
+  'Smokepurpp',
+  'Wifisfuneral',
+  // Broward County / Fort Lauderdale
   'Kodak Black',
   'Ace Hood',
-  'Smokepurpp',
   'Ski Mask the Slump God',
   'XXXTENTACION',
   'Jackboy',
-  // Carol City / Opa-locka
-  'Denzel Curry',
-  // Treasure Coast
+  'Saucy Santana',
+  'Ghostemane',
+  // Treasure Coast / Vero Beach / Gifford
   'YNW Melly',
-  // Tampa / St. Pete
+  // Tampa / St. Petersburg
   'Rod Wave',
   'Bezz Believe',
-  // Southwest Florida
+  // Southwest Florida / Fort Myers
   'Plies',
-  // Central Florida
+  // Central Florida / Orlando / Kissimmee
   'Hotboii',
+  '9lokknine',
+  // Tallahassee
+  'Luh Tyler',
   // Jacksonville / North Florida
   'SpottemGottem',
   'Yungeen Ace',
   'Foolio',
-  // Miami underground
+  'Danny Towers',
+  // Miami underground / alternative
   'Pouya',
   'Stitches',
-  'Lil Pump',
+  // City Girls (JT from Liberty City, Miami)
+  'City Girls',
   // Rising FL artists
   'Slimelife Shawty',
   'Doeboy',
+  'Killumantii',
 ];

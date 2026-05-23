@@ -13,12 +13,13 @@ async function generate(previousTracks = []) {
   const featured = await resolveFeaturedTracks('floridaWave');
   const pool = [...featured];
 
-  // Rotating subset of Florida artists — search for their tracks directly
+  // Rotating subset of Florida artists — pull tracks only from confirmed FL artists
+  // 14 artists × up to 3 tracks each = ~42 candidates → dedupe → pick 20
   const weekRotation = Math.floor(Date.now() / (1000 * 60 * 60 * 24 * 14)) % FLORIDA_ARTISTS.length;
   const rotatedArtists = [
     ...FLORIDA_ARTISTS.slice(weekRotation),
     ...FLORIDA_ARTISTS.slice(0, weekRotation),
-  ].slice(0, 10);
+  ].slice(0, 14);
 
   for (const name of rotatedArtists) {
     try {
@@ -29,24 +30,22 @@ async function generate(previousTracks = []) {
     }
   }
 
-  // Genre + keyword searches to fill the pool
-  const searches = [
-    'florida rap 2025',
-    'miami hip hop',
-    'florida drill 2025',
-    'sunshine state rap',
-  ];
-  const searchIdx = Math.floor(Date.now() / (1000 * 60 * 60 * 24 * 14)) % searches.length;
-  for (const q of [searches[searchIdx % searches.length], searches[(searchIdx + 1) % searches.length]]) {
-    try {
-      const results = await spotify.searchTracks(q, 10);
-      pool.push(...results);
-    } catch (e) {
-      console.warn(`[FloridaWave] Search failed: ${q}`);
-    }
-  }
+  // Only keep tracks where the primary artist is a confirmed Florida artist
+  const floridaSet = new Set(FLORIDA_ARTISTS.map(a => a.toLowerCase()));
+  const floridaOnly = pool.filter(t => {
+    const primary = (t.artists?.[0]?.name || '').toLowerCase();
+    return floridaSet.has(primary);
+  });
 
-  const unique = spotify.dedupe(spotify.shuffle(pool));
+  // Dedupe by URI first, then by name+artist to catch alternate versions
+  const byUri = spotify.dedupe(spotify.shuffle(floridaOnly));
+  const seenSongs = new Set();
+  const unique = byUri.filter(t => {
+    const key = `${(t.artists?.[0]?.name || '').toLowerCase()}::${t.name.toLowerCase()}`;
+    if (seenSongs.has(key)) return false;
+    seenSongs.add(key);
+    return true;
+  });
   const final = unique.slice(0, TARGET_COUNT);
   console.log(`[FloridaWave] Selected ${final.length} tracks.`);
   return {
