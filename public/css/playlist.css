@@ -172,3 +172,11 @@
   .other-card__title { font-size: 26px; }
   .other-card__arrow { top: 20px; right: 20px; }
 }
+
+#detail-hero.workout { background: linear-gradient(135deg, #1a0000, #3d0000, #1a0a00); }
+#detail-hero.study   { background: linear-gradient(135deg, #000d1a, #001a33, #000d0d); }
+#detail-hero.summer  { background: linear-gradient(160deg, #1a0f00, #2d1a00, #1a1200); }
+
+.other-card--workout::before { background: #FF4D4D; }
+.other-card--study::before   { background: #4FC3F7; }
+.other-card--summer::before  { background: #FFD166; }

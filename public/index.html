@@ -21,6 +21,7 @@
     <a href="#florida-wave" onclick="closeMobileMenu()">Florida Wave</a>
     <a href="#gaming" onclick="closeMobileMenu()">Gaming</a>
     <a href="#underground" onclick="closeMobileMenu()">Underground</a>
+    <a href="/#new-playlists" onclick="closeMobileMenu()">More Playlists</a>
     <a href="/submit.html" onclick="closeMobileMenu()">Submit</a>
     <a href="https://open.spotify.com" target="_blank" rel="noopener" class="mobile-menu__spotify">Open Spotify ↗</a>
   </div>
@@ -32,6 +33,7 @@
       <a href="#florida-wave">Florida Wave</a>
       <a href="#gaming">Gaming</a>
       <a href="#underground">Underground</a>
+      <a href="/#new-playlists">More Playlists</a>
       <a href="/submit.html" class="nav__submit">Submit</a>
     </div>
     <button class="nav__hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
@@ -53,16 +55,16 @@
         <span class="hero__word hero__word--outline reveal delay-1">PLAYLIST</span>
         <span class="hero__word hero__word--accent reveal delay-2">ENGINE</span>
       </h1>
-      <p class="hero__sub reveal delay-5">Three playlists. Powered by real listener data.<br>Refreshed every two weeks. Never the same twice.</p>
+      <p class="hero__sub reveal delay-5">Six playlists. Powered by real listener data.<br>Refreshed every two weeks. Never the same twice.</p>
       <a href="#florida-wave" class="hero__cta reveal delay-6">
         <span>Explore Playlists</span>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
       </a>
     </div>
     <div class="hero__stats reveal delay-6">
-      <div class="stat"><span class="stat__num">3</span><span class="stat__label">Playlists</span></div>
+      <div class="stat"><span class="stat__num">6</span><span class="stat__label">Playlists</span></div>
       <div class="stat__divider"></div>
-      <div class="stat"><span class="stat__num">60</span><span class="stat__label">Total Tracks</span></div>
+      <div class="stat"><span class="stat__num">120</span><span class="stat__label">Total Tracks</span></div>
       <div class="stat__divider"></div>
       <div class="stat"><span class="stat__num">2WK</span><span class="stat__label">Auto Refresh</span></div>
     </div>
@@ -182,6 +184,69 @@
     </div>
   </section>
 
+  <!-- ── NEW PLAYLISTS GRID ───────────────────────────────────────── -->
+  <!-- New Playlists Grid -->
+  <section class="pl-new-grid" id="new-playlists">
+    <div class="pl-new-grid__inner">
+      <p class="features__eyebrow">— ALSO IN ROTATION —</p>
+      <h2 class="features__title">More Playlists</h2>
+      <div class="pl-new-grid__cards">
+
+        <!-- The Iron Hour -->
+        <div class="pl-section pl-new-card" id="workout">
+          <div class="pl-section__bg pl-new-card__bg--workout"></div>
+          <div class="pl-new-card__content">
+            <p class="pl-new-card__eyebrow">— All Genres · High Energy —</p>
+            <h3 class="pl-new-card__title">THE IRON<br>HOUR</h3>
+            <p class="pl-new-card__desc">High-intensity. Every genre. The only playlist that matches your effort.</p>
+            <div class="pl-new-card__actions">
+              <div id="embed-workout" class="pl-new-card__embed">
+                <div class="embed-placeholder"><p>Playlist loads after setup</p></div>
+              </div>
+              <a href="playlist.html?id=workout" class="pl-btn">View Playlist ↗</a>
+              <a href="https://open.spotify.com" id="open-workout" target="_blank" rel="noopener" class="pl-btn pl-btn--ghost">Open in Spotify ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Locked In -->
+        <div class="pl-section pl-new-card" id="study">
+          <div class="pl-section__bg pl-new-card__bg--study"></div>
+          <div class="pl-new-card__content">
+            <p class="pl-new-card__eyebrow">— Focus · Instrumental —</p>
+            <h3 class="pl-new-card__title">LOCKED<br>IN</h3>
+            <p class="pl-new-card__desc">Zero distractions. Pure focus. The study session you didn't know you needed.</p>
+            <div class="pl-new-card__actions">
+              <div id="embed-study" class="pl-new-card__embed">
+                <div class="embed-placeholder"><p>Playlist loads after setup</p></div>
+              </div>
+              <a href="playlist.html?id=study" class="pl-btn">View Playlist ↗</a>
+              <a href="https://open.spotify.com" id="open-study" target="_blank" rel="noopener" class="pl-btn pl-btn--ghost">Open in Spotify ↗</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coastal Heat -->
+        <div class="pl-section pl-new-card" id="summer">
+          <div class="pl-section__bg pl-new-card__bg--summer"></div>
+          <div class="pl-new-card__content">
+            <p class="pl-new-card__eyebrow">— All Vibes · All Summer —</p>
+            <h3 class="pl-new-card__title">COASTAL<br>HEAT</h3>
+            <p class="pl-new-card__desc">Sun. Waves. Good vibes only. The soundtrack to your summer.</p>
+            <div class="pl-new-card__actions">
+              <div id="embed-summer" class="pl-new-card__embed">
+                <div class="embed-placeholder"><p>Playlist loads after setup</p></div>
+              </div>
+              <a href="playlist.html?id=summer" class="pl-btn">View Playlist ↗</a>
+              <a href="https://open.spotify.com" id="open-summer" target="_blank" rel="noopener" class="pl-btn pl-btn--ghost">Open in Spotify ↗</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ── HOW IT WORKS ───────────────────────────────────────────────── -->
   <section class="features" id="about">
     <div class="features__inner">
@@ -224,6 +289,9 @@
         <a href="#florida-wave">Fresh Florida Wave</a>
         <a href="#gaming">Unstoppable Gaming</a>
         <a href="#underground">The Slept On Underground</a>
+        <a href="playlist.html?id=workout">The Iron Hour</a>
+        <a href="playlist.html?id=study">Locked In</a>
+        <a href="playlist.html?id=summer">Coastal Heat</a>
       </div>
       <div class="footer__right">
         <p class="footer__label">Powered by</p>

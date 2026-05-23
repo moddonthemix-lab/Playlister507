@@ -36,12 +36,48 @@ const CONFIGS = {
     otherClass: 'other-card--underground',
     accentColor:'#F5A623',
   },
+  'workout': {
+    key:        'workout',
+    name:       'THE IRON\nHOUR',
+    eyebrow:    '— All Genres · High Energy —',
+    desc:       'High-intensity. Every genre. The only playlist that matches your effort, updated bi-weekly.',
+    tags:       ['All Genres', '20 Tracks', 'High Energy'],
+    heroClass:  'workout',
+    btnClass:   'pl-btn--workout',
+    otherClass: 'other-card--workout',
+    accentColor:'#FF4D4D',
+  },
+  'study': {
+    key:        'study',
+    name:       'LOCKED\nIN',
+    eyebrow:    '— Focus · No Distractions —',
+    desc:       'Zero distractions. Pure focus. Instrumental and ambient tracks curated for deep work.',
+    tags:       ['Focus Music', '20 Tracks', 'Instrumental'],
+    heroClass:  'study',
+    btnClass:   'pl-btn--study',
+    otherClass: 'other-card--study',
+    accentColor:'#4FC3F7',
+  },
+  'summer': {
+    key:        'summer',
+    name:       'COASTAL\nHEAT',
+    eyebrow:    '— All Vibes · All Summer —',
+    desc:       'Sun. Waves. Good vibes only. The soundtrack to your summer, refreshed every two weeks.',
+    tags:       ['Summer Vibes', '20 Tracks', 'Feel Good'],
+    heroClass:  'summer',
+    btnClass:   'pl-btn--summer',
+    otherClass: 'other-card--summer',
+    accentColor:'#FFD166',
+  },
 };
 
 const OTHER_INFO = {
   'florida-wave': { title: 'FRESH FLORIDA WAVE',      desc: 'Florida rap only. 20 tracks.' },
   'gaming':       { title: 'UNSTOPPABLE GAMING',       desc: 'All genres, max energy.' },
   'underground':  { title: 'THE SLEPT ON UNDERGROUND', desc: 'Rising artists, always fresh.' },
+  'workout':      { title: 'THE IRON HOUR',            desc: 'All genres, max intensity.' },
+  'study':        { title: 'LOCKED IN',                desc: 'Focus music, zero distractions.' },
+  'summer':       { title: 'COASTAL HEAT',             desc: 'Summer vibes, all genres.' },
 };
 
 // ── Read query param ────────────────────────────────────────────────

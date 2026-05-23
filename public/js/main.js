@@ -86,6 +86,9 @@ async function loadPlaylists() {
     injectEmbed('embed-florida',    data.floridaWave,  'open-florida');
     injectEmbed('embed-gaming',     data.gaming,       'open-gaming');
     injectEmbed('embed-underground', data.underground, 'open-underground');
+    injectEmbed('embed-workout', data.workout, 'open-workout');
+    injectEmbed('embed-study',   data.study,   'open-study');
+    injectEmbed('embed-summer',  data.summer,  'open-summer');
   } catch {
     // No server running — placeholders stay visible
   }
