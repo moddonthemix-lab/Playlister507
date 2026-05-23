@@ -1,9 +1,9 @@
 const spotify = require('../spotify/client');
 const { resolveFeaturedTracks } = require('../utils/featured');
 
-const PLAYLIST_NAME = 'COASTAL HEAT';
+const PLAYLIST_NAME = 'Seasonal: Summer Jams';
 const PLAYLIST_DESC_TEMPLATE = (date) =>
-  `Sun. Waves. Good vibes only. The soundtrack to your summer — updated ${date}. ☀️`;
+  `Sun. Waves. Good vibes only. The seasonal soundtrack to your summer — updated ${date}. ☀️`;
 
 const TARGET_COUNT = 20;
 
@@ -37,7 +37,7 @@ const SUMMER_SEARCHES = [
 ];
 
 async function generate(previousTracks = []) {
-  console.log('[Summer] Generating COASTAL HEAT...');
+  console.log('[Summer] Generating Seasonal: Summer Jams...');
   const featured = await resolveFeaturedTracks('summer');
   const pool = [...featured];
 

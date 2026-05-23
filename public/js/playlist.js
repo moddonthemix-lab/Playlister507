@@ -60,9 +60,9 @@ const CONFIGS = {
   },
   'summer': {
     key:        'summer',
-    name:       'COASTAL\nHEAT',
+    name:       'SEASONAL:\nSUMMER\nJAMS',
     eyebrow:    '— All Vibes · All Summer —',
-    desc:       'Sun. Waves. Good vibes only. The soundtrack to your summer, refreshed every two weeks.',
+    desc:       'Sun. Waves. Good vibes only. The seasonal soundtrack to your summer, refreshed every two weeks.',
     tags:       ['Summer Vibes', '20 Tracks', 'Feel Good'],
     heroClass:  'summer',
     btnClass:   'pl-btn--summer',
@@ -77,7 +77,7 @@ const OTHER_INFO = {
   'underground':  { title: 'THE SLEPT ON UNDERGROUND', desc: 'Rising artists, always fresh.' },
   'workout':      { title: 'THE IRON HOUR',            desc: 'All genres, max intensity.' },
   'study':        { title: 'LOCKED IN',                desc: 'Focus music, zero distractions.' },
-  'summer':       { title: 'COASTAL HEAT',             desc: 'Summer vibes, all genres.' },
+  'summer':       { title: 'SEASONAL: SUMMER JAMS',     desc: 'Summer vibes, all genres.' },
 };
 
 // ── Read query param ────────────────────────────────────────────────
