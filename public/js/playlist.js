@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   Playlister 507 — Playlist Detail Page JS
+   Playlist Engine — Playlist Detail Page JS
    ═══════════════════════════════════════════════════════════════ */
 
 const CONFIGS = {
@@ -65,7 +65,7 @@ if (eyebrowEl) eyebrowEl.textContent = config.eyebrow;
 const descEl = document.getElementById('detail-desc');
 if (descEl) descEl.textContent = config.desc;
 
-document.title = `Playlister 507 — ${config.name.replace(/\n/g, ' ')}`;
+document.title = `Playlist Engine — ${config.name.replace(/\n/g, ' ')}`;
 
 // Tags
 const badgesEl = document.getElementById('detail-badges');
@@ -98,7 +98,7 @@ if (otherCards) {
     a.className = `other-card ${cls}`;
     a.innerHTML = `
       <span class="other-card__arrow">↗</span>
-      <p class="other-card__label">— Playlister 507 —</p>
+      <p class="other-card__label">— Playlist Engine —</p>
       <h3 class="other-card__title">${info.title}</h3>
       <p class="other-card__desc">${info.desc}</p>
     `;
