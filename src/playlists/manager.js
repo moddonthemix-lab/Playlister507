@@ -1,5 +1,5 @@
-const spotify = require('./spotify');
-const store = require('./store');
+const spotify = require('../spotify/client');
+const store = require('../store');
 
 // ── Traction measurement ────────────────────────────────────────────────────────
 // Re-fetches popularity for each track from the previous cycle and computes the gain.

@@ -1,5 +1,5 @@
 require('dotenv').config();
-const spotify = require('../spotify');
+const spotify = require('../spotify/client');
 
 const PLAYLIST_NAME = 'The Slept On Underground';
 const PLAYLIST_DESC_TEMPLATE = (date) =>

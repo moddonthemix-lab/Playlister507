@@ -1,4 +1,4 @@
-const spotify = require('../spotify');
+const spotify = require('../spotify/client');
 
 const PLAYLIST_NAME = 'Unstoppable Gaming';
 const PLAYLIST_DESC_TEMPLATE = (date) =>

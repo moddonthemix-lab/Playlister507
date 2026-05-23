@@ -1,4 +1,4 @@
-const spotify = require('../spotify');
+const spotify = require('../spotify/client');
 const FLORIDA_ARTISTS = require('../data/floridaArtists');
 
 const PLAYLIST_NAME = 'Fresh Florida Wave';
