@@ -20,7 +20,7 @@ async function syncToYouTube(playlistKey, generatorResult, storedYoutubeId) {
   const videoIds = [];
   for (const track of tracks) {
     const trackName = track.name;
-    const artistName = track.artists?.[0]?.name || '';
+    const artistName = track.artist || track.artists?.[0]?.name || '';
 
     const videoId = await youtube.searchVideo(trackName, artistName);
     if (videoId) {
