@@ -1,5 +1,6 @@
 const spotify = require('../spotify/client');
 const store = require('../store');
+const { syncToYouTube } = require('../youtube/sync');
 
 // ── Traction measurement ────────────────────────────────────────────────────────
 // Re-fetches popularity for each track from the previous cycle and computes the gain.
@@ -72,14 +73,30 @@ async function updatePlaylist(key, generator, userId) {
   await spotify.replacePlaylistTracks(playlistId, uris);
   await spotify.updatePlaylistDescription(playlistId, result.description);
 
-  // Persist new track state
+  // Persist new track state (keep any existing youtubeId)
+  const existingStored = store.getPlaylist(key) || {};
   store.setPlaylist(key, {
     id: playlistId,
+    youtubeId: existingStored.youtubeId || null,
     tracks: result.tracks,
     lastUpdated: new Date().toISOString(),
   });
 
   console.log(`[Playlists] ✓ "${result.name}" updated with ${result.tracks.length} tracks.`);
+
+  // Optional: sync to YouTube if credentials are configured
+  if (process.env.YOUTUBE_REFRESH_TOKEN) {
+    try {
+      const stored = store.getPlaylist(key) || {};
+      const youtubeId = await syncToYouTube(key, result, stored.youtubeId || null);
+      // Persist the YouTube playlist ID
+      store.setPlaylist(key, { ...store.getPlaylist(key), youtubeId });
+      console.log(`[Playlists] ✓ YouTube sync complete for "${result.name}" (${youtubeId})`);
+    } catch (e) {
+      console.warn(`[Playlists] YouTube sync failed for "${result.name}":`, e.message);
+    }
+  }
+
   return { playlistId, trackCount: result.tracks.length, name: result.name };
 }
 
