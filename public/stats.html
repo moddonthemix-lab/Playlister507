@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Playlist Engine — Live Stats</title>
+  <meta name="description" content="Real-time follower data across all Playlist Engine playlists. Live metrics updated on demand." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <style>
+    /* ── Stats Hero ──────────────────────────────────────────────── */
+    .stats-hero {
+      position: relative;
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      padding-top: 70px;
+    }
+
+    .stats-hero__mesh {
+      position: absolute;
+      inset: -50%;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(29,185,84,0.2) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 55% 85%, rgba(6,182,212,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 40% 30%, rgba(255,209,102,0.1) 0%, transparent 50%);
+      animation: meshDrift 14s ease-in-out infinite alternate;
+    }
+
+    .stats-hero__noise {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .stats-hero__content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      padding: 0 40px;
+    }
+
+    .stats-hero__eyebrow {
+      font-size: 12px;
+      letter-spacing: 4px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .live-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #1DB954;
+      box-shadow: 0 0 0 0 rgba(29,185,84,0.6);
+      animation: livePulse 2s ease-in-out infinite;
+    }
+
+    @keyframes livePulse {
+      0%   { box-shadow: 0 0 0 0 rgba(29,185,84,0.7); }
+      60%  { box-shadow: 0 0 0 10px rgba(29,185,84,0); }
+      100% { box-shadow: 0 0 0 0 rgba(29,185,84,0); }
+    }
+
+    .stats-hero__title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(80px, 13vw, 160px);
+      line-height: 0.9;
+      letter-spacing: 1px;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 28px;
+    }
+
+    .stats-hero__title span:first-child {
+      -webkit-text-stroke: 2px #ffffff;
+      color: transparent;
+    }
+
+    .stats-hero__sub {
+      font-size: 17px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.65;
+      margin-bottom: 56px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Total followers hero counter */
+    .hero-total {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 32px 64px;
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-total__label {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .hero-total__num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(64px, 10vw, 120px);
+      line-height: 1;
+      letter-spacing: 2px;
+      color: #1DB954;
+      transition: color 0.4s;
+    }
+
+    .hero-total__sub {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* Fetched-at badge */
+    .fetched-at {
+      margin-top: 20px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 0.5px;
+    }
+
+    /* ── Playlist Grid Section ───────────────────────────────────── */
+    .stats-grid-section {
+      padding: 100px 40px;
+      background: #111111;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .stats-grid-section__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .stats-section-eyebrow {
+      font-size: 12px;
+      letter-spacing: 4px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 16px;
+    }
+
+    .stats-section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 5vw, 72px);
+      margin-bottom: 64px;
+    }
+
+    .playlists-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .playlist-card {
+      background: #111111;
+      padding: 44px 40px;
+      position: relative;
+      transition: background 0.3s;
+      overflow: hidden;
+    }
+
+    .playlist-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      opacity: 0.8;
+    }
+
+    .playlist-card:hover {
+      background: #1a1a1a;
+    }
+
+    .playlist-card--florida-wave::before  { background: #FFD166; }
+    .playlist-card--gaming::before         { background: #8B5CF6; }
+    .playlist-card--underground::before    { background: #F5A623; }
+    .playlist-card--workout::before        { background: #FF4D4D; }
+    .playlist-card--study::before          { background: #4FC3F7; }
+    .playlist-card--summer::before         { background: #FFD166; }
+
+    .playlist-card__accent {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      flex-shrink: 0;
+    }
+
+    .playlist-card--florida-wave .playlist-card__accent  { background: #FFD166; box-shadow: 0 0 12px rgba(255,209,102,0.5); }
+    .playlist-card--gaming .playlist-card__accent         { background: #8B5CF6; box-shadow: 0 0 12px rgba(139,92,246,0.5); }
+    .playlist-card--underground .playlist-card__accent    { background: #F5A623; box-shadow: 0 0 12px rgba(245,166,35,0.5); }
+    .playlist-card--workout .playlist-card__accent        { background: #FF4D4D; box-shadow: 0 0 12px rgba(255,77,77,0.5); }
+    .playlist-card--study .playlist-card__accent          { background: #4FC3F7; box-shadow: 0 0 12px rgba(79,195,247,0.5); }
+    .playlist-card--summer .playlist-card__accent         { background: #FFD166; box-shadow: 0 0 12px rgba(255,209,102,0.5); }
+
+    .playlist-card__header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .playlist-card__name {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .playlist-card__followers {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(48px, 5vw, 72px);
+      line-height: 1;
+      letter-spacing: 1px;
+      color: #ffffff;
+      margin-bottom: 8px;
+      transition: color 0.4s;
+    }
+
+    .playlist-card--florida-wave .playlist-card__followers  { color: #FFD166; }
+    .playlist-card--gaming .playlist-card__followers         { color: #8B5CF6; }
+    .playlist-card--underground .playlist-card__followers    { color: #F5A623; }
+    .playlist-card--workout .playlist-card__followers        { color: #FF4D4D; }
+    .playlist-card--study .playlist-card__followers          { color: #4FC3F7; }
+    .playlist-card--summer .playlist-card__followers         { color: #FFD166; }
+
+    .playlist-card__meta {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .playlist-card__tracks {
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 1px;
+    }
+
+    .playlist-card__updated {
+      font-size: 11px;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.5px;
+    }
+
+    .card-followers-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      margin-bottom: 4px;
+    }
+
+    /* Null/unavailable state */
+    .playlist-card__followers.unavailable {
+      color: rgba(255,255,255,0.15) !important;
+      font-size: 40px;
+    }
+
+    /* ── Platform Totals Section ─────────────────────────────────── */
+    .stats-totals-section {
+      padding: 100px 40px;
+      background: #080808;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .stats-totals-section__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .totals-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      overflow: hidden;
+      margin-top: 64px;
+    }
+
+    .total-card {
+      background: #0d0d0d;
+      padding: 60px 48px;
+      text-align: center;
+      transition: background 0.3s;
+    }
+
+    .total-card:hover {
+      background: #141414;
+    }
+
+    .total-card__icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    .total-card--spotify .total-card__icon  { background: rgba(29,185,84,0.12); color: #1DB954; }
+    .total-card--youtube .total-card__icon  { background: rgba(255,0,0,0.1); color: #FF4444; }
+    .total-card--combined .total-card__icon { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.6); }
+
+    .total-card__label {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 16px;
+    }
+
+    .total-card__num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 6vw, 88px);
+      line-height: 1;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .total-card--spotify .total-card__num  { color: #1DB954; }
+    .total-card--youtube .total-card__num  { color: #FF4444; }
+    .total-card--combined .total-card__num { color: #ffffff; }
+
+    .total-card__sub {
+      font-size: 12px;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 1px;
+    }
+
+    /* Loading skeleton shimmer */
+    @keyframes shimmer {
+      0%   { background-position: -400px 0; }
+      100% { background-position: 400px 0; }
+    }
+
+    .loading-text {
+      display: inline-block;
+      background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.05) 75%);
+      background-size: 400px 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 4px;
+      color: transparent !important;
+      user-select: none;
+      min-width: 80px;
+    }
+
+    /* Number counter animation */
+    @keyframes countUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .count-animate {
+      animation: countUp 0.5s var(--ease-out, cubic-bezier(0.16,1,0.3,1)) forwards;
+    }
+
+    /* Error state */
+    .stats-error {
+      text-align: center;
+      padding: 80px 40px;
+      color: rgba(255,255,255,0.35);
+    }
+
+    .stats-error__title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      margin-bottom: 16px;
+      color: rgba(255,255,255,0.2);
+    }
+
+    .stats-error__msg {
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* ── Responsive ─────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .stats-hero__content { padding: 0 24px; }
+      .stats-grid-section  { padding: 80px 24px; }
+      .stats-totals-section { padding: 80px 24px; }
+
+      .playlists-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .totals-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .total-card {
+        padding: 48px 32px;
+      }
+
+      .hero-total {
+        padding: 28px 40px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .stats-hero { min-height: 80vh; }
+      .stats-hero__content { padding: 0 20px; }
+      .stats-grid-section  { padding: 60px 20px; }
+      .stats-section-title { margin-bottom: 40px; }
+      .stats-totals-section { padding: 60px 20px; }
+      .playlist-card { padding: 32px 24px; }
+      .total-card { padding: 40px 24px; }
+      .hero-total { padding: 24px 32px; width: 100%; }
+      .stats-hero__sub { font-size: 15px; margin-bottom: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Custom cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <!-- Mobile menu overlay -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="/#florida-wave" onclick="closeMobileMenu()">Florida Wave</a>
+    <a href="/#gaming" onclick="closeMobileMenu()">Gaming</a>
+    <a href="/#underground" onclick="closeMobileMenu()">Underground</a>
+    <a href="/#new-playlists" onclick="closeMobileMenu()">More Playlists</a>
+    <a href="/stats.html" onclick="closeMobileMenu()">Stats</a>
+    <a href="/submit.html" onclick="closeMobileMenu()">Submit</a>
+    <a href="https://open.spotify.com" target="_blank" rel="noopener" class="mobile-menu__spotify">Open Spotify ↗</a>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav scrolled" id="nav">
+    <a href="/" class="nav__logo">PLAYLIST<span>ENGINE</span></a>
+    <div class="nav__links">
+      <a href="/#florida-wave">Florida Wave</a>
+      <a href="/#gaming">Gaming</a>
+      <a href="/#underground">Underground</a>
+      <a href="/#new-playlists">More Playlists</a>
+      <a href="/stats.html">Stats</a>
+      <a href="/submit.html" class="nav__submit">Submit</a>
+    </div>
+    <button class="nav__hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="https://open.spotify.com" target="_blank" rel="noopener" class="nav__spotify">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+      Open Spotify ↗
+    </a>
+  </nav>
+
+  <!-- ── HERO ─────────────────────────────────────────────────────── -->
+  <section class="stats-hero">
+    <div class="stats-hero__mesh"></div>
+    <div class="stats-hero__noise"></div>
+    <div class="stats-hero__content">
+      <p class="stats-hero__eyebrow reveal">
+        <span class="live-dot"></span>
+        — LIVE METRICS —
+      </p>
+      <h1 class="stats-hero__title reveal delay-1">
+        <span>PLAYLIST</span>
+        <span>STATS</span>
+      </h1>
+      <p class="stats-hero__sub reveal delay-2">Real-time follower data across all platforms. Updated on demand.</p>
+      <div class="reveal delay-3">
+        <div class="hero-total">
+          <span class="hero-total__label">Total Spotify Followers</span>
+          <span class="hero-total__num loading-text" id="total-followers">000000</span>
+          <span class="hero-total__sub">Across All 6 Playlists</span>
+        </div>
+        <p class="fetched-at" id="fetched-at"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PLAYLIST GRID ──────────────────────────────────────────── -->
+  <section class="stats-grid-section">
+    <div class="stats-grid-section__inner">
+      <p class="stats-section-eyebrow reveal">— BY PLAYLIST —</p>
+      <h2 class="stats-section-title reveal">Follower Breakdown</h2>
+
+      <div class="playlists-grid" id="playlists-grid">
+
+        <div class="playlist-card playlist-card--florida-wave reveal delay-1">
+          <div class="playlist-card__header">
+            <span class="playlist-card__accent"></span>
+            <span class="playlist-card__name">Fresh Florida Wave</span>
+          </div>
+          <p class="card-followers-label">Followers</p>
+          <div class="playlist-card__followers loading-text" id="stat-floridaWave">—</div>
+          <div class="playlist-card__meta">
+            <span class="playlist-card__tracks" id="tracks-floridaWave"></span>
+            <span class="playlist-card__updated" id="updated-floridaWave"></span>
+          </div>
+        </div>
+
+        <div class="playlist-card playlist-card--gaming reveal delay-2">
+          <div class="playlist-card__header">
+            <span class="playlist-card__accent"></span>
+            <span class="playlist-card__name">Unstoppable Gaming</span>
+          </div>
+          <p class="card-followers-label">Followers</p>
+          <div class="playlist-card__followers loading-text" id="stat-gaming">—</div>
+          <div class="playlist-card__meta">
+            <span class="playlist-card__tracks" id="tracks-gaming"></span>
+            <span class="playlist-card__updated" id="updated-gaming"></span>
+          </div>
+        </div>
+
+        <div class="playlist-card playlist-card--underground reveal delay-3">
+          <div class="playlist-card__header">
+            <span class="playlist-card__accent"></span>
+            <span class="playlist-card__name">The Slept On Underground</span>
+          </div>
+          <p class="card-followers-label">Followers</p>
+          <div class="playlist-card__followers loading-text" id="stat-underground">—</div>
+          <div class="playlist-card__meta">
+            <span class="playlist-card__tracks" id="tracks-underground"></span>
+            <span class="playlist-card__updated" id="updated-underground"></span>
+          </div>
+        </div>
+
+        <div class="playlist-card playlist-card--workout reveal delay-4">
+          <div class="playlist-card__header">
+            <span class="playlist-card__accent"></span>
+            <span class="playlist-card__name">The Iron Hour</span>
+          </div>
+          <p class="card-followers-label">Followers</p>
+          <div class="playlist-card__followers loading-text" id="stat-workout">—</div>
+          <div class="playlist-card__meta">
+            <span class="playlist-card__tracks" id="tracks-workout"></span>
+            <span class="playlist-card__updated" id="updated-workout"></span>
+          </div>
+        </div>
+
+        <div class="playlist-card playlist-card--study reveal delay-5">
+          <div class="playlist-card__header">
+            <span class="playlist-card__accent"></span>
+            <span class="playlist-card__name">Locked In</span>
+          </div>
+          <p class="card-followers-label">Followers</p>
+          <div class="playlist-card__followers loading-text" id="stat-study">—</div>
+          <div class="playlist-card__meta">
+            <span class="playlist-card__tracks" id="tracks-study"></span>
+            <span class="playlist-card__updated" id="updated-study"></span>
+          </div>
+        </div>
+
+        <div class="playlist-card playlist-card--summer reveal delay-6">
+          <div class="playlist-card__header">
+            <span class="playlist-card__accent"></span>
+            <span class="playlist-card__name">Seasonal: Summer Jams</span>
+          </div>
+          <p class="card-followers-label">Followers</p>
+          <div class="playlist-card__followers loading-text" id="stat-summer">—</div>
+          <div class="playlist-card__meta">
+            <span class="playlist-card__tracks" id="tracks-summer"></span>
+            <span class="playlist-card__updated" id="updated-summer"></span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PLATFORM TOTALS ─────────────────────────────────────────── -->
+  <section class="stats-totals-section">
+    <div class="stats-totals-section__inner">
+      <p class="stats-section-eyebrow reveal">— PLATFORM OVERVIEW —</p>
+      <h2 class="stats-section-title reveal">Combined Reach</h2>
+
+      <div class="totals-grid reveal delay-1">
+
+        <div class="total-card total-card--spotify">
+          <div class="total-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+          </div>
+          <p class="total-card__label">Spotify Followers</p>
+          <div class="total-card__num loading-text" id="total-spotify">000000</div>
+          <p class="total-card__sub">Across 6 playlists</p>
+        </div>
+
+        <div class="total-card total-card--youtube">
+          <div class="total-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </div>
+          <p class="total-card__label">YouTube Subscribers</p>
+          <div class="total-card__num loading-text" id="total-youtube">—</div>
+          <p class="total-card__sub" id="yt-sub-label">Channel subscribers</p>
+        </div>
+
+        <div class="total-card total-card--combined">
+          <div class="total-card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <p class="total-card__label">Combined Reach</p>
+          <div class="total-card__num loading-text" id="total-combined">000000</div>
+          <p class="total-card__sub">Spotify + YouTube</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <span class="footer__logo">PLAYLIST<strong>ENGINE</strong></span>
+        <p>Curated. Evolved. Always Fresh.</p>
+      </div>
+      <div class="footer__playlists">
+        <p class="footer__label">Playlists</p>
+        <a href="/#florida-wave">Fresh Florida Wave</a>
+        <a href="/#gaming">Unstoppable Gaming</a>
+        <a href="/#underground">The Slept On Underground</a>
+        <a href="/playlist.html?id=workout">The Iron Hour</a>
+        <a href="/playlist.html?id=study">Locked In</a>
+        <a href="/playlist.html?id=summer">Seasonal: Summer Jams</a>
+      </div>
+      <div class="footer__right">
+        <p class="footer__label">© 2025 Playlist Engine</p>
+        <p style="font-size:12px;color:rgba(255,255,255,0.2);margin-top:4px;letter-spacing:0.5px">Music fuels everything.</p>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p style="color:rgba(255,255,255,0.15);font-size:11px;letter-spacing:1px">PLAYLIST ENGINE · BI-WEEKLY UPDATES · TRACTION TRACKED</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    /* ── Stats Page Logic ─────────────────────────────────────────── */
+    const PLAYLIST_NAMES = {
+      floridaWave: 'Fresh Florida Wave',
+      gaming:      'Unstoppable Gaming',
+      underground: 'The Slept On Underground',
+      workout:     'The Iron Hour',
+      study:       'Locked In',
+      summer:      'Seasonal: Summer Jams',
+    };
+
+    function formatNumber(n) {
+      if (n === null || n === undefined) return '—';
+      const num = parseInt(n, 10);
+      if (isNaN(num)) return '—';
+      if (num >= 1000000) return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+      return num.toLocaleString();
+    }
+
+    function animateCounter(el, targetVal) {
+      if (!el) return;
+      const formatted = formatNumber(targetVal);
+
+      // Remove loading shimmer
+      el.classList.remove('loading-text');
+
+      // Animate in
+      el.classList.add('count-animate');
+      el.textContent = formatted;
+
+      el.addEventListener('animationend', () => {
+        el.classList.remove('count-animate');
+      }, { once: true });
+    }
+
+    function formatDate(iso) {
+      if (!iso) return '';
+      try {
+        const d = new Date(iso);
+        return 'Updated ' + d.toLocaleString(undefined, {
+          month: 'short', day: 'numeric',
+          hour: '2-digit', minute: '2-digit',
+        });
+      } catch { return ''; }
+    }
+
+    function renderStats(data) {
+      if (!data || data.error) {
+        // Show gentle no-data state
+        const keys = ['floridaWave', 'gaming', 'underground', 'workout', 'study', 'summer'];
+        keys.forEach(k => {
+          const el = document.getElementById('stat-' + k);
+          if (el) {
+            el.classList.remove('loading-text');
+            el.textContent = '—';
+          }
+        });
+        ['total-followers', 'total-spotify', 'total-youtube', 'total-combined'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) { el.classList.remove('loading-text'); el.textContent = '—'; }
+        });
+        const fetchedEl = document.getElementById('fetched-at');
+        if (fetchedEl) fetchedEl.textContent = data?.error ? 'Stats not yet available — refresh via admin endpoint.' : '';
+        return;
+      }
+
+      // Playlist cards
+      const spotify = data.spotify || {};
+      const playlists = spotify.playlists || {};
+      const keys = ['floridaWave', 'gaming', 'underground', 'workout', 'study', 'summer'];
+
+      keys.forEach((k, i) => {
+        const p = playlists[k];
+        const followerEl = document.getElementById('stat-' + k);
+        const tracksEl   = document.getElementById('tracks-' + k);
+        const updatedEl  = document.getElementById('updated-' + k);
+
+        if (p === null || p === undefined) {
+          if (followerEl) { followerEl.classList.remove('loading-text'); followerEl.textContent = '—'; followerEl.classList.add('unavailable'); }
+          if (tracksEl)   tracksEl.textContent = 'No playlist ID set';
+          if (updatedEl)  updatedEl.textContent = '';
+        } else {
+          setTimeout(() => {
+            animateCounter(followerEl, p.followers);
+          }, i * 80);
+          if (tracksEl)  tracksEl.textContent = p.tracks != null ? p.tracks + ' tracks' : '';
+          if (updatedEl) updatedEl.textContent = formatDate(data.fetchedAt);
+        }
+      });
+
+      // Hero total
+      const spotifyTotal = spotify.total || 0;
+      setTimeout(() => animateCounter(document.getElementById('total-followers'), spotifyTotal), 100);
+      setTimeout(() => animateCounter(document.getElementById('total-spotify'), spotifyTotal), 150);
+
+      // YouTube
+      const yt = data.youtube;
+      const ytEl     = document.getElementById('total-youtube');
+      const ytLabel  = document.getElementById('yt-sub-label');
+
+      if (yt && yt.subscribers != null) {
+        setTimeout(() => animateCounter(ytEl, yt.subscribers), 200);
+        if (ytLabel) ytLabel.textContent = 'Channel subscribers';
+      } else {
+        if (ytEl)    { ytEl.classList.remove('loading-text'); ytEl.textContent = '—'; }
+        if (ytLabel) ytLabel.textContent = 'Not connected';
+      }
+
+      // Combined
+      const ytSubs   = (yt && yt.subscribers) ? parseInt(yt.subscribers, 10) : 0;
+      const combined = spotifyTotal + ytSubs;
+      setTimeout(() => animateCounter(document.getElementById('total-combined'), combined), 250);
+
+      // Fetched at
+      const fetchedEl = document.getElementById('fetched-at');
+      if (fetchedEl && data.fetchedAt) {
+        fetchedEl.textContent = formatDate(data.fetchedAt);
+      }
+    }
+
+    // Fetch public stats on load
+    async function loadStats() {
+      try {
+        const res  = await fetch('/api/public-stats');
+        const data = await res.json();
+        renderStats(data);
+      } catch (e) {
+        renderStats(null);
+      }
+    }
+
+    loadStats();
+  </script>
+</body>
+</html>
