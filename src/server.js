@@ -107,28 +107,57 @@ app.get('/api/trigger-update', async (req, res) => {
   });
 });
 
-// Live playlist stats — follower counts from Spotify
+// Live playlist stats — follower counts from Spotify + YouTube channel stats
 app.get('/api/stats', async (req, res) => {
   const secret = process.env.UPDATE_TOKEN;
   if (!secret || req.query.token !== secret) return res.status(401).json({ error: 'Unauthorized' });
   try {
     const spotify = require('./spotify/client');
+    const youtube = require('./youtube/client');
     const keys = ['floridaWave', 'gaming', 'underground', 'workout', 'study', 'summer'];
-    const stats = {};
+    const playlists = {};
+    let totalFollowers = 0;
     for (const k of keys) {
       const p = store.getPlaylist(k);
       if (p?.id) {
         try {
           const s = await spotify.getPlaylistStats(p.id);
-          stats[k] = { id: p.id, name: k, followers: s.followers, tracks: s.tracks };
-        } catch { stats[k] = { id: p.id, followers: 'error' }; }
+          playlists[k] = { followers: s.followers, tracks: s.tracks };
+          totalFollowers += (s.followers || 0);
+        } catch { playlists[k] = { followers: 0, tracks: 0 }; }
       } else {
-        stats[k] = null;
+        playlists[k] = null;
       }
     }
-    res.json({ fetchedAt: new Date().toISOString(), playlists: stats });
+
+    let ytStats = null;
+    if (process.env.YOUTUBE_REFRESH_TOKEN) {
+      try {
+        ytStats = await youtube.getChannelStats();
+      } catch (e) {
+        console.warn('[stats] YouTube channel stats failed:', e.message);
+        ytStats = null;
+      }
+    }
+
+    const result = {
+      fetchedAt: new Date().toISOString(),
+      spotify: { total: totalFollowers, playlists },
+      youtube: ytStats,
+    };
+    global.__cachedStats = result;
+    res.json(result);
   } catch (e) {
     res.status(500).json({ error: e.message });
+  }
+});
+
+// Public cached stats — no token required, returns last fetched data
+app.get('/api/public-stats', (req, res) => {
+  if (global.__cachedStats) {
+    res.json(global.__cachedStats);
+  } else {
+    res.json({ error: 'No stats fetched yet. Visit /api/stats?token=YOUR_TOKEN to refresh.' });
   }
 });
 

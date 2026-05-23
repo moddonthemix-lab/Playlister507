@@ -135,6 +135,16 @@ async function updatePlaylistDescription(playlistId, description) {
   });
 }
 
+async function getChannelStats() {
+  const res = await api('GET', '/channels', {
+    params: { part: 'statistics', mine: true },
+  });
+  return {
+    subscribers: res.items[0].statistics.subscriberCount,
+    totalViews: res.items[0].statistics.viewCount,
+  };
+}
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -148,5 +158,6 @@ module.exports = {
   addTracksToPlaylist,
   searchVideo,
   updatePlaylistDescription,
+  getChannelStats,
   sleep,
 };
