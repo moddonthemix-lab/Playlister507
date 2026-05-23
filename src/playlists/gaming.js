@@ -1,4 +1,5 @@
 const spotify = require('../spotify/client');
+const { resolveFeaturedTracks } = require('../utils/featured');
 
 const PLAYLIST_NAME = 'Unstoppable Gaming';
 const PLAYLIST_DESC_TEMPLATE = (date) =>
@@ -37,7 +38,8 @@ const GAMING_SEARCHES = [
 
 async function generate(previousTracks = []) {
   console.log('[Gaming] Generating Unstoppable Gaming...');
-  const pool = [];
+  const featured = await resolveFeaturedTracks('gaming');
+  const pool = [...featured];
 
   // ── Step 1: Seed from previous top-performers ────────────────────────────────
   let seedTrackIds = [];

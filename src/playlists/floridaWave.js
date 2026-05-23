@@ -1,5 +1,6 @@
-const spotify = require('../spotify/client');
+const spotify  = require('../spotify/client');
 const FLORIDA_ARTISTS = require('../data/floridaArtists');
+const { resolveFeaturedTracks } = require('../utils/featured');
 
 const PLAYLIST_NAME = 'Fresh Florida Wave';
 const PLAYLIST_DESC_TEMPLATE = (date) =>
@@ -9,7 +10,8 @@ const TARGET_COUNT = 20;
 
 async function generate(previousTracks = []) {
   console.log('[FloridaWave] Generating Fresh Florida Wave...');
-  const pool = [];
+  const featured = await resolveFeaturedTracks('floridaWave');
+  const pool = [...featured]; // featured artists always lead
 
   // ── Step 1: Determine seed artists ──────────────────────────────────────────
   // If we have previous-playlist data, use the top performers as recommendation seeds.

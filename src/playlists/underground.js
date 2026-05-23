@@ -1,5 +1,6 @@
 require('dotenv').config();
 const spotify = require('../spotify/client');
+const { resolveFeaturedTracks } = require('../utils/featured');
 
 const PLAYLIST_NAME = 'The Slept On Underground';
 const PLAYLIST_DESC_TEMPLATE = (date) =>
@@ -22,7 +23,8 @@ const UNDERGROUND_SEARCHES = [
 
 async function generate(previousTracks = []) {
   console.log('[Underground] Generating The Slept On Underground...');
-  const pool = [];
+  const featured = await resolveFeaturedTracks('underground');
+  const pool = [...featured];
 
   // ── Step 1: Seed recommendations from previous top-performers ────────────────
   let seedTrackIds = [];
