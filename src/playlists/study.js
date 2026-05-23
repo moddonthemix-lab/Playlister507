@@ -23,6 +23,7 @@ const STUDY_ARTISTS = [
   'Com Truise',
   'Washed Out',
   'MGMT',
+  'Modd Origami',
 ];
 
 const STUDY_SEARCHES = [
