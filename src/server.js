@@ -111,11 +111,12 @@ app.get('/api/trigger-update', async (req, res) => {
 app.get('/auth/spotify', (req, res) => {
   const token = req.query.token;
   if (!token || token !== process.env.UPDATE_TOKEN) return res.status(401).send('Unauthorized');
+    const redirectUri = 'https://playlister507-production.up.railway.app/auth/callback';
   const scopes = 'playlist-modify-public playlist-modify-private user-read-private';
   const params = new URLSearchParams({
     client_id: process.env.SPOTIFY_CLIENT_ID,
     response_type: 'code',
-    redirect_uri: `${process.env.APP_URL || `https://playlister507-production.up.railway.app`}/auth/callback`,
+    redirect_uri: redirectUri,
     scope: scopes,
   });
   res.redirect(`https://accounts.spotify.com/authorize?${params}`);
@@ -131,7 +132,7 @@ app.get('/auth/callback', async (req, res) => {
       new URLSearchParams({
         grant_type: 'authorization_code',
         code,
-        redirect_uri: `${process.env.APP_URL || `https://playlister507-production.up.railway.app`}/auth/callback`,
+        redirect_uri: 'https://playlister507-production.up.railway.app/auth/callback',
       }),
       {
         headers: {
