@@ -107,6 +107,52 @@ app.get('/api/trigger-update', async (req, res) => {
   });
 });
 
+// Spotify re-auth flow — visit /auth/spotify to get a fresh refresh token
+app.get('/auth/spotify', (req, res) => {
+  const token = req.query.token;
+  if (!token || token !== process.env.UPDATE_TOKEN) return res.status(401).send('Unauthorized');
+  const scopes = 'playlist-modify-public playlist-modify-private user-read-private';
+  const params = new URLSearchParams({
+    client_id: process.env.SPOTIFY_CLIENT_ID,
+    response_type: 'code',
+    redirect_uri: `${process.env.APP_URL || `https://playlister507-production.up.railway.app`}/auth/callback`,
+    scope: scopes,
+  });
+  res.redirect(`https://accounts.spotify.com/authorize?${params}`);
+});
+
+app.get('/auth/callback', async (req, res) => {
+  const { code } = req.query;
+  if (!code) return res.status(400).send('Missing code');
+  try {
+    const axios = require('axios');
+    const r = await axios.post('https://accounts.spotify.com/api/token',
+      new URLSearchParams({
+        grant_type: 'authorization_code',
+        code,
+        redirect_uri: `${process.env.APP_URL || `https://playlister507-production.up.railway.app`}/auth/callback`,
+      }),
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Authorization: `Basic ${Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64')}`,
+        },
+      }
+    );
+    const { refresh_token } = r.data;
+    res.send(`
+      <html><body style="font-family:monospace;padding:40px;background:#111;color:#fff">
+        <h2 style="color:#1DB954">✓ New Refresh Token</h2>
+        <p>Copy this value and set it as <strong>SPOTIFY_REFRESH_TOKEN</strong> in Railway Variables:</p>
+        <textarea style="width:100%;height:80px;background:#222;color:#1DB954;border:1px solid #333;padding:12px;font-size:13px;border-radius:8px">${refresh_token}</textarea>
+        <p style="color:#888;margin-top:16px">After updating the Railway variable, trigger the update again.</p>
+      </body></html>
+    `);
+  } catch (e) {
+    res.status(500).send(`Auth failed: ${e.message}`);
+  }
+});
+
 app.get('/api/submissions', (req, res) => {
   // Simple admin view — in production this should be auth-protected
   const filePath = path.join(__dirname, '..', 'data', 'submissions.json');
