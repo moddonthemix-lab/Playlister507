@@ -36,6 +36,12 @@ module.exports = [
   'Foolio',
   'Danny Towers',
   'Nino Breeze',
+  'Nardo Wick',
+  'BossMan Dlow',
+  // Rising / Upcoming FL artists
+  'Hurricane Wisdom',
+  'ffawty',
+  'Bigg 290',
   // Miami underground / alternative
   'Pouya',
   'Stitches',
