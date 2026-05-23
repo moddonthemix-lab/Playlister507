@@ -122,8 +122,9 @@ app.get('/auth/spotify', (req, res) => {
 });
 
 app.get('/auth/callback', async (req, res) => {
-  const { code } = req.query;
-  if (!code) return res.status(400).send('Missing code');
+  const { code, error } = req.query;
+  if (error) return res.status(400).send(`Spotify error: ${error}`);
+  if (!code) return res.status(400).send(`Missing code. Query params: ${JSON.stringify(req.query)}`);
   try {
     const axios = require('axios');
     const r = await axios.post('https://accounts.spotify.com/api/token',
