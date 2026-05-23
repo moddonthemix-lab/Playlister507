@@ -35,6 +35,7 @@ module.exports = [
   'Yungeen Ace',
   'Foolio',
   'Danny Towers',
+  'Nino Breeze',
   // Miami underground / alternative
   'Pouya',
   'Stitches',
