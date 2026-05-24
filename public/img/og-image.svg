@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#0a0a0a"/>
+
+  <!-- Subtle noise texture overlay -->
+  <rect width="1200" height="630" fill="url(#noise)" opacity="0.03"/>
+
+  <!-- Accent gradient glow left -->
+  <radialGradient id="glowLeft" cx="25%" cy="50%" r="40%">
+    <stop offset="0%" stop-color="#FFD166" stop-opacity="0.08"/>
+    <stop offset="100%" stop-color="#0a0a0a" stop-opacity="0"/>
+  </radialGradient>
+  <rect width="1200" height="630" fill="url(#glowLeft)"/>
+
+  <!-- Accent gradient glow right -->
+  <radialGradient id="glowRight" cx="80%" cy="45%" r="35%">
+    <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.1"/>
+    <stop offset="100%" stop-color="#0a0a0a" stop-opacity="0"/>
+  </radialGradient>
+  <rect width="1200" height="630" fill="url(#glowRight)"/>
+
+  <!-- Divider line -->
+  <line x1="680" y1="80" x2="680" y2="530" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+
+  <!-- ── LEFT SIDE ── -->
+
+  <!-- "PLAYLIST" — outline text -->
+  <text
+    x="80"
+    y="260"
+    font-family="'Arial Black', 'Impact', sans-serif"
+    font-size="148"
+    font-weight="900"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="3"
+    letter-spacing="6"
+  >PLAYLIST</text>
+
+  <!-- "ENGINE" — solid fill text -->
+  <text
+    x="80"
+    y="390"
+    font-family="'Arial Black', 'Impact', sans-serif"
+    font-size="148"
+    font-weight="900"
+    fill="#ffffff"
+    letter-spacing="6"
+  >ENGINE</text>
+
+  <!-- Tagline -->
+  <text
+    x="80"
+    y="450"
+    font-family="'Courier New', 'Courier', monospace"
+    font-size="18"
+    font-weight="400"
+    fill="#888888"
+    letter-spacing="5"
+  >CURATED. EVOLVED. ALWAYS FRESH.</text>
+
+  <!-- Thin accent line under tagline -->
+  <rect x="80" y="464" width="200" height="1" fill="#FFD166" opacity="0.6"/>
+
+  <!-- ── RIGHT SIDE — Decorative playlist bars ── -->
+
+  <!-- Label: "PLAYLISTS" -->
+  <text
+    x="740"
+    y="130"
+    font-family="'Courier New', 'Courier', monospace"
+    font-size="11"
+    fill="#555555"
+    letter-spacing="4"
+  >— IN ROTATION —</text>
+
+  <!-- Bar 1: Florida Wave -->
+  <rect x="740" y="155" width="380" height="90" rx="12" fill="#FFD166" opacity="0.12"/>
+  <rect x="740" y="155" width="6" height="90" rx="3" fill="#FFD166"/>
+  <text
+    x="764"
+    y="195"
+    font-family="'Arial Black', 'Impact', sans-serif"
+    font-size="22"
+    font-weight="900"
+    fill="#FFD166"
+    letter-spacing="2"
+  >FLORIDA WAVE</text>
+  <text
+    x="764"
+    y="222"
+    font-family="'Courier New', 'Courier', monospace"
+    font-size="12"
+    fill="#888888"
+    letter-spacing="2"
+  >Florida Rap · 20 Tracks · Bi-Weekly</text>
+
+  <!-- Bar 2: Gaming -->
+  <rect x="740" y="270" width="380" height="90" rx="12" fill="#8B5CF6" opacity="0.12"/>
+  <rect x="740" y="270" width="6" height="90" rx="3" fill="#8B5CF6"/>
+  <text
+    x="764"
+    y="310"
+    font-family="'Arial Black', 'Impact', sans-serif"
+    font-size="22"
+    font-weight="900"
+    fill="#8B5CF6"
+    letter-spacing="2"
+  >GAMING</text>
+  <text
+    x="764"
+    y="337"
+    font-family="'Courier New', 'Courier', monospace"
+    font-size="12"
+    fill="#888888"
+    letter-spacing="2"
+  >All Genres · High Energy · Evolved</text>
+
+  <!-- Bar 3: Underground -->
+  <rect x="740" y="385" width="380" height="90" rx="12" fill="#F5A623" opacity="0.12"/>
+  <rect x="740" y="385" width="6" height="90" rx="3" fill="#F5A623"/>
+  <text
+    x="764"
+    y="425"
+    font-family="'Arial Black', 'Impact', sans-serif"
+    font-size="22"
+    font-weight="900"
+    fill="#F5A623"
+    letter-spacing="2"
+  >UNDERGROUND</text>
+  <text
+    x="764"
+    y="452"
+    font-family="'Courier New', 'Courier', monospace"
+    font-size="12"
+    fill="#888888"
+    letter-spacing="2"
+  >Rising Artists · Traction Tracked</text>
+
+  <!-- ── BOTTOM STRIP ── -->
+  <rect x="0" y="580" width="1200" height="50" fill="rgba(255,255,255,0.02)"/>
+  <line x1="0" y1="580" x2="1200" y2="580" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+
+  <text
+    x="80"
+    y="612"
+    font-family="'Courier New', 'Courier', monospace"
+    font-size="13"
+    fill="#444444"
+    letter-spacing="3"
+  >playlistengine.com</text>
+
+  <text
+    x="1120"
+    y="612"
+    font-family="'Courier New', 'Courier', monospace"
+    font-size="11"
+    fill="#333333"
+    letter-spacing="2"
+    text-anchor="end"
+  >AUTO-CURATED · SPOTIFY · 2WK REFRESH</text>
+</svg>
