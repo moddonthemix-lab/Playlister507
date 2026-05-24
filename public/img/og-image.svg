@@ -1,162 +1,80 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#080808"/>
+      <stop offset="100%" style="stop-color:#111111"/>
+    </linearGradient>
+    <linearGradient id="divider" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:rgba(255,255,255,0)"/>
+      <stop offset="30%" style="stop-color:rgba(255,255,255,0.15)"/>
+      <stop offset="70%" style="stop-color:rgba(255,255,255,0.15)"/>
+      <stop offset="100%" style="stop-color:rgba(255,255,255,0)"/>
+    </linearGradient>
+  </defs>
+
   <!-- Background -->
-  <rect width="1200" height="630" fill="#0a0a0a"/>
+  <rect width="1200" height="630" fill="url(#bg)"/>
 
-  <!-- Subtle noise texture overlay -->
-  <rect width="1200" height="630" fill="url(#noise)" opacity="0.03"/>
+  <!-- Subtle green glow bottom-left -->
+  <ellipse cx="160" cy="540" rx="280" ry="160" fill="rgba(29,185,84,0.07)"/>
 
-  <!-- Accent gradient glow left -->
-  <radialGradient id="glowLeft" cx="25%" cy="50%" r="40%">
-    <stop offset="0%" stop-color="#FFD166" stop-opacity="0.08"/>
-    <stop offset="100%" stop-color="#0a0a0a" stop-opacity="0"/>
-  </radialGradient>
-  <rect width="1200" height="630" fill="url(#glowLeft)"/>
+  <!-- LEFT SIDE: Branding -->
+  <!-- Logo wordmark -->
+  <text x="80" y="118" font-family="Arial Black, Impact, sans-serif" font-size="13" font-weight="400" fill="rgba(255,255,255,0.35)" letter-spacing="6">PLAYLIST ENGINE</text>
 
-  <!-- Accent gradient glow right -->
-  <radialGradient id="glowRight" cx="80%" cy="45%" r="35%">
-    <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.1"/>
-    <stop offset="100%" stop-color="#0a0a0a" stop-opacity="0"/>
-  </radialGradient>
-  <rect width="1200" height="630" fill="url(#glowRight)"/>
-
-  <!-- Divider line -->
-  <line x1="680" y1="80" x2="680" y2="530" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-
-  <!-- ── LEFT SIDE ── -->
-
-  <!-- "PLAYLIST" — outline text -->
-  <text
-    x="80"
-    y="260"
-    font-family="'Arial Black', 'Impact', sans-serif"
-    font-size="148"
-    font-weight="900"
-    fill="none"
-    stroke="#ffffff"
-    stroke-width="3"
-    letter-spacing="6"
-  >PLAYLIST</text>
-
-  <!-- "ENGINE" — solid fill text -->
-  <text
-    x="80"
-    y="390"
-    font-family="'Arial Black', 'Impact', sans-serif"
-    font-size="148"
-    font-weight="900"
-    fill="#ffffff"
-    letter-spacing="6"
-  >ENGINE</text>
+  <!-- Main title -->
+  <text x="80" y="240" font-family="Arial Black, Impact, sans-serif" font-size="112" font-weight="900" fill="none" stroke="white" stroke-width="2" letter-spacing="-2">PLAYLIST</text>
+  <text x="80" y="350" font-family="Arial Black, Impact, sans-serif" font-size="112" font-weight="900" fill="white" letter-spacing="-2">ENGINE</text>
 
   <!-- Tagline -->
-  <text
-    x="80"
-    y="450"
-    font-family="'Courier New', 'Courier', monospace"
-    font-size="18"
-    font-weight="400"
-    fill="#888888"
-    letter-spacing="5"
-  >CURATED. EVOLVED. ALWAYS FRESH.</text>
+  <text x="82" y="410" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="rgba(255,255,255,0.45)" letter-spacing="3">CURATED.  EVOLVED.  ALWAYS FRESH.</text>
 
-  <!-- Thin accent line under tagline -->
-  <rect x="80" y="464" width="200" height="1" fill="#FFD166" opacity="0.6"/>
+  <!-- Divider line under tagline -->
+  <rect x="80" y="428" width="48" height="2" fill="#1DB954"/>
 
-  <!-- ── RIGHT SIDE — Decorative playlist bars ── -->
+  <!-- CTA -->
+  <rect x="80" y="468" width="200" height="46" rx="23" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+  <text x="180" y="496" font-family="Arial, sans-serif" font-size="13" font-weight="600" fill="white" letter-spacing="2" text-anchor="middle">EXPLORE PLAYLISTS →</text>
 
-  <!-- Label: "PLAYLISTS" -->
-  <text
-    x="740"
-    y="130"
-    font-family="'Courier New', 'Courier', monospace"
-    font-size="11"
-    fill="#555555"
-    letter-spacing="4"
-  >— IN ROTATION —</text>
+  <!-- URL bottom left -->
+  <text x="82" y="592" font-family="monospace, Courier" font-size="12" fill="rgba(255,255,255,0.2)" letter-spacing="1">playlistengine.com</text>
 
-  <!-- Bar 1: Florida Wave -->
-  <rect x="740" y="155" width="380" height="90" rx="12" fill="#FFD166" opacity="0.12"/>
-  <rect x="740" y="155" width="6" height="90" rx="3" fill="#FFD166"/>
-  <text
-    x="764"
-    y="195"
-    font-family="'Arial Black', 'Impact', sans-serif"
-    font-size="22"
-    font-weight="900"
-    fill="#FFD166"
-    letter-spacing="2"
-  >FLORIDA WAVE</text>
-  <text
-    x="764"
-    y="222"
-    font-family="'Courier New', 'Courier', monospace"
-    font-size="12"
-    fill="#888888"
-    letter-spacing="2"
-  >Florida Rap · 20 Tracks · Bi-Weekly</text>
+  <!-- VERTICAL DIVIDER -->
+  <rect x="620" y="0" width="1" height="630" fill="url(#divider)"/>
 
-  <!-- Bar 2: Gaming -->
-  <rect x="740" y="270" width="380" height="90" rx="12" fill="#8B5CF6" opacity="0.12"/>
-  <rect x="740" y="270" width="6" height="90" rx="3" fill="#8B5CF6"/>
-  <text
-    x="764"
-    y="310"
-    font-family="'Arial Black', 'Impact', sans-serif"
-    font-size="22"
-    font-weight="900"
-    fill="#8B5CF6"
-    letter-spacing="2"
-  >GAMING</text>
-  <text
-    x="764"
-    y="337"
-    font-family="'Courier New', 'Courier', monospace"
-    font-size="12"
-    fill="#888888"
-    letter-spacing="2"
-  >All Genres · High Energy · Evolved</text>
+  <!-- RIGHT SIDE: Playlist list -->
+  <text x="680" y="118" font-family="Arial, sans-serif" font-size="11" font-weight="400" fill="rgba(255,255,255,0.3)" letter-spacing="4">— IN ROTATION —</text>
 
-  <!-- Bar 3: Underground -->
-  <rect x="740" y="385" width="380" height="90" rx="12" fill="#F5A623" opacity="0.12"/>
-  <rect x="740" y="385" width="6" height="90" rx="3" fill="#F5A623"/>
-  <text
-    x="764"
-    y="425"
-    font-family="'Arial Black', 'Impact', sans-serif"
-    font-size="22"
-    font-weight="900"
-    fill="#F5A623"
-    letter-spacing="2"
-  >UNDERGROUND</text>
-  <text
-    x="764"
-    y="452"
-    font-family="'Courier New', 'Courier', monospace"
-    font-size="12"
-    fill="#888888"
-    letter-spacing="2"
-  >Rising Artists · Traction Tracked</text>
+  <!-- Playlist 1: Florida Wave -->
+  <rect x="680" y="148" width="4" height="48" rx="2" fill="#FFD166"/>
+  <text x="702" y="168" font-family="Arial Black, sans-serif" font-size="15" font-weight="900" fill="white" letter-spacing="1">FRESH FLORIDA WAVE</text>
+  <text x="702" y="186" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.35)" letter-spacing="1">Florida Rap · 20 Tracks · Bi-Weekly</text>
 
-  <!-- ── BOTTOM STRIP ── -->
-  <rect x="0" y="580" width="1200" height="50" fill="rgba(255,255,255,0.02)"/>
-  <line x1="0" y1="580" x2="1200" y2="580" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <!-- Playlist 2: Gaming -->
+  <rect x="680" y="218" width="4" height="48" rx="2" fill="#8B5CF6"/>
+  <text x="702" y="238" font-family="Arial Black, sans-serif" font-size="15" font-weight="900" fill="white" letter-spacing="1">UNSTOPPABLE GAMING</text>
+  <text x="702" y="256" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.35)" letter-spacing="1">All Genres · High Energy · Evolved</text>
 
-  <text
-    x="80"
-    y="612"
-    font-family="'Courier New', 'Courier', monospace"
-    font-size="13"
-    fill="#444444"
-    letter-spacing="3"
-  >playlistengine.com</text>
+  <!-- Playlist 3: Underground -->
+  <rect x="680" y="288" width="4" height="48" rx="2" fill="#F5A623"/>
+  <text x="702" y="308" font-family="Arial Black, sans-serif" font-size="15" font-weight="900" fill="white" letter-spacing="1">THE SLEPT ON UNDERGROUND</text>
+  <text x="702" y="326" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.35)" letter-spacing="1">Rising Artists · Traction Tracked</text>
 
-  <text
-    x="1120"
-    y="612"
-    font-family="'Courier New', 'Courier', monospace"
-    font-size="11"
-    fill="#333333"
-    letter-spacing="2"
-    text-anchor="end"
-  >AUTO-CURATED · SPOTIFY · 2WK REFRESH</text>
+  <!-- Playlist 4: Workout -->
+  <rect x="680" y="358" width="4" height="48" rx="2" fill="#FF4D4D"/>
+  <text x="702" y="378" font-family="Arial Black, sans-serif" font-size="15" font-weight="900" fill="white" letter-spacing="1">THE IRON HOUR</text>
+  <text x="702" y="396" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.35)" letter-spacing="1">All Genres · High Intensity · No Mercy</text>
+
+  <!-- Playlist 5: Study -->
+  <rect x="680" y="428" width="4" height="48" rx="2" fill="#4FC3F7"/>
+  <text x="702" y="448" font-family="Arial Black, sans-serif" font-size="15" font-weight="900" fill="white" letter-spacing="1">LOCKED IN</text>
+  <text x="702" y="466" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.35)" letter-spacing="1">Focus · Instrumental · Zero Distractions</text>
+
+  <!-- Playlist 6: Summer -->
+  <rect x="680" y="498" width="4" height="48" rx="2" fill="#FFD166"/>
+  <text x="702" y="518" font-family="Arial Black, sans-serif" font-size="15" font-weight="900" fill="white" letter-spacing="1">SEASONAL: SUMMER JAMS</text>
+  <text x="702" y="536" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.35)" letter-spacing="1">All Vibes · Feel Good · Sun &amp; Waves</text>
+
+  <!-- Bottom right tag -->
+  <text x="1120" y="592" font-family="monospace" font-size="11" fill="rgba(255,255,255,0.15)" letter-spacing="1" text-anchor="end">AUTO-CURATED · SPOTIFY · 2WK REFRESH</text>
 </svg>
