@@ -80,6 +80,51 @@ const OTHER_INFO = {
   'summer':       { title: 'SEASONAL: SUMMER JAMS',     desc: 'Summer vibes, all genres.' },
 };
 
+const SEO_DATA = {
+  'florida-wave': {
+    title:    'Fresh Florida Wave — Best Florida Rap Playlist on Spotify',
+    desc:     'Fresh Florida Wave is Playlist Engine\'s curated Florida rap playlist featuring the best Florida artists right now. Updated every two weeks with rising and established Florida MCs — from Miami to Jacksonville. The only Florida hip-hop playlist driven by real listener traction data.',
+    keywords: 'florida rap playlist spotify, florida hip hop playlist, best florida rappers, miami rap music, jacksonville hip hop, florida rap 2025, fresh florida wave playlist engine, curated florida music',
+    ogTitle:  'Fresh Florida Wave — Florida Rap Playlist | Playlist Engine',
+    ogDesc:   'The best Florida rap playlist on Spotify. 20 tracks, updated every 2 weeks. Only the Sunshine State\'s finest.',
+  },
+  'gaming': {
+    title:    'Unstoppable Gaming — Best Gaming Music Playlist on Spotify 2025',
+    desc:     'Unstoppable Gaming is Playlist Engine\'s high-energy gaming playlist. EDM, metal, trap, synthwave, hip-hop — every genre that hits hardest. Whether you\'re grinding ranked, streaming, or just need music to match your focus level, this playlist evolves every two weeks based on listener traction. No filler. Only bangers.',
+    keywords: 'gaming playlist spotify, best gaming music 2025, music for gaming, high energy gaming songs, edm gaming playlist, trap gaming music, gaming background music spotify, unstoppable gaming playlist engine',
+    ogTitle:  'Unstoppable Gaming — Best Gaming Playlist | Playlist Engine',
+    ogDesc:   'EDM, metal, trap, synthwave. High-energy gaming music updated bi-weekly. 20 tracks, no filler.',
+  },
+  'underground': {
+    title:    'The Slept On Underground — Best Underrated Artists Playlist 2025',
+    desc:     'The Slept On Underground is where Playlist Engine finds the next wave before everyone else does. Independent and rising artists from across genres — hip-hop, R&B, indie, pop, and beyond. These are the artists trending before the world catches on. Updated every two weeks with fresh traction data.',
+    keywords: 'underground music playlist spotify, best underrated artists 2025, rising artists playlist, indie hip hop playlist, slept on music, hidden gem artists spotify, new artists to listen to, underground rap playlist 2025',
+    ogTitle:  'The Slept On Underground — Rising Artists Playlist | Playlist Engine',
+    ogDesc:   'The next wave before everyone knows. 20 rising artists, updated every 2 weeks.',
+  },
+  'workout': {
+    title:    'The Iron Hour — Best Workout Music Playlist on Spotify 2025',
+    desc:     'The Iron Hour is Playlist Engine\'s ultimate workout playlist. High-intensity tracks across every genre — hip-hop, rock, EDM, metal, rap. Built for the gym, the run, the grind. Every track is selected for maximum energy output. Updated every two weeks so your motivation never runs dry.',
+    keywords: 'workout playlist spotify, best gym music 2025, exercise music playlist, high intensity workout songs, gym motivation music, running playlist spotify, iron hour playlist engine, best workout songs spotify',
+    ogTitle:  'The Iron Hour — Best Workout Playlist | Playlist Engine',
+    ogDesc:   'High-intensity workout music across every genre. 20 tracks built for the gym, updated bi-weekly.',
+  },
+  'study': {
+    title:    'Locked In — Best Study Music & Focus Playlist on Spotify 2025',
+    desc:     'Locked In is Playlist Engine\'s deep focus and study music playlist. Instrumental, ambient, lo-fi, and atmospheric tracks curated for flow state. Zero distractions. Whether you\'re studying, coding, writing, or doing deep work, Locked In keeps you in the zone. Updated every two weeks.',
+    keywords: 'study music playlist spotify, focus music spotify, instrumental music for studying, lo-fi study playlist, deep work music, ambient music playlist, concentration music spotify, locked in playlist engine, best study songs 2025',
+    ogTitle:  'Locked In — Best Study & Focus Playlist | Playlist Engine',
+    ogDesc:   'Instrumental and ambient focus music for deep work. 20 tracks, zero distractions.',
+  },
+  'summer': {
+    title:    'Seasonal: Summer Jams — Best Summer Music Playlist on Spotify 2025',
+    desc:     'Seasonal: Summer Jams is Playlist Engine\'s hand-curated summer soundtrack. The best feel-good tracks across pop, hip-hop, R&B, and tropical sounds — built for beach days, road trips, and late nights. Updated every two weeks so the vibes stay fresh all season long.',
+    keywords: 'summer playlist spotify 2025, best summer songs, summer jams playlist, feel good music summer, beach music playlist spotify, summer hits 2025, seasonal summer jams playlist engine, summer road trip music',
+    ogTitle:  'Seasonal: Summer Jams — Best Summer Playlist | Playlist Engine',
+    ogDesc:   'Sun. Waves. Good vibes. The ultimate summer soundtrack updated every 2 weeks.',
+  },
+};
+
 // ── Read query param ────────────────────────────────────────────────
 const params   = new URLSearchParams(window.location.search);
 const id       = params.get('id') || 'florida-wave';
@@ -102,6 +147,33 @@ const descEl = document.getElementById('detail-desc');
 if (descEl) descEl.textContent = config.desc;
 
 document.title = `Playlist Engine — ${config.name.replace(/\n/g, ' ')}`;
+
+// ── SEO content ─────────────────────────────────────────────────────
+(function applySEO() {
+  const seo = SEO_DATA[id];
+  if (!seo) return;
+
+  // Dynamic meta tags
+  const setMeta = (sel, val) => { const el = document.querySelector(sel); if (el) el.setAttribute('content', val); };
+  document.title = seo.ogTitle;
+  setMeta('meta[name="description"]',         seo.ogDesc);
+  setMeta('meta[property="og:title"]',        seo.ogTitle);
+  setMeta('meta[property="og:description"]',  seo.ogDesc);
+  setMeta('meta[name="twitter:title"]',       seo.ogTitle);
+  setMeta('meta[name="twitter:description"]', seo.ogDesc);
+
+  // Indexable hidden section
+  const section = document.getElementById('seo-content');
+  if (section) {
+    section.style.display = 'block';
+    const titleEl = document.getElementById('seo-title');
+    const descEl  = document.getElementById('seo-desc');
+    const kwEl    = document.getElementById('seo-keywords');
+    if (titleEl) titleEl.textContent = seo.title;
+    if (descEl)  descEl.textContent  = seo.desc;
+    if (kwEl)    kwEl.textContent    = seo.keywords;
+  }
+})();
 
 // Tags
 const badgesEl = document.getElementById('detail-badges');
