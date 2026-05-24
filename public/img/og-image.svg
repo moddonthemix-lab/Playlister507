@@ -34,7 +34,7 @@
 
   <!-- CTA -->
   <rect x="80" y="468" width="200" height="46" rx="23" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
-  <text x="180" y="496" font-family="Arial, sans-serif" font-size="13" font-weight="600" fill="white" letter-spacing="2" text-anchor="middle">EXPLORE PLAYLISTS →</text>
+  <text x="180" y="496" font-family="Arial, sans-serif" font-size="13" font-weight="600" fill="white" letter-spacing="2" text-anchor="middle">LISTEN NOW →</text>
 
   <!-- URL bottom left -->
   <text x="82" y="592" font-family="monospace, Courier" font-size="12" fill="rgba(255,255,255,0.2)" letter-spacing="1">playlistengine.com</text>
