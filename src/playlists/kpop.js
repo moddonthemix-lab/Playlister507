@@ -8,42 +8,43 @@ const PLAYLIST_DESC_TEMPLATE = (date) =>
 const TARGET_COUNT = 20;
 
 const KPOP_ARTISTS = [
-  // Mainstream K-pop
+  // User picks + core
   'NewJeans',
   'BTS',
+  'FIFTY FIFTY',
+  'Pink Pantheress',
+  // Girl groups trending now
   'BLACKPINK',
   'aespa',
   'IVE',
-  'FIFTY FIFTY',
   'LE SSERAFIM',
   'TWICE',
-  'Stray Kids',
-  'TXT',
-  // Cross-genre / global breakouts
-  'Pink Pantheress',
   'MAMAMOO',
   'Red Velvet',
-  'EXO',
-  // K-indie / R&B gems
-  'DPR LIVE',
-  'DPR IAN',
-  'pH-1',
-  'Heize',
-  'Dean',
-  'Epik High',
+  'ITZY',
+  // Boy groups
+  'Stray Kids',
+  'TXT',
+  'ENHYPEN',
+  'ATEEZ',
+  // Solo / crossover
+  'Jungkook',
+  'Jimin',
+  'Taeyeon',
+  'HyunA',
 ];
 
 const KPOP_SEARCHES = [
-  'kpop hits 2025',
-  'best kpop songs 2025',
-  'kpop girl group banger 2025',
+  'NewJeans best songs',
+  'BTS popular songs',
+  'FIFTY FIFTY kpop hits',
+  'kpop girl group hits 2025',
   'kpop boy group trending 2025',
-  'k-indie viral 2025',
-  'korean r&b smooth 2025',
-  'kpop new release 2025',
-  'kpop crossover pop 2025',
-  'trending kpop playlist 2025',
-  'kpop feel good summer 2025',
+  'best kpop songs 2025',
+  'kpop viral tiktok 2025',
+  'kpop feel good playlist',
+  'kpop summer bop 2025',
+  'kpop crossover pop english',
 ];
 
 async function generate(previousTracks = []) {
