@@ -74,7 +74,20 @@ const revealObserver = new IntersectionObserver(
   }),
   { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
 );
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+document.querySelectorAll('.reveal').forEach(el => {
+  const rect = el.getBoundingClientRect();
+  if (rect.top < window.innerHeight && rect.bottom > 0) {
+    el.classList.add('visible');
+  } else {
+    revealObserver.observe(el);
+  }
+});
+
+// Safety net: if anything is still hidden after 1.5s, force-reveal it
+setTimeout(() => {
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => el.classList.add('visible'));
+}, 1500);
 
 // ── Load playlist data & inject Spotify embeds ──────────────────────
 async function loadPlaylists() {
