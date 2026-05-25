@@ -294,6 +294,7 @@ async function loadData() {
     // Render track list
     if (playlist.tracks?.length) {
       renderTracks(playlist.tracks);
+      injectMusicPlaylistSchema(playlist);
 
       const noteEl = document.getElementById('refresh-note');
       if (noteEl && playlist.lastUpdated) {
@@ -305,6 +306,37 @@ async function loadData() {
   } catch {
     clearSkeletons();
   }
+}
+
+function injectMusicPlaylistSchema(playlist) {
+  const seo = SEO_DATA[id];
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'MusicPlaylist',
+    'name': config.name.replace(/\n/g, ' '),
+    'description': seo?.desc || config.desc,
+    'url': `https://playlistengine.com/playlist.html?id=${id}`,
+    'numTracks': playlist.tracks?.length || 20,
+    'genre': config.tags[0] || 'Music',
+    'dateModified': playlist.lastUpdated || new Date().toISOString(),
+    'maintainer': {
+      '@type': 'Organization',
+      'name': 'Playlist Engine',
+      'url': 'https://playlistengine.com'
+    },
+    'track': (playlist.tracks || []).map(t => ({
+      '@type': 'MusicRecording',
+      'name': t.name,
+      'byArtist': { '@type': 'MusicGroup', 'name': t.artist }
+    }))
+  };
+  if (playlist.id) {
+    schema['sameAs'] = `https://open.spotify.com/playlist/${playlist.id}`;
+  }
+  const el = document.createElement('script');
+  el.type = 'application/ld+json';
+  el.textContent = JSON.stringify(schema);
+  document.head.appendChild(el);
 }
 
 function renderTracks(tracks) {

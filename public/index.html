@@ -21,18 +21,113 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
   <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Playlist Engine",
-  "url": "https://playlistengine.com",
-  "description": "Auto-curated Spotify playlists updated every two weeks based on real listener traction data.",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://playlistengine.com/submit.html",
-    "query-input": "required name=search_term_string"
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Playlist Engine",
+    "url": "https://playlistengine.com",
+    "description": "Auto-curated Spotify playlists updated every two weeks based on real listener traction data.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://playlistengine.com/submit.html",
+      "query-input": "required name=search_term_string"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Playlist Engine",
+    "url": "https://playlistengine.com",
+    "logo": "https://playlistengine.com/img/og-image.png",
+    "description": "Playlist Engine curates 7 auto-updating Spotify playlists across Florida rap, gaming, K-pop, underground hip-hop, workout, study, and summer genres. Every playlist refreshes every two weeks based on real listener traction data.",
+    "foundingDate": "2025",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Music Submission",
+      "url": "https://playlistengine.com/submit.html"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Playlist Engine — All Curated Spotify Playlists",
+    "description": "7 auto-curated Spotify playlists updated every two weeks.",
+    "url": "https://playlistengine.com",
+    "numberOfItems": 7,
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Fresh Florida Wave", "url": "https://playlistengine.com/playlist.html?id=florida-wave", "description": "The best Florida rap playlist on Spotify. Only Florida MCs, updated every 2 weeks." },
+      { "@type": "ListItem", "position": 2, "name": "Unstoppable Gaming", "url": "https://playlistengine.com/playlist.html?id=gaming", "description": "High-energy gaming music across EDM, metal, trap, and synthwave. Updated bi-weekly." },
+      { "@type": "ListItem", "position": 3, "name": "Ease In Kpop", "url": "https://playlistengine.com/playlist.html?id=kpop", "description": "K-pop hits, K-indie gems, and Korean R&B curated and updated every two weeks." },
+      { "@type": "ListItem", "position": 4, "name": "The Slept On Underground", "url": "https://playlistengine.com/playlist.html?id=underground", "description": "Rising and underrated artists across hip-hop and R&B, updated every 2 weeks." },
+      { "@type": "ListItem", "position": 5, "name": "The Iron Hour", "url": "https://playlistengine.com/playlist.html?id=workout", "description": "High-intensity workout music across all genres. Updated bi-weekly." },
+      { "@type": "ListItem", "position": 6, "name": "Locked In", "url": "https://playlistengine.com/playlist.html?id=study", "description": "Instrumental and ambient focus music for deep work and studying." },
+      { "@type": "ListItem", "position": 7, "name": "Seasonal: Summer Jams", "url": "https://playlistengine.com/playlist.html?id=summer", "description": "Feel-good summer hits across pop, R&B, and afrobeats. Updated every 2 weeks." }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Playlist Engine?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Playlist Engine is a music curation platform that maintains 7 auto-updating Spotify playlists across genres including Florida rap, gaming, K-pop, underground hip-hop, workout, study, and summer music. Every playlist refreshes automatically every two weeks based on real listener traction data."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How often are Playlist Engine playlists updated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "All Playlist Engine playlists update automatically every two weeks. The same Spotify playlist link stays consistent — follow it once and you'll always get fresh music without needing to re-follow."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I submit my music to Playlist Engine?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You can submit your music for playlist consideration at playlistengine.com/submit.html. Provide your artist name, track link (Spotify, SoundCloud, or YouTube), target playlist, and a short pitch. Every submission is personally reviewed by our curators."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What genres does Playlist Engine cover?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Playlist Engine covers Florida rap, gaming music (EDM, metal, trap, synthwave), K-pop and Korean R&B, underground hip-hop, high-intensity workout music, instrumental focus and study music, and feel-good summer vibes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the best Florida rap playlist on Spotify?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Fresh Florida Wave by Playlist Engine is one of the top Florida rap playlists on Spotify, featuring only Florida MCs — from established names to rising artists. It updates every two weeks based on traction data, keeping it fresh with the best Florida hip-hop at all times."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is Playlist Engine free to use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. All Playlist Engine playlists are completely free to follow and listen to on Spotify. Music submission for playlist consideration is also free."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does Playlist Engine choose which songs to include?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Playlist Engine uses a traction-based curation system. Songs are selected from genre-specific artist pools and trending search queries via the Spotify API. Between update cycles, track popularity is measured — songs that gained listeners are weighted more heavily in the next refresh, so the playlists naturally evolve toward what real listeners respond to."
+        }
+      }
+    ]
   }
-}
+]
   </script>
 </head>
 <body>
