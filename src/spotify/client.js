@@ -120,6 +120,29 @@ async function updatePlaylistDescription(playlistId, description) {
   await api('PUT', `/playlists/${playlistId}`, { data: { description } });
 }
 
+async function addTracksToPlaylist(playlistId, uris) {
+  await api('POST', `/playlists/${playlistId}/tracks`, { data: { uris } });
+}
+
+async function removeTracksFromPlaylist(playlistId, uris) {
+  await api('DELETE', `/playlists/${playlistId}/tracks`, {
+    data: { tracks: uris.map(uri => ({ uri })) },
+  });
+}
+
+async function updatePlaylistDetails(playlistId, fields) {
+  await api('PUT', `/playlists/${playlistId}`, { data: fields });
+}
+
+async function uploadPlaylistCover(playlistId, base64Jpeg) {
+  const token = await getAccessToken();
+  await axios.put(
+    `https://api.spotify.com/v1/playlists/${playlistId}/images`,
+    base64Jpeg,
+    { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'image/jpeg' } }
+  );
+}
+
 async function getUserPlaylists() {
   const playlists = [];
   let url = `/me/playlists`;
@@ -172,6 +195,10 @@ module.exports = {
   createPlaylist,
   replacePlaylistTracks,
   updatePlaylistDescription,
+  addTracksToPlaylist,
+  removeTracksFromPlaylist,
+  updatePlaylistDetails,
+  uploadPlaylistCover,
   getUserPlaylists,
   shuffle,
   dedupe,

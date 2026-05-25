@@ -35,5 +35,11 @@
     "tracks": [],
     "lastUpdated": "2026-05-23T23:12:23.834Z"
   },
+  "kpop": {
+    "id": null,
+    "youtubeId": null,
+    "tracks": [],
+    "lastUpdated": null
+  },
   "lastRun": "2026-05-23T23:12:23.834Z"
 }

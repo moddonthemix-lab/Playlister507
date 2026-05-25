@@ -69,6 +69,17 @@ const CONFIGS = {
     otherClass: 'other-card--summer',
     accentColor:'#FFD166',
   },
+  'kpop': {
+    key:        'kpop',
+    name:       'EASE IN\nKPOP',
+    eyebrow:    '— K-Pop · K-Indie · Korean R&B —',
+    desc:       'K-pop, K-indie, and Korean R&B done right. Trending hits and hidden gems from across the Korean music scene.',
+    tags:       ['K-Pop', '20 Tracks', 'Feel Good'],
+    heroClass:  'kpop',
+    btnClass:   'pl-btn--kpop',
+    otherClass: 'other-card--kpop',
+    accentColor:'#FF69B4',
+  },
 };
 
 const OTHER_INFO = {
@@ -78,6 +89,7 @@ const OTHER_INFO = {
   'workout':      { title: 'THE IRON HOUR',            desc: 'All genres, max intensity.' },
   'study':        { title: 'LOCKED IN',                desc: 'Focus music, zero distractions.' },
   'summer':       { title: 'SEASONAL: SUMMER JAMS',     desc: 'Summer vibes, all genres.' },
+  'kpop':         { title: 'EASE IN KPOP',              desc: 'K-pop hits, K-indie gems.' },
 };
 
 const SEO_DATA = {
@@ -115,6 +127,13 @@ const SEO_DATA = {
     keywords: 'study music playlist spotify, focus music spotify, instrumental music for studying, lo-fi study playlist, deep work music, ambient music playlist, concentration music spotify, locked in playlist engine, best study songs 2025',
     ogTitle:  'Locked In — Best Study & Focus Playlist | Playlist Engine',
     ogDesc:   'Instrumental and ambient focus music for deep work. 20 tracks, zero distractions.',
+  },
+  'kpop': {
+    title:    'Ease In Kpop — Best K-Pop Playlist on Spotify 2025',
+    desc:     'Ease In Kpop is Playlist Engine\'s curated K-pop, K-indie, and Korean R&B playlist. From NewJeans and BTS to underground K-indie gems and smooth Korean R&B — 20 tracks updated every two weeks with the freshest sounds from the Korean music scene. Whether you\'re a long-time fan or just discovering K-pop, this is your starting point.',
+    keywords: 'kpop playlist spotify 2025, best kpop songs, newjeans spotify, bts playlist, blackpink playlist, aespa ive fifty fifty, k-indie playlist, korean r&b spotify, ease in kpop playlist engine, trending kpop 2025',
+    ogTitle:  'Ease In Kpop — Best K-Pop Playlist | Playlist Engine',
+    ogDesc:   'K-pop, K-indie, and Korean R&B — the smoothest hits and hidden gems. 20 tracks, updated every 2 weeks.',
   },
   'summer': {
     title:    'Seasonal: Summer Jams — Best Summer Music Playlist on Spotify 2025',

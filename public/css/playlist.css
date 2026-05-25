@@ -180,3 +180,6 @@
 .other-card--workout::before { background: #FF4D4D; }
 .other-card--study::before   { background: #4FC3F7; }
 .other-card--summer::before  { background: #FFD166; }
+.other-card--kpop::before    { background: #FF69B4; }
+
+#detail-hero.kpop { background: linear-gradient(135deg, #1a0014, #2d0028, #0d0020, #1a001a); }

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Playlist Engine — Admin</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+  <!-- ── LOGIN SCREEN ── -->
+  <div id="login-screen">
+    <div class="login-card">
+      <div class="login-logo">PLAYLIST<span>ENGINE</span></div>
+      <p class="login-sub">ADMIN DASHBOARD</p>
+      <form id="login-form">
+        <input class="login-input" type="password" id="login-password" placeholder="Password" autocomplete="current-password" />
+        <button class="login-btn" type="submit">SIGN IN</button>
+        <p class="login-error" id="login-error"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── DASHBOARD ── -->
+  <div id="dashboard">
+
+    <header class="adm-header">
+      <a href="/" class="adm-logo">PLAYLIST<span>ENGINE</span> <em>ADMIN</em></a>
+      <div class="adm-header-right">
+        <span class="adm-status" id="adm-status"></span>
+        <button class="adm-logout-btn" id="logout-btn">Sign Out</button>
+      </div>
+    </header>
+
+    <div class="adm-layout">
+
+      <!-- Sidebar -->
+      <aside class="adm-sidebar">
+        <p class="adm-sidebar-label">PLAYLISTS</p>
+        <nav class="adm-playlist-nav" id="playlist-nav">
+          <button class="adm-pl-btn" data-key="floridaWave">
+            <span class="adm-pl-dot" style="background:#FFD166"></span>
+            Fresh Florida Wave
+          </button>
+          <button class="adm-pl-btn" data-key="gaming">
+            <span class="adm-pl-dot" style="background:#8B5CF6"></span>
+            Unstoppable Gaming
+          </button>
+          <button class="adm-pl-btn" data-key="underground">
+            <span class="adm-pl-dot" style="background:#F5A623"></span>
+            The Slept On Underground
+          </button>
+          <button class="adm-pl-btn" data-key="workout">
+            <span class="adm-pl-dot" style="background:#FF4D4D"></span>
+            The Iron Hour
+          </button>
+          <button class="adm-pl-btn" data-key="study">
+            <span class="adm-pl-dot" style="background:#4FC3F7"></span>
+            Locked In
+          </button>
+          <button class="adm-pl-btn" data-key="summer">
+            <span class="adm-pl-dot" style="background:#FFD166"></span>
+            Seasonal: Summer Jams
+          </button>
+          <button class="adm-pl-btn" data-key="kpop">
+            <span class="adm-pl-dot" style="background:#FF69B4"></span>
+            Ease In Kpop
+          </button>
+        </nav>
+
+        <div class="adm-sidebar-divider"></div>
+        <p class="adm-sidebar-label">TOOLS</p>
+        <button class="adm-tool-btn" id="btn-submissions">View Submissions</button>
+      </aside>
+
+      <!-- Main -->
+      <main class="adm-main" id="adm-main">
+        <div class="adm-welcome">
+          <h2>Select a playlist to manage</h2>
+          <p>Add or remove tracks, update description, upload cover art, or trigger a fresh auto-update.</p>
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- ── TOAST ── -->
+  <div class="adm-toast" id="adm-toast"></div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

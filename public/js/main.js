@@ -89,6 +89,7 @@ async function loadPlaylists() {
     injectEmbed('embed-workout', data.workout, 'open-workout');
     injectEmbed('embed-study',   data.study,   'open-study');
     injectEmbed('embed-summer',  data.summer,  'open-summer');
+    injectEmbed('embed-kpop',    data.kpop,    'open-kpop');
   } catch {
     // No server running — placeholders stay visible
   }

@@ -1083,6 +1083,7 @@ button:hover ~ .cursor { width: 60px; height: 60px; }
 .pl-new-card__bg--workout { background: linear-gradient(135deg, #1a0000, #3d0000, #1a0a00); }
 .pl-new-card__bg--study   { background: linear-gradient(135deg, #000d1a, #001a33, #000d0d); }
 .pl-new-card__bg--summer  { background: linear-gradient(160deg, #1a0f00, #2d1a00, #1a1200); }
+.pl-new-card__bg--kpop    { background: linear-gradient(135deg, #1a0014, #2d0028, #0d0020, #1a001a); }
 .pl-new-card__content {
   position: relative;
   z-index: 1;
