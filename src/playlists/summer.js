@@ -8,32 +8,43 @@ const PLAYLIST_DESC_TEMPLATE = (date) =>
 const TARGET_COUNT = 20;
 
 const SUMMER_ARTISTS = [
-  'Drake',
-  'Post Malone',
+  // Current wave
   'Bad Bunny',
   'Tyler the Creator',
-  'Frank Ocean',
   'SZA',
   'Doja Cat',
-  'Harry Styles',
+  'Peso Pluma',
+  'Feid',
+  'Tems',
+  'Burna Boy',
+  // R&B / soul feel-good
+  'Victoria Monet',
+  'Omar Apollo',
+  'Benson Boone',
+  'Frank Ocean',
+  // Pop / crossover
   'Dua Lipa',
-  'The Weeknd',
-  'Rihanna',
-  'Beyoncé',
+  'Harry Styles',
   'Pharrell Williams',
-  'Kendrick Lamar',
-  'Jack Johnson',
+  // Gems / vibes
+  'Remi Wolf',
+  'Durand Bernarr',
+  'Emotional Oranges',
+  'Masego',
+  'Lucky Daye',
 ];
 
 const SUMMER_SEARCHES = [
   'summer hits 2025',
-  'summer vibes hip hop',
-  'beach party music 2025',
-  'summer anthem R&B 2025',
-  'hot summer pop 2025',
-  'summer reggaeton 2025',
-  'carefree summer music',
-  'good vibes summer playlist',
+  'hot girl summer R&B 2025',
+  'beach vibes afrobeats 2025',
+  'summer pop banger 2025',
+  'latin summer hits reggaeton 2025',
+  'feel good music summer vibes',
+  'tropical house summer 2025',
+  'indie summer road trip music',
+  'summer night R&B smooth 2025',
+  'carefree summer anthem playlist',
 ];
 
 async function generate(previousTracks = []) {

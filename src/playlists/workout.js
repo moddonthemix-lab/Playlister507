@@ -8,32 +8,43 @@ const PLAYLIST_DESC_TEMPLATE = (date) =>
 const TARGET_COUNT = 20;
 
 const WORKOUT_ARTISTS = [
+  // Hip-hop energy
   'Eminem',
   'Kendrick Lamar',
   'Travis Scott',
-  'Kanye West',
-  'Jay-Z',
-  'Lil Wayne',
-  'TheFatRat',
-  'Alan Walker',
-  'Imagine Dragons',
+  'Future',
+  'Lil Baby',
+  // Phonk / dark trap (gym culture right now)
+  'Night Lovell',
+  'Ghostemane',
+  '$uicideboy$',
+  'City Morgue',
+  'Ken Carson',
+  // Rock / metal
   'Linkin Park',
-  'Metallica',
   'Rage Against the Machine',
-  'AC/DC',
+  'Spiritbox',
+  'Bad Omens',
+  // Electronic hype
   'Skrillex',
-  'Marshmello',
+  'Virtual Riot',
+  'Noisia',
+  // Hidden gems
+  'CORPSE',
+  'Thorn',
 ];
 
 const WORKOUT_SEARCHES = [
-  'gym motivation hip hop 2025',
-  'workout hype electronic',
-  'training hard beats 2025',
-  'high energy workout music',
-  'gym rap motivation',
-  'intense workout electronic 2025',
-  'beast mode music',
-  'lifting music heavy',
+  'phonk workout gym 2025',
+  'dark phonk driving aggressive',
+  'gym motivation trap 2025',
+  'high intensity workout rap',
+  'beast mode electronic music',
+  'heavy lifting metal rap hybrid',
+  'aggressive workout music 2025',
+  'russian phonk gym',
+  'hard bass workout hype',
+  'powerlifting music heavy',
 ];
 
 async function generate(previousTracks = []) {

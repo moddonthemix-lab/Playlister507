@@ -8,33 +8,43 @@ const PLAYLIST_DESC_TEMPLATE = (date) =>
 const TARGET_COUNT = 20;
 
 const STUDY_ARTISTS = [
+  // Lo-fi / jazz-hop legends
   'Nujabes',
   'J Dilla',
-  'Flying Lotus',
-  'Tycho',
-  'Bonobo',
-  'Explosions in the Sky',
+  'Knxwledge',
+  'Idealism',
+  'Philanthrope',
+  // Ambient / instrumental
   'Nils Frahm',
   'Brian Eno',
   'Rival Consoles',
   'Hammock',
-  'Khruangbin',
-  'Tame Impala',
+  'Explosions in the Sky',
+  // Electronic / chillwave
+  'Tycho',
+  'Bonobo',
   'Com Truise',
   'Washed Out',
-  'MGMT',
+  'Flying Lotus',
+  // Gems
   'Modd Origami',
+  'Elijah Who',
+  'Cozy Lofi',
+  'Hior Chronik',
+  'Olan',
 ];
 
 const STUDY_SEARCHES = [
-  'lofi hip hop study beats',
-  'focus music instrumental 2025',
-  'deep focus ambient study',
-  'lo-fi chill study music',
-  'concentration music instrumental',
-  'study beats no lyrics',
-  'calm focus music beats',
-  'piano study music',
+  'lofi hip hop study beats 2025',
+  'deep focus instrumental music',
+  'ambient study music no lyrics',
+  'lo-fi chill beats concentration',
+  'piano focus music study',
+  'jazz hop study session',
+  'dark academia music playlist',
+  'minimal techno focus work',
+  'binaural beats study focus',
+  'cinematic ambient study music',
 ];
 
 async function generate(previousTracks = []) {

@@ -9,11 +9,15 @@ const TARGET_COUNT = 20;
 
 const UNDERGROUND_SEARCHES = [
   'underground hip hop 2025',
-  'slept on rap 2024 2025',
-  'rising rapper 2025',
-  'underground r&b rising',
-  'new hip hop wave underground',
-  'indie rap unsigned 2025',
+  'slept on rap blowing up 2025',
+  'rising rapper underground 2025',
+  'underground r&b hidden gem',
+  'new wave hip hop underground',
+  'indie rap unsigned artist 2025',
+  'underground drill new artist 2025',
+  'viral underground rap 2025',
+  'next big rapper underground',
+  'underrated r&b artist 2025',
 ];
 
 async function generate(previousTracks = []) {

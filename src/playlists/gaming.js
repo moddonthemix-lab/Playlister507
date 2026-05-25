@@ -8,32 +8,43 @@ const PLAYLIST_DESC_TEMPLATE = (date) =>
 const TARGET_COUNT = 20;
 
 const GAMING_ARTISTS = [
+  // Electronic / EDM staples
   'TheFatRat',
   'Marshmello',
   'Alan Walker',
-  'Imagine Dragons',
-  'Two Steps From Hell',
+  'Porter Robinson',
+  'Madeon',
+  'Skrillex',
+  'Virtual Riot',
+  'Pegboard Nerds',
+  // Harder / synthwave edge
   'Carpenter Brut',
   'Perturbator',
-  'HOME',
+  'Rezz',
+  'Camellia',
+  'Savant',
+  // Rock / cinematic
+  'Imagine Dragons',
+  'Two Steps From Hell',
   'Linkin Park',
   'Muse',
-  'Madeon',
-  'Porter Robinson',
-  'Skrillex',
-  'deadmau5',
+  // Hidden gems
+  'Bossfight',
+  'Nitro Fun',
   'EDEN',
 ];
 
 const GAMING_SEARCHES = [
-  'epic gaming music 2024',
-  'gaming beats electronic',
-  'game soundtrack intense',
-  'gaming dubstep hype',
-  'metal gaming epic',
-  'lo-fi gaming chill beats',
-  'fortnite music gaming',
-  'anime gaming opening',
+  'epic gaming music 2025',
+  'high energy gaming beats 2025',
+  'gaming electronic hype',
+  'game soundtrack intense orchestral',
+  'dubstep gaming drop 2025',
+  'synthwave gaming neon',
+  'hard bass gaming music',
+  'speed metal gaming',
+  'phonk gaming drift 2025',
+  'competitive gaming music playlist',
 ];
 
 async function generate(previousTracks = []) {
