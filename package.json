@@ -23,8 +23,5 @@
     "node-cron": "^3.0.3",
     "oauth-1.0a": "^2.2.6",
     "open": "^10.1.0"
-  },
-  "devDependencies": {
-    "sharp": "^0.34.5"
   }
 }
