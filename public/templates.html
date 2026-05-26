@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Playlist Engine — Template Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="stylesheet" href="css/templates.css" />
+</head>
+<body class="templates-page">
+
+  <div class="tmpl-layout">
+
+    <!-- Sidebar -->
+    <aside class="tmpl-sidebar">
+      <a href="/admin" class="tmpl-back">← Admin</a>
+      <h2 class="tmpl-sidebar__title">TEMPLATE<br>STUDIO</h2>
+
+      <!-- Playlist picker -->
+      <div class="tmpl-section">
+        <label class="tmpl-label">Playlist</label>
+        <select id="playlist-pick" class="tmpl-select">
+          <option value="floridaWave">Fresh Florida Wave</option>
+          <option value="gaming">Unstoppable Gaming</option>
+          <option value="kpop">Ease In Kpop</option>
+          <option value="underground">The Slept On Underground</option>
+          <option value="workout">The Iron Hour</option>
+          <option value="study">Locked In</option>
+          <option value="summer">Seasonal: Summer Jams</option>
+        </select>
+      </div>
+
+      <!-- Template style -->
+      <div class="tmpl-section">
+        <label class="tmpl-label">Template</label>
+        <div class="tmpl-style-grid">
+          <button class="tmpl-style-btn active" data-style="cover">Cover Art</button>
+          <button class="tmpl-style-btn" data-style="promo">Promo Post</button>
+          <button class="tmpl-style-btn" data-style="story">Story</button>
+          <button class="tmpl-style-btn" data-style="announce">New Drop</button>
+        </div>
+      </div>
+
+      <!-- Canvas size -->
+      <div class="tmpl-section">
+        <label class="tmpl-label">Size</label>
+        <div class="tmpl-style-grid">
+          <button class="tmpl-size-btn active" data-w="1080" data-h="1080">1:1<span>Post</span></button>
+          <button class="tmpl-size-btn" data-w="1080" data-h="1350">4:5<span>IG Feed</span></button>
+          <button class="tmpl-size-btn" data-w="1080" data-h="1920">9:16<span>Story</span></button>
+          <button class="tmpl-size-btn" data-w="1200" data-h="675">16:9<span>Banner</span></button>
+        </div>
+      </div>
+
+      <!-- Custom text -->
+      <div class="tmpl-section">
+        <label class="tmpl-label">Custom Headline</label>
+        <input type="text" id="custom-headline" class="tmpl-input" placeholder="Auto" />
+      </div>
+      <div class="tmpl-section">
+        <label class="tmpl-label">Subtext</label>
+        <input type="text" id="custom-sub" class="tmpl-input" placeholder="Auto" />
+      </div>
+      <div class="tmpl-section">
+        <label class="tmpl-label">CTA Line</label>
+        <input type="text" id="custom-cta" class="tmpl-input" value="Follow on Spotify →" />
+      </div>
+
+      <!-- Toggles -->
+      <div class="tmpl-section">
+        <label class="tmpl-label">Show Elements</label>
+        <label class="tmpl-toggle"><input type="checkbox" id="show-logo" checked /> Brand logo</label>
+        <label class="tmpl-toggle"><input type="checkbox" id="show-stats" checked /> Track count</label>
+        <label class="tmpl-toggle"><input type="checkbox" id="show-refresh" checked /> Refresh cadence</label>
+        <label class="tmpl-toggle"><input type="checkbox" id="show-cta" checked /> CTA</label>
+      </div>
+
+      <button class="tmpl-render-btn" id="render-btn">Render</button>
+      <button class="tmpl-download-btn" id="download-btn">↓ Download PNG</button>
+    </aside>
+
+    <!-- Canvas preview -->
+    <main class="tmpl-main">
+      <div class="tmpl-preview-wrap">
+        <canvas id="tmpl-canvas" width="1080" height="1080"></canvas>
+      </div>
+      <p class="tmpl-hint">Click <strong>Render</strong> to generate · <strong>Download PNG</strong> to export</p>
+    </main>
+
+  </div>
+
+  <script src="js/templates.js"></script>
+</body>
+</html>
