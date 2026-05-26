@@ -189,6 +189,10 @@ app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'admin.html'));
 });
 
+app.get('/templates', requireAdmin, (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'templates.html'));
+});
+
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.get('/api/playlists', (req, res) => {
