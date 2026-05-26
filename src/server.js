@@ -262,45 +262,50 @@ app.get('/api/stats', async (req, res) => {
   const secret = process.env.UPDATE_TOKEN;
   if (!secret || req.query.token !== secret) return res.status(401).json({ error: 'Unauthorized' });
   try {
-    const spotify = require('./spotify/client');
-    const youtube = require('./youtube/client');
-    const keys = ['floridaWave', 'gaming', 'underground', 'workout', 'study', 'summer', 'kpop'];
-    const playlists = {};
-    let totalFollowers = 0;
-    for (const k of keys) {
-      const p = store.getPlaylist(k);
-      if (p?.id) {
-        try {
-          const s = await spotify.getPlaylistStats(p.id);
-          playlists[k] = { followers: s.followers, tracks: s.tracks };
-          totalFollowers += (s.followers || 0);
-        } catch { playlists[k] = { followers: 0, tracks: 0 }; }
-      } else {
-        playlists[k] = null;
-      }
-    }
-
-    let ytStats = null;
-    if (process.env.YOUTUBE_REFRESH_TOKEN) {
-      try {
-        ytStats = await youtube.getChannelStats();
-      } catch (e) {
-        console.warn('[stats] YouTube channel stats failed:', e.message);
-        ytStats = null;
-      }
-    }
-
-    const result = {
-      fetchedAt: new Date().toISOString(),
-      spotify: { total: totalFollowers, playlists },
-      youtube: ytStats,
-    };
-    global.__cachedStats = result;
+    const result = await fetchStats();
     res.json(result);
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
 });
+
+async function fetchStats() {
+  const spotify = require('./spotify/client');
+  const youtube = require('./youtube/client');
+  const keys = ['floridaWave', 'gaming', 'underground', 'workout', 'study', 'summer', 'kpop'];
+  const playlists = {};
+  let totalFollowers = 0;
+  for (const k of keys) {
+    const p = store.getPlaylist(k);
+    if (p?.id) {
+      try {
+        const s = await spotify.getPlaylistStats(p.id);
+        playlists[k] = { followers: s.followers, tracks: s.tracks };
+        totalFollowers += (s.followers || 0);
+      } catch { playlists[k] = { followers: 0, tracks: 0 }; }
+    } else {
+      playlists[k] = null;
+    }
+  }
+
+  let ytStats = null;
+  if (process.env.YOUTUBE_REFRESH_TOKEN) {
+    try {
+      ytStats = await youtube.getChannelStats();
+    } catch (e) {
+      console.warn('[stats] YouTube channel stats failed:', e.message);
+    }
+  }
+
+  const result = {
+    fetchedAt: new Date().toISOString(),
+    spotify: { total: totalFollowers, playlists },
+    youtube: ytStats,
+  };
+  global.__cachedStats = result;
+  console.log(`[stats] Refreshed — ${totalFollowers} total followers`);
+  return result;
+}
 
 // Public cached stats
 app.get('/api/public-stats', (req, res) => {
@@ -369,6 +374,15 @@ app.get('/api/submissions', (req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`\n  Playlister507 → http://localhost:${PORT}`);
   startScheduler();
+
+  // Auto-fetch stats on startup (30s delay to let Spotify auth settle)
+  // then refresh every 6 hours
+  setTimeout(() => {
+    fetchStats().catch(e => console.warn('[stats] Initial fetch failed:', e.message));
+    setInterval(() => {
+      fetchStats().catch(e => console.warn('[stats] Auto-refresh failed:', e.message));
+    }, 6 * 60 * 60 * 1000);
+  }, 30_000);
 });
 
 module.exports = app;
