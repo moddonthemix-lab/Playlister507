@@ -1148,6 +1148,6 @@ button:hover ~ .cursor { width: 60px; height: 60px; }
     gap: 40px;
     padding: 80px 24px;
   }
-  .pl-section__grid > *:nth-child(1) { order: 1; }
-  .pl-section__grid > *:nth-child(2) { order: 2; }
+  .pl-section__grid--embed-first > *:nth-child(1) { order: 2; }
+  .pl-section__grid--embed-first > *:nth-child(2) { order: 1; }
 }
