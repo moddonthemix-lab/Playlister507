@@ -11,6 +11,7 @@ const underground = require('./playlists/underground');
 const workout = require('./playlists/workout');
 const study = require('./playlists/study');
 const summer = require('./playlists/summer');
+const kpop = require('./playlists/kpop');
 
 const PLAYLISTS = {
   floridaWave,
@@ -19,6 +20,7 @@ const PLAYLISTS = {
   workout,
   study,
   summer,
+  kpop,
 };
 
 async function runAll(targetKey = null) {

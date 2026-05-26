@@ -167,13 +167,19 @@ loadPlaylists();
 
 // ── Smooth parallax on playlist section backgrounds ─────────────────
 const parallaxSections = document.querySelectorAll('.pl-section');
+let parallaxTicking = false;
 
 window.addEventListener('scroll', () => {
-  const scrollY = window.scrollY;
-  parallaxSections.forEach(section => {
-    const rect   = section.getBoundingClientRect();
-    const center = rect.top + rect.height / 2 - window.innerHeight / 2;
-    const bg     = section.querySelector('.pl-section__bg');
-    if (bg) bg.style.transform = `translateY(${center * 0.08}px)`;
-  });
+  if (!parallaxTicking) {
+    requestAnimationFrame(() => {
+      parallaxSections.forEach(section => {
+        const rect   = section.getBoundingClientRect();
+        const center = rect.top + rect.height / 2 - window.innerHeight / 2;
+        const bg     = section.querySelector('.pl-section__bg');
+        if (bg) bg.style.transform = `translateY(${center * 0.08}px)`;
+      });
+      parallaxTicking = false;
+    });
+    parallaxTicking = true;
+  }
 }, { passive: true });

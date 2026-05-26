@@ -90,7 +90,7 @@ async function loadAllPlaylists() {
 
 function updateStatus() {
   const total = Object.values(allPlaylists).filter(p => p?.id).length;
-  document.getElementById('adm-status').textContent = `${total}/6 playlists active`;
+  document.getElementById('adm-status').textContent = `${total}/${Object.keys(PLAYLIST_META).length} playlists active`;
 }
 
 // ── Playlist selection ────────────────────────────────────────────
