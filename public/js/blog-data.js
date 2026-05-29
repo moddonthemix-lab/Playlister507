@@ -1,4 +1,4 @@
-const BLOG_POSTS = [
+const BLOG_POSTS = window.BLOG_POSTS = [
   {
     slug: 'best-florida-rap-artists-2025',
     title: 'Best Florida Rap Artists to Listen to Right Now (2025)',
