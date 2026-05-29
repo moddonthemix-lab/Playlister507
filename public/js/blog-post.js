@@ -51,14 +51,41 @@
 
   /* ── SEO injection ─────────────────────────────────────────────── */
   function injectSEO(post) {
-    document.title = `${post.title} — Playlist Engine`;
+    const fullTitle = `${post.title} — Playlist Engine`;
+    const pageUrl   = `https://www.playlistengine.com/blog/${post.slug}`;
+    const ogImage   = 'https://www.playlistengine.com/img/og-image.png?v=2';
+    const desc      = post.metaDesc || post.intro || '';
 
-    setMeta('name', 'description', post.metaDesc);
-    setMeta('property', 'og:title', `${post.title} — Playlist Engine`);
-    setMeta('property', 'og:description', post.metaDesc);
-    setMeta('property', 'og:url', `https://playlistengine.com/blog/${post.slug}`);
-    setMeta('name', 'twitter:title', `${post.title} — Playlist Engine`);
-    setMeta('name', 'twitter:description', post.metaDesc);
+    document.title = fullTitle;
+
+    // Standard
+    setMeta('name', 'description', desc);
+
+    // Open Graph — core (Facebook, Instagram, TikTok link previews)
+    setMeta('property', 'og:site_name',   'Playlist Engine');
+    setMeta('property', 'og:locale',      'en_US');
+    setMeta('property', 'og:type',        'article');
+    setMeta('property', 'og:title',       fullTitle);
+    setMeta('property', 'og:description', desc);
+    setMeta('property', 'og:url',         pageUrl);
+    setMeta('property', 'og:image',       ogImage);
+    setMeta('property', 'og:image:type',  'image/png');
+    setMeta('property', 'og:image:width', '1200');
+    setMeta('property', 'og:image:height','630');
+    setMeta('property', 'og:image:alt',   post.title);
+
+    // Article-specific Open Graph (boosts Facebook rich preview)
+    if (post.date) setMeta('property', 'article:published_time', new Date(post.date).toISOString());
+    if (post.tag)  setMeta('property', 'article:section', post.tag);
+    if (post.tag)  setMeta('property', 'article:tag',     post.tag);
+
+    // Twitter / X Card
+    setMeta('name', 'twitter:card',        'summary_large_image');
+    setMeta('name', 'twitter:site',        '@playlistengine');
+    setMeta('name', 'twitter:title',       fullTitle);
+    setMeta('name', 'twitter:description', desc);
+    setMeta('name', 'twitter:image',       ogImage);
+    setMeta('name', 'twitter:image:alt',   post.title);
 
     // Canonical
     let canonical = document.querySelector('link[rel="canonical"]');
@@ -67,19 +94,35 @@
       canonical.rel = 'canonical';
       document.head.appendChild(canonical);
     }
-    canonical.href = `https://playlistengine.com/blog/${post.slug}`;
+    canonical.href = pageUrl;
 
-    // Article schema
+    // Article JSON-LD schema
     const schema = {
       '@context': 'https://schema.org',
       '@type': 'Article',
       headline: post.title,
-      description: post.metaDesc,
-      datePublished: post.date,
+      description: desc,
+      datePublished: post.date ? new Date(post.date).toISOString() : undefined,
+      image: ogImage,
+      url: pageUrl,
+      author: {
+        '@type': 'Organization',
+        name: 'Playlist Engine',
+        url: 'https://www.playlistengine.com',
+      },
       publisher: {
         '@type': 'Organization',
         name: 'Playlist Engine',
-        url: 'https://playlistengine.com',
+        url: 'https://www.playlistengine.com',
+        logo: {
+          '@type': 'ImageObject',
+          url: 'https://www.playlistengine.com/img/og-image.png',
+        },
+      },
+      keywords: [post.tag, 'playlist', 'Spotify', 'music'].filter(Boolean).join(', '),
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': pageUrl,
       },
     };
     const schemaTag = document.createElement('script');
