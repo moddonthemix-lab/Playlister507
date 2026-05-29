@@ -70,6 +70,8 @@ async function updatePlaylist(key, generator, userId) {
   const existingStored = store.getPlaylist(key) || {};
   store.setPlaylist(key, {
     id: playlistId,
+    name: result.name,
+    description: result.description,
     youtubeId: existingStored.youtubeId || null,
     deezerUserId: existingStored.deezerUserId || null,
     deezerId: existingStored.deezerId || null,
