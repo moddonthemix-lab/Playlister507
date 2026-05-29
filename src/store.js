@@ -45,9 +45,20 @@ async function hydrate() {
   }
   try {
     const rows = await sbGet('playlist_store', '?select=key,value');
-    cache = {};
-    rows.forEach(r => { cache[r.key] = r.value; });
-    console.log(`[store] Hydrated from Supabase (${rows.length} keys)`);
+    if (rows.length > 0) {
+      cache = {};
+      rows.forEach(r => { cache[r.key] = r.value; });
+      console.log(`[store] Hydrated from Supabase (${rows.length} keys)`);
+    } else {
+      // Supabase is empty — seed it from the local JSON file
+      cache = loadFile();
+      console.log('[store] Supabase empty, seeding from local file...');
+      const seeds = Object.entries(cache).map(([key, value]) =>
+        sbUpsert('playlist_store', { key, value, updated_at: new Date().toISOString() })
+      );
+      await Promise.allSettled(seeds);
+      console.log(`[store] Seeded ${seeds.length} keys to Supabase`);
+    }
   } catch (e) {
     console.warn('[store] Supabase hydration failed, falling back to file:', e.message);
     cache = loadFile();
