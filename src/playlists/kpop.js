@@ -3,48 +3,49 @@ const { resolveFeaturedTracks } = require('../utils/featured');
 
 const PLAYLIST_NAME = 'Ease In Kpop';
 const PLAYLIST_DESC_TEMPLATE = (date) =>
-  `K-pop, K-indie & Korean R&B done right. The smoothest hits and hidden gems updated ${date}. 🌸`;
+  `K-pop done right. NewJeans, 4th gen girl groups, K-R&B, and the smooth Korean tracks that actually hit. Updated ${date}. 🌸`;
 
-const TARGET_COUNT = 20;
+const TARGET_COUNT = 25;
+
+// NewJeans is the anchor — always gets 5 tracks, pulled separately
+const NEWJEANS_ANCHOR = 'NewJeans';
 
 const KPOP_ARTISTS = [
-  // User picks + core
-  'NewJeans',
-  'BTS',
-  'FIFTY FIFTY',
-  'Pink Pantheress',
-  // Girl groups trending now
-  'BLACKPINK',
-  'aespa',
+  // 4th gen girl groups
   'IVE',
+  'aespa',
   'LE SSERAFIM',
-  'TWICE',
-  'MAMAMOO',
-  'Red Velvet',
-  'ITZY',
-  // Boy groups
-  'Stray Kids',
-  'TXT',
-  'ENHYPEN',
-  'ATEEZ',
-  // Solo / crossover
-  'Jungkook',
-  'Jimin',
-  'Taeyeon',
-  'HyunA',
+  'FIFTY FIFTY',
+  'MAMAMOO+',
+  'BABYMONSTER',
+  'KISS OF LIFE',
+  'tripleS',
+  'Kep1er',
+  'STAYC',
+  'Brave Girls',
+  'Apink',
+  // Korean R&B / indie
+  'Heize',
+  'Dean',
+  'Crush',
+  'pH-1',
+  'OFFONOFF',
+  'Lim Young Woong',
+  'The Rose',
+  'DAY6',
 ];
 
 const KPOP_SEARCHES = [
-  'NewJeans best songs',
-  'BTS popular songs',
-  'FIFTY FIFTY kpop hits',
-  'kpop girl group hits 2025',
-  'kpop boy group trending 2025',
-  'best kpop songs 2025',
-  'kpop viral tiktok 2025',
-  'kpop feel good playlist',
-  'kpop summer bop 2025',
-  'kpop crossover pop english',
+  'NewJeans hype boy attention',
+  'NewJeans OMG get up',
+  '4th gen kpop girl group hits 2025',
+  'korean R&B chill 2025',
+  'kpop ease in playlist 2025',
+  'korean indie pop 2025',
+  'KISS OF LIFE kpop retro',
+  'IVE After LIKE Eleven',
+  'STAYC kpop smooth',
+  'kpop viral trending 2025',
 ];
 
 async function generate(previousTracks = []) {
@@ -52,6 +53,15 @@ async function generate(previousTracks = []) {
   const featured = await resolveFeaturedTracks('kpop');
   const pool = [...featured];
 
+  // NewJeans always gets 5 tracks as the anchor
+  try {
+    const newjeansTracks = await spotify.searchArtistTracks(NEWJEANS_ANCHOR, 5);
+    pool.push(...newjeansTracks);
+  } catch (e) {
+    console.warn(`[Kpop] Could not load anchor artist: ${NEWJEANS_ANCHOR}`);
+  }
+
+  // Rotate through the rest of the artist list
   const rotation = Math.floor(Date.now() / (1000 * 60 * 60 * 24 * 14)) % KPOP_ARTISTS.length;
   const rotated = [...KPOP_ARTISTS.slice(rotation), ...KPOP_ARTISTS.slice(0, rotation)].slice(0, 8);
 
