@@ -5,7 +5,7 @@ const PLAYLIST_NAME = 'Ease In Kpop';
 const PLAYLIST_DESC_TEMPLATE = (date) =>
   `K-pop done right. NewJeans, 4th gen girl groups, K-R&B, and the smooth Korean tracks that actually hit. Updated ${date}. 🌸`;
 
-const TARGET_COUNT = 25;
+const TARGET_COUNT = 30;
 
 // NewJeans is the anchor — always gets 5 tracks, pulled separately
 const NEWJEANS_ANCHOR = 'NewJeans';

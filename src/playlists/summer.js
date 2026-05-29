@@ -5,7 +5,7 @@ const PLAYLIST_NAME = 'Seasonal: Summer Jams';
 const PLAYLIST_DESC_TEMPLATE = (date) =>
   `Sun. Waves. Good vibes only. The seasonal soundtrack to your summer — updated ${date}. ☀️`;
 
-const TARGET_COUNT = 20;
+const TARGET_COUNT = 30;
 
 const SUMMER_ARTISTS = [
   // Current wave

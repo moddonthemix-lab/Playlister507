@@ -5,7 +5,7 @@ const PLAYLIST_NAME = 'The Slept On Underground';
 const PLAYLIST_DESC_TEMPLATE = (date) =>
   `Rising artists. Hidden gems. The ones growing right now — updated ${date}. 🔥`;
 
-const TARGET_COUNT = 20;
+const TARGET_COUNT = 30;
 
 const UNDERGROUND_SEARCHES = [
   'underground hip hop 2025',

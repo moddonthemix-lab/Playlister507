@@ -5,7 +5,7 @@ const PLAYLIST_NAME = 'LOCKED IN';
 const PLAYLIST_DESC_TEMPLATE = (date) =>
   `Zero distractions. Pure focus. The study session you didn't know you needed — updated ${date}. 🎧`;
 
-const TARGET_COUNT = 20;
+const TARGET_COUNT = 30;
 
 const STUDY_ARTISTS = [
   // Lo-fi / jazz-hop legends

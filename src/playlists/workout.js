@@ -5,7 +5,7 @@ const PLAYLIST_NAME = 'THE IRON HOUR';
 const PLAYLIST_DESC_TEMPLATE = (date) =>
   `High-intensity. All genres. The only playlist that matches your effort — updated ${date}. 💪`;
 
-const TARGET_COUNT = 20;
+const TARGET_COUNT = 30;
 
 const WORKOUT_ARTISTS = [
   // Hip-hop energy

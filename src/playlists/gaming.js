@@ -5,7 +5,7 @@ const PLAYLIST_NAME = 'Unstoppable Gaming';
 const PLAYLIST_DESC_TEMPLATE = (date) =>
   `All genres. All levels. The soundtrack to your victories — updated ${date}. 🎮`;
 
-const TARGET_COUNT = 20;
+const TARGET_COUNT = 30;
 
 const GAMING_ARTISTS = [
   // Electronic / EDM staples

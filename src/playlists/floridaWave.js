@@ -6,7 +6,7 @@ const PLAYLIST_NAME = 'Fresh Florida Wave';
 const PLAYLIST_DESC_TEMPLATE = (date) =>
   `Only Florida MCs. The hottest tracks from the Sunshine State — updated ${date}. 🌴`;
 
-const TARGET_COUNT = 20;
+const TARGET_COUNT = 30;
 const RECENCY_MONTHS = 18; // only tracks released in the last 18 months
 
 function isRecent(track) {
