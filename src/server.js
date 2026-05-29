@@ -436,7 +436,7 @@ app.get('/api/public-stats', (req, res) => {
 app.get('/auth/spotify', (req, res) => {
   const token = req.query.token;
   if (!token || token !== process.env.UPDATE_TOKEN) return res.status(401).send('Unauthorized');
-  const redirectUri = 'https://playlister507-production.up.railway.app/auth/callback';
+  const redirectUri = 'https://playlistengine.com/auth/callback';
   const scopes = 'playlist-modify-public playlist-modify-private ugc-image-upload user-read-private';
   const params = new URLSearchParams({
     client_id: process.env.SPOTIFY_CLIENT_ID,
@@ -457,7 +457,7 @@ app.get('/auth/callback', async (req, res) => {
       new URLSearchParams({
         grant_type: 'authorization_code',
         code,
-        redirect_uri: 'https://playlister507-production.up.railway.app/auth/callback',
+        redirect_uri: 'https://playlistengine.com/auth/callback',
       }),
       {
         headers: {
