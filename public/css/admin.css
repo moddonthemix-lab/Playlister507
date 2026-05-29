@@ -411,13 +411,117 @@ body {
 .adm-submission-item {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.07);
+  border-left: 4px solid rgba(255,255,255,0.12);
   border-radius: 10px;
   padding: 16px;
   margin-bottom: 10px;
+  transition: border-left-color 0.2s;
 }
 .adm-submission-item h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
 .adm-submission-item p  { font-size: 13px; color: rgba(255,255,255,0.45); margin-bottom: 4px; }
 .adm-submission-item a  { color: #1DB954; }
+
+/* Status-colored left borders */
+.sub-border--accepted { border-left-color: #1DB954 !important; }
+.sub-border--declined { border-left-color: #FF4D4D !important; }
+.sub-border--pending  { border-left-color: rgba(255,255,255,0.18) !important; }
+
+/* ── FILTER TABS ── */
+.sub-filter-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.sub-filter-tab {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 7px 16px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.45);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.sub-filter-tab:hover { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); }
+.sub-filter-tab.active {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.22);
+  color: #fff;
+}
+
+/* ── STATUS BADGE ── */
+.sub-status-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+.sub-status-badge--pending  { background: rgba(255,255,255,0.1);  color: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.15); }
+.sub-status-badge--accepted { background: rgba(29,185,84,0.18);   color: #1DB954;                border: 1px solid rgba(29,185,84,0.35); }
+.sub-status-badge--declined { background: rgba(255,77,77,0.15);   color: #FF4D4D;                border: 1px solid rgba(255,77,77,0.3); }
+
+/* ── SUBMISSION CARD HEADER ── */
+.sub-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.sub-card-header h4 { margin-bottom: 0; flex: 1; min-width: 0; }
+
+/* ── NOTES ── */
+.sub-notes-row {
+  margin: 10px 0 8px;
+}
+
+.sub-notes-display {
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.03);
+  border: 1px dashed rgba(255,255,255,0.1);
+  min-height: 32px;
+  font-size: 13px;
+  line-height: 1.5;
+  transition: background 0.15s, border-color 0.15s;
+}
+.sub-notes-display:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.2); }
+
+.sub-notes-text { color: rgba(255,255,255,0.7); }
+.sub-notes-placeholder { color: rgba(255,255,255,0.25); font-style: italic; }
+
+.sub-notes-textarea {
+  width: 100%;
+  margin-bottom: 0;
+  min-height: 60px;
+  font-size: 13px;
+}
+
+/* ── SUBMISSION ACTIONS ── */
+.sub-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.sub-btn-delete {
+  padding: 7px 14px;
+  font-size: 12px;
+  background: rgba(255,77,77,0.08);
+  border-color: rgba(255,77,77,0.18);
+  color: rgba(255,77,77,0.7);
+}
+.sub-btn-delete:hover { background: rgba(255,77,77,0.18); color: #FF4D4D; }
 
 /* ── DANGER ZONE ── */
 .adm-section--danger { border-color: rgba(255,77,77,0.2); }

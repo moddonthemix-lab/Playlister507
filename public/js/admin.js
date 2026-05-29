@@ -377,30 +377,179 @@ async function removeTrack(uri) {
 }
 
 // ── Submissions ───────────────────────────────────────────────────
+let _submissionsData   = [];
+let _submissionsFilter = 'all';
+
 async function showSubmissions() {
   document.querySelectorAll('.adm-pl-btn').forEach(b => b.classList.remove('active'));
   currentKey = null;
   const main = document.getElementById('adm-main');
-  main.innerHTML = `<div class="adm-editor-header"><h2 class="adm-editor-title">Submissions</h2></div><div id="submissions-list"><p style="color:rgba(255,255,255,0.3);font-size:14px">Loading…</p></div>`;
+  main.innerHTML = `
+    <div class="adm-editor-header">
+      <h2 class="adm-editor-title">Submissions</h2>
+    </div>
+    <div class="sub-filter-tabs" id="sub-filter-tabs">
+      <button class="sub-filter-tab active" data-filter="all">All</button>
+      <button class="sub-filter-tab" data-filter="pending">Pending</button>
+      <button class="sub-filter-tab" data-filter="accepted">Accepted</button>
+      <button class="sub-filter-tab" data-filter="declined">Declined</button>
+    </div>
+    <div id="submissions-list"><p style="color:rgba(255,255,255,0.3);font-size:14px">Loading…</p></div>
+  `;
+
+  document.getElementById('sub-filter-tabs').addEventListener('click', (e) => {
+    const tab = e.target.closest('.sub-filter-tab');
+    if (!tab) return;
+    document.querySelectorAll('.sub-filter-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    _submissionsFilter = tab.dataset.filter;
+    renderSubmissionsList();
+  });
+
   try {
     const res  = await fetch('/api/admin/submissions');
-    const data = await res.json();
-    const el   = document.getElementById('submissions-list');
-    if (!data.length) {
-      el.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:14px">No submissions yet.</p>';
-      return;
-    }
-    el.innerHTML = [...data].reverse().map(s => `
-      <div class="adm-submission-item">
-        <h4>${esc(s.artistName)} — ${esc(s.trackTitle || '(no title)')}</h4>
-        <p>Playlist: ${esc(s.playlist || '—')} &nbsp;·&nbsp; Genre: ${esc(s.genre || '—')}</p>
-        <p>Email: ${esc(s.email)} &nbsp;·&nbsp; ${new Date(s.submittedAt).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })}</p>
-        ${s.trackLink ? `<p><a href="${esc(s.trackLink)}" target="_blank" rel="noopener">Listen ↗</a></p>` : ''}
-        ${s.pitch ? `<p style="margin-top:8px;font-size:12px;color:rgba(255,255,255,0.3);line-height:1.6">${esc(s.pitch)}</p>` : ''}
-      </div>
-    `).join('');
+    _submissionsData = await res.json();
+    _submissionsFilter = 'all';
+    renderSubmissionsList();
   } catch {
     toast('Failed to load submissions', 'error');
+  }
+}
+
+function renderSubmissionsList() {
+  const el = document.getElementById('submissions-list');
+  if (!el) return;
+
+  const filtered = _submissionsData.filter(s => {
+    if (_submissionsFilter === 'all') return true;
+    const status = (s.status || 'pending').toLowerCase();
+    return status === _submissionsFilter;
+  });
+
+  if (!_submissionsData.length) {
+    el.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:14px">No submissions yet.</p>';
+    return;
+  }
+  if (!filtered.length) {
+    el.innerHTML = `<p style="color:rgba(255,255,255,0.3);font-size:14px">No ${_submissionsFilter} submissions.</p>`;
+    return;
+  }
+
+  el.innerHTML = filtered.map(s => {
+    const status  = (s.status || 'pending').toLowerCase();
+    const badgeClass = status === 'accepted' ? 'sub-status-badge--accepted'
+                     : status === 'declined' ? 'sub-status-badge--declined'
+                     : 'sub-status-badge--pending';
+    const borderClass = status === 'accepted' ? 'sub-border--accepted'
+                      : status === 'declined' ? 'sub-border--declined'
+                      : 'sub-border--pending';
+    const dateStr = s.submittedAt
+      ? new Date(s.submittedAt).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })
+      : '—';
+    const notesVal = s.notes || '';
+    const notesDisplay = notesVal
+      ? `<span class="sub-notes-text">${esc(notesVal)}</span>`
+      : `<span class="sub-notes-placeholder">Add note…</span>`;
+
+    return `
+      <div class="adm-submission-item ${borderClass}" data-id="${esc(String(s.id))}">
+        <div class="sub-card-header">
+          <h4>${esc(s.artistName || '—')} — ${esc(s.trackTitle || '(no title)')}</h4>
+          <span class="sub-status-badge ${badgeClass}">${status.toUpperCase()}</span>
+        </div>
+        <p>Playlist: ${esc(s.playlist || '—')} &nbsp;·&nbsp; Genre: ${esc(s.genre || '—')}</p>
+        <p>Email: ${esc(s.email || '—')} &nbsp;·&nbsp; ${dateStr}</p>
+        ${s.trackLink ? `<p><a href="${esc(s.trackLink)}" target="_blank" rel="noopener">Listen ↗</a></p>` : ''}
+        ${s.pitch ? `<p style="margin-top:6px;font-size:12px;color:rgba(255,255,255,0.3);line-height:1.6">${esc(s.pitch)}</p>` : ''}
+        <div class="sub-notes-row" data-id="${esc(String(s.id))}">
+          <div class="sub-notes-display">${notesDisplay}</div>
+          <textarea class="sub-notes-textarea adm-textarea" style="display:none" rows="2">${esc(notesVal)}</textarea>
+        </div>
+        <div class="sub-actions">
+          <button class="adm-btn adm-btn--green sub-btn-accept" data-id="${esc(String(s.id))}" ${status === 'accepted' ? 'disabled' : ''}>Accept</button>
+          <button class="adm-btn adm-btn--red sub-btn-decline" data-id="${esc(String(s.id))}" ${status === 'declined' ? 'disabled' : ''}>Decline</button>
+          <button class="adm-btn sub-btn-delete" data-id="${esc(String(s.id))}" style="margin-left:auto">&#x1F5D1; Delete</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Bind action buttons
+  el.querySelectorAll('.sub-btn-accept').forEach(btn => {
+    btn.addEventListener('click', () => patchSubmission(btn.dataset.id, { status: 'accepted' }));
+  });
+  el.querySelectorAll('.sub-btn-decline').forEach(btn => {
+    btn.addEventListener('click', () => patchSubmission(btn.dataset.id, { status: 'declined' }));
+  });
+  el.querySelectorAll('.sub-btn-delete').forEach(btn => {
+    btn.addEventListener('click', () => deleteSubmission(btn.dataset.id));
+  });
+
+  // Notes inline editing — click to open, blur to save
+  el.querySelectorAll('.sub-notes-row').forEach(row => {
+    const display  = row.querySelector('.sub-notes-display');
+    const textarea = row.querySelector('.sub-notes-textarea');
+    const id       = row.dataset.id;
+
+    display.addEventListener('click', () => {
+      display.style.display  = 'none';
+      textarea.style.display = 'block';
+      textarea.focus();
+    });
+
+    textarea.addEventListener('blur', async () => {
+      const newNotes = textarea.value;
+      textarea.style.display = 'none';
+      display.style.display  = '';
+      display.innerHTML = newNotes
+        ? `<span class="sub-notes-text">${esc(newNotes)}</span>`
+        : `<span class="sub-notes-placeholder">Add note…</span>`;
+      await patchSubmission(id, { notes: newNotes }, true);
+    });
+  });
+}
+
+async function patchSubmission(id, body, silent = false) {
+  try {
+    const res = await fetch(`/api/admin/submission/${encodeURIComponent(id)}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) {
+      const d = await res.json().catch(() => ({}));
+      toast(d.error || 'Update failed', 'error');
+      return;
+    }
+    // Update local cache
+    const idx = _submissionsData.findIndex(s => String(s.id) === String(id));
+    if (idx !== -1) {
+      if (body.status !== undefined) _submissionsData[idx].status = body.status;
+      if (body.notes  !== undefined) _submissionsData[idx].notes  = body.notes;
+    }
+    if (!silent) {
+      toast(body.status ? `Marked ${body.status}` : 'Note saved', 'success');
+      renderSubmissionsList();
+    }
+  } catch {
+    toast('Request failed', 'error');
+  }
+}
+
+async function deleteSubmission(id) {
+  if (!confirm('Delete this submission? This cannot be undone.')) return;
+  try {
+    const res = await fetch(`/api/admin/submission/${encodeURIComponent(id)}`, { method: 'DELETE' });
+    if (!res.ok) {
+      const d = await res.json().catch(() => ({}));
+      toast(d.error || 'Delete failed', 'error');
+      return;
+    }
+    _submissionsData = _submissionsData.filter(s => String(s.id) !== String(id));
+    toast('Submission deleted', 'success');
+    renderSubmissionsList();
+  } catch {
+    toast('Request failed', 'error');
   }
 }
 

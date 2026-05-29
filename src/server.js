@@ -149,16 +149,109 @@ app.post('/api/admin/trigger-update', requireAdmin, async (req, res) => {
 app.get('/api/admin/submissions', requireAdmin, async (req, res) => {
   if (store.useSupabase()) {
     try {
-      const rows = await store.sbGet('submissions', '?select=data,submitted_at&order=submitted_at.desc');
-      return res.json(rows.map(row => ({ ...row.data, submittedAt: row.submitted_at })));
+      const rows = await store.sbGet('submissions', '?select=id,data,submitted_at&order=submitted_at.desc');
+      return res.json(rows.map(row => ({ id: row.id, ...row.data, submittedAt: row.submitted_at })));
     } catch (e) {
       return res.status(500).json({ error: e.message });
     }
   }
   const filePath = path.join(__dirname, '..', 'data', 'submissions.json');
   if (!fs.existsSync(filePath)) return res.json([]);
-  try { res.json(JSON.parse(fs.readFileSync(filePath, 'utf-8'))); }
-  catch { res.json([]); }
+  try {
+    const submissions = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    res.json(submissions.map((s, i) => ({ id: i, ...s })));
+  } catch { res.json([]); }
+});
+
+app.patch('/api/admin/submission/:id', requireAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { status, notes } = req.body;
+  if (store.useSupabase()) {
+    try {
+      const axios = require('axios');
+      const SUPABASE_URL = process.env.SUPABASE_URL;
+      const SUPABASE_KEY = process.env.SUPABASE_KEY;
+      const sbH = () => ({
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal',
+      });
+      // GET the current row to merge
+      const rows = await store.sbGet('submissions', `?id=eq.${id}&select=id,data,submitted_at`);
+      if (!rows.length) return res.status(404).json({ error: 'Not found' });
+      const updatedData = { ...rows[0].data };
+      if (status !== undefined) updatedData.status = status;
+      if (notes !== undefined) updatedData.notes = notes;
+      await axios.patch(
+        `${SUPABASE_URL}/rest/v1/submissions?id=eq.${id}`,
+        { data: updatedData },
+        { headers: sbH() }
+      );
+      return res.json({ ok: true });
+    } catch (e) {
+      return res.status(500).json({ error: e.message });
+    }
+  }
+  // File fallback
+  const filePath = path.join(__dirname, '..', 'data', 'submissions.json');
+  try {
+    let submissions = [];
+    if (fs.existsSync(filePath)) {
+      try { submissions = JSON.parse(fs.readFileSync(filePath, 'utf-8')); } catch {}
+    }
+    const idx = parseInt(id, 10);
+    if (isNaN(idx) || idx < 0 || idx >= submissions.length) {
+      return res.status(404).json({ error: 'Not found' });
+    }
+    if (status !== undefined) submissions[idx].status = status;
+    if (notes !== undefined) submissions[idx].notes = notes;
+    fs.writeFileSync(filePath, JSON.stringify(submissions, null, 2));
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.delete('/api/admin/submission/:id', requireAdmin, async (req, res) => {
+  const { id } = req.params;
+  if (store.useSupabase()) {
+    try {
+      const axios = require('axios');
+      const SUPABASE_URL = process.env.SUPABASE_URL;
+      const SUPABASE_KEY = process.env.SUPABASE_KEY;
+      const sbH = () => ({
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal',
+      });
+      await axios.delete(
+        `${SUPABASE_URL}/rest/v1/submissions?id=eq.${id}`,
+        { headers: sbH() }
+      );
+      return res.json({ ok: true });
+    } catch (e) {
+      return res.status(500).json({ error: e.message });
+    }
+  }
+  // File fallback
+  const filePath = path.join(__dirname, '..', 'data', 'submissions.json');
+  try {
+    let submissions = [];
+    if (fs.existsSync(filePath)) {
+      try { submissions = JSON.parse(fs.readFileSync(filePath, 'utf-8')); } catch {}
+    }
+    const idx = parseInt(id, 10);
+    if (isNaN(idx) || idx < 0 || idx >= submissions.length) {
+      return res.status(404).json({ error: 'Not found' });
+    }
+    submissions.splice(idx, 1);
+    fs.writeFileSync(filePath, JSON.stringify(submissions, null, 2));
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
 // ── Shared update helper ────────────────────────────────────────────
