@@ -294,6 +294,13 @@ app.get('/templates', requireAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'templates.html'));
 });
 
+app.get('/blog', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'blog.html'));
+});
+app.get('/blog/:slug', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'blog-post.html'));
+});
+
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.get('/api/playlists', (req, res) => {
