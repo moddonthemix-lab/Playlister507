@@ -146,7 +146,15 @@ app.post('/api/admin/trigger-update', requireAdmin, async (req, res) => {
   setImmediate(() => runUpdateJob(playlistKey));
 });
 
-app.get('/api/admin/submissions', requireAdmin, (req, res) => {
+app.get('/api/admin/submissions', requireAdmin, async (req, res) => {
+  if (store.useSupabase()) {
+    try {
+      const rows = await store.sbGet('submissions', '?select=data,submitted_at&order=submitted_at.desc');
+      return res.json(rows.map(row => ({ ...row.data, submittedAt: row.submitted_at })));
+    } catch (e) {
+      return res.status(500).json({ error: e.message });
+    }
+  }
   const filePath = path.join(__dirname, '..', 'data', 'submissions.json');
   if (!fs.existsSync(filePath)) return res.json([]);
   try { res.json(JSON.parse(fs.readFileSync(filePath, 'utf-8'))); }
@@ -226,20 +234,24 @@ app.get('/api/status', (req, res) => {
   });
 });
 
-app.post('/api/submit', (req, res) => {
+app.post('/api/submit', async (req, res) => {
   try {
     const submission = { ...req.body, submittedAt: new Date().toISOString() };
     if (!submission.artistName || !submission.trackLink || !submission.email) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
-    const filePath = path.join(__dirname, '..', 'data', 'submissions.json');
-    let submissions = [];
-    if (fs.existsSync(filePath)) {
-      try { submissions = JSON.parse(fs.readFileSync(filePath, 'utf-8')); } catch {}
+    if (store.useSupabase()) {
+      await store.sbInsert('submissions', { data: submission, submitted_at: submission.submittedAt });
+    } else {
+      const filePath = path.join(__dirname, '..', 'data', 'submissions.json');
+      let submissions = [];
+      if (fs.existsSync(filePath)) {
+        try { submissions = JSON.parse(fs.readFileSync(filePath, 'utf-8')); } catch {}
+      }
+      submissions.push(submission);
+      fs.mkdirSync(path.dirname(filePath), { recursive: true });
+      fs.writeFileSync(filePath, JSON.stringify(submissions, null, 2));
     }
-    submissions.push(submission);
-    fs.mkdirSync(path.dirname(filePath), { recursive: true });
-    fs.writeFileSync(filePath, JSON.stringify(submissions, null, 2));
     res.json({ ok: true });
   } catch (e) {
     res.status(500).json({ error: 'Server error' });
@@ -368,16 +380,23 @@ app.get('/auth/callback', async (req, res) => {
   }
 });
 
-app.get('/api/submissions', (req, res) => {
+app.get('/api/submissions', async (req, res) => {
+  if (store.useSupabase()) {
+    try {
+      const rows = await store.sbGet('submissions', '?select=data,submitted_at&order=submitted_at.desc');
+      return res.json(rows.map(row => ({ ...row.data, submittedAt: row.submitted_at })));
+    } catch (e) { return res.json([]); }
+  }
   const filePath = path.join(__dirname, '..', 'data', 'submissions.json');
   if (!fs.existsSync(filePath)) return res.json([]);
   try { res.json(JSON.parse(fs.readFileSync(filePath, 'utf-8'))); }
   catch { res.json([]); }
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`\n  Playlister507 → http://localhost:${PORT}`);
-  startScheduler();
+store.hydrate().then(() => {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`\n  Playlister507 → http://localhost:${PORT}`);
+    startScheduler();
 
   // Auto-fetch stats on startup (30s delay to let Spotify auth settle)
   // then refresh every 6 hours
@@ -387,6 +406,13 @@ app.listen(PORT, '0.0.0.0', () => {
       fetchStats().catch(e => console.warn('[stats] Auto-refresh failed:', e.message));
     }, 6 * 60 * 60 * 1000);
   }, 30_000);
+  });
+}).catch(e => {
+  console.error('[store] Hydration error, starting anyway:', e.message);
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`\n  Playlister507 → http://localhost:${PORT}`);
+    startScheduler();
+  });
 });
 
 module.exports = app;
