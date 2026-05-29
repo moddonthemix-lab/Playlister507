@@ -132,7 +132,9 @@ app.post('/api/admin/upload-cover', requireAdmin, async (req, res) => {
     await spotify.uploadPlaylistCover(playlist.id, imageBase64);
     res.json({ ok: true });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    const detail = e.response?.data || e.message;
+    console.error('[upload-cover] Spotify error:', JSON.stringify(detail));
+    res.status(500).json({ error: typeof detail === 'object' ? JSON.stringify(detail) : detail });
   }
 });
 

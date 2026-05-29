@@ -589,7 +589,8 @@ function fileToBase64Jpeg(file) {
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement('canvas');
-        const MAX = 800;
+        // Spotify max: 256KB. Use 500px + quality 0.8 to stay safely under.
+        const MAX = 500;
         let w = img.width, h = img.height;
         if (w > MAX || h > MAX) {
           if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
@@ -598,7 +599,7 @@ function fileToBase64Jpeg(file) {
         canvas.width  = w;
         canvas.height = h;
         canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-        resolve(canvas.toDataURL('image/jpeg', 0.82).split(',')[1]);
+        resolve(canvas.toDataURL('image/jpeg', 0.8).split(',')[1]);
       };
       img.onerror = reject;
       img.src = e.target.result;
