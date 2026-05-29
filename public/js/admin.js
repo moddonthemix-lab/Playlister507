@@ -103,6 +103,7 @@ document.getElementById('playlist-nav').addEventListener('click', (e) => {
 });
 
 document.getElementById('btn-submissions').addEventListener('click', showSubmissions);
+document.getElementById('btn-blog').addEventListener('click', showBlog);
 
 document.getElementById('btn-update-all').addEventListener('click', async () => {
   const btn = document.getElementById('btn-update-all');
@@ -576,6 +577,319 @@ async function deleteSubmission(id) {
     _submissionsData = _submissionsData.filter(s => String(s.id) !== String(id));
     toast('Submission deleted', 'success');
     renderSubmissionsList();
+  } catch {
+    toast('Request failed', 'error');
+  }
+}
+
+// ── Blog Manager ─────────────────────────────────────────────────
+async function showBlog() {
+  document.querySelectorAll('.adm-pl-btn').forEach(b => b.classList.remove('active'));
+  currentKey = null;
+  const main = document.getElementById('adm-main');
+  main.innerHTML = `
+    <div class="adm-blog-header">
+      <h2 class="adm-editor-title">Blog Posts</h2>
+      <button class="adm-btn adm-btn--green" id="btn-new-post">+ New Post</button>
+    </div>
+    <div id="blog-list"><p style="color:rgba(255,255,255,0.3);font-size:14px">Loading…</p></div>
+  `;
+
+  document.getElementById('btn-new-post').addEventListener('click', () => showNewPostForm());
+
+  try {
+    const res  = await fetch('/api/admin/blog-posts');
+    const posts = await res.json();
+    renderBlogList(posts);
+  } catch {
+    toast('Failed to load blog posts', 'error');
+  }
+}
+
+function renderBlogList(posts) {
+  const el = document.getElementById('blog-list');
+  if (!el) return;
+
+  if (!posts || !posts.length) {
+    el.innerHTML = '<p style="color:rgba(255,255,255,0.3);font-size:14px">No posts yet. Create your first one.</p>';
+    return;
+  }
+
+  el.innerHTML = `<div class="adm-blog-list">${posts.map(p => {
+    const dateStr = p.createdAt
+      ? new Date(p.createdAt).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })
+      : '—';
+    const tagStyle = p.tagColor ? `background:${esc(p.tagColor)}22;color:${esc(p.tagColor)};border:1px solid ${esc(p.tagColor)}44` : '';
+    return `
+      <div class="adm-blog-item">
+        <div class="adm-blog-item__body">
+          <div class="adm-blog-item__title">${esc(p.title || '(Untitled)')}</div>
+          <div class="adm-blog-item__meta">
+            ${p.tag ? `<span class="adm-blog-tag" style="${tagStyle}">${esc(p.tag)}</span>` : ''}
+            ${dateStr}
+            &nbsp;·&nbsp;
+            <span style="color:${p.published ? '#1DB954' : 'rgba(255,255,255,0.3)'}">${p.published ? 'Published' : 'Draft'}</span>
+          </div>
+        </div>
+        <div class="adm-blog-item__actions">
+          <button class="adm-btn blog-btn-edit" data-id="${esc(String(p.id || p._id || ''))}">Edit</button>
+          <button class="adm-btn adm-btn--red blog-btn-delete" data-id="${esc(String(p.id || p._id || ''))}" data-title="${esc(p.title || '')}">Delete</button>
+        </div>
+      </div>
+    `;
+  }).join('')}</div>`;
+
+  el.querySelectorAll('.blog-btn-edit').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      try {
+        const res = await fetch(`/api/admin/blog-posts/${encodeURIComponent(btn.dataset.id)}`);
+        const post = await res.json();
+        showNewPostForm(post);
+      } catch {
+        toast('Failed to load post', 'error');
+      }
+    });
+  });
+
+  el.querySelectorAll('.blog-btn-delete').forEach(btn => {
+    btn.addEventListener('click', () => deletePost(btn.dataset.id, btn.dataset.title));
+  });
+}
+
+function showNewPostForm(existing = null) {
+  const main = document.getElementById('adm-main');
+  const isEdit = !!existing;
+
+  const playlistOptions = Object.entries(PLAYLIST_META).map(([key, meta]) =>
+    `<option value="${esc(key)}" ${existing?.playlist === key ? 'selected' : ''}>${esc(meta.label)}</option>`
+  ).join('');
+
+  const sections = existing?.sections?.length
+    ? existing.sections
+    : [{ heading: '', body: '' }];
+
+  const sectionsHtml = sections.map((sec, i) => buildSectionItemHtml(sec, i)).join('');
+
+  main.innerHTML = `
+    <div class="adm-blog-header">
+      <h2 class="adm-editor-title">${isEdit ? 'Edit Post' : 'New Post'}</h2>
+    </div>
+    <div class="adm-section">
+      <form class="adm-blog-form" id="blog-post-form" onsubmit="return false">
+
+        <div>
+          <label class="adm-section-title" for="blog-title">Title</label>
+          <input class="adm-input" type="text" id="blog-title" placeholder="e.g. The Rise of Florida Rap" required
+            value="${esc(existing?.title || '')}" style="width:100%" />
+        </div>
+
+        <div>
+          <label class="adm-section-title" for="blog-slug">Slug</label>
+          <input class="adm-input" type="text" id="blog-slug" placeholder="e.g. rise-of-florida-rap"
+            value="${esc(existing?.slug || '')}" style="width:100%" />
+        </div>
+
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <div style="flex:1;min-width:160px">
+            <label class="adm-section-title" for="blog-tag">Tag</label>
+            <input class="adm-input" type="text" id="blog-tag" placeholder="e.g. Florida Rap"
+              value="${esc(existing?.tag || '')}" style="width:100%" />
+          </div>
+          <div style="min-width:120px">
+            <label class="adm-section-title" for="blog-tag-color">Tag Color</label>
+            <input type="color" id="blog-tag-color" value="${esc(existing?.tagColor || '#FFD166')}"
+              style="width:100%;height:42px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.06);cursor:pointer;padding:4px 6px" />
+          </div>
+        </div>
+
+        <div>
+          <label class="adm-section-title" for="blog-playlist">Playlist</label>
+          <select class="adm-input" id="blog-playlist" style="width:100%">
+            <option value="">— None —</option>
+            ${playlistOptions}
+          </select>
+        </div>
+
+        <div>
+          <label class="adm-section-title" for="blog-meta-desc">Meta Description <span class="adm-char-count" id="meta-char-count">0 / 160</span></label>
+          <textarea class="adm-textarea" id="blog-meta-desc" rows="2" maxlength="200"
+            placeholder="Short description for search engines (max 160 chars)"
+            style="margin-bottom:0">${esc(existing?.metaDescription || '')}</textarea>
+        </div>
+
+        <div>
+          <label class="adm-section-title" for="blog-read-time">Read Time</label>
+          <input class="adm-input" type="text" id="blog-read-time" placeholder="e.g. 5 min read"
+            value="${esc(existing?.readTime || '')}" style="width:100%" />
+        </div>
+
+        <div>
+          <label class="adm-section-title" for="blog-intro">Intro</label>
+          <textarea class="adm-textarea" id="blog-intro" rows="4"
+            placeholder="The hook paragraph — draws readers in">${esc(existing?.intro || '')}</textarea>
+        </div>
+
+        <div class="adm-blog-sections">
+          <p class="adm-section-title" style="margin-bottom:12px">Sections</p>
+          <div id="blog-sections-list">${sectionsHtml}</div>
+          <button type="button" class="adm-btn" id="btn-add-section" style="margin-top:8px">+ Add Section</button>
+        </div>
+
+        <div>
+          <label class="adm-section-title" for="blog-cta">CTA Line</label>
+          <input class="adm-input" type="text" id="blog-cta" placeholder="e.g. Follow Fresh Florida Wave on Spotify"
+            value="${esc(existing?.ctaLine || '')}" style="width:100%" />
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px">
+          <input type="checkbox" id="blog-published" ${existing === null || existing?.published !== false ? 'checked' : ''}
+            style="width:16px;height:16px;cursor:pointer;accent-color:#1DB954" />
+          <label for="blog-published" style="font-size:14px;color:rgba(255,255,255,0.7);cursor:pointer">Published</label>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:4px">
+          <button type="button" class="adm-btn" id="btn-cancel-post">Cancel</button>
+          <button type="button" class="adm-btn adm-btn--green" id="btn-save-post">Save Post</button>
+        </div>
+
+      </form>
+    </div>
+  `;
+
+  const titleInput = document.getElementById('blog-title');
+  const slugInput  = document.getElementById('blog-slug');
+  titleInput.addEventListener('input', () => {
+    if (!isEdit || !slugInput.dataset.manuallyEdited) {
+      slugInput.value = titleInput.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    }
+  });
+  slugInput.addEventListener('input', () => {
+    slugInput.dataset.manuallyEdited = '1';
+  });
+
+  const metaDesc  = document.getElementById('blog-meta-desc');
+  const charCount = document.getElementById('meta-char-count');
+  function updateCharCount() {
+    const len = metaDesc.value.length;
+    charCount.textContent = `${len} / 160`;
+    charCount.classList.toggle('adm-char-count--over', len > 160);
+  }
+  metaDesc.addEventListener('input', updateCharCount);
+  updateCharCount();
+
+  document.getElementById('btn-add-section').addEventListener('click', () => {
+    const list = document.getElementById('blog-sections-list');
+    const idx  = list.querySelectorAll('.adm-blog-section-item').length;
+    const div  = document.createElement('div');
+    div.innerHTML = buildSectionItemHtml({ heading: '', body: '' }, idx);
+    list.appendChild(div.firstElementChild);
+    bindSectionRemove(list.lastElementChild);
+  });
+
+  document.querySelectorAll('.adm-blog-section-item').forEach(item => bindSectionRemove(item));
+
+  document.getElementById('btn-cancel-post').addEventListener('click', showBlog);
+  document.getElementById('btn-save-post').addEventListener('click', () => savePost(existing?.id || existing?._id || null));
+}
+
+function buildSectionItemHtml(sec, idx) {
+  return `
+    <div class="adm-blog-section-item">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:11px;letter-spacing:2px;color:rgba(255,255,255,0.25)">SECTION ${idx + 1}</span>
+        <button type="button" class="adm-btn adm-btn--red blog-section-remove" style="padding:4px 10px;font-size:11px">Remove</button>
+      </div>
+      <input class="adm-input blog-section-heading" type="text" placeholder="Section heading (optional)"
+        value="${esc(sec.heading || '')}" style="width:100%;margin-bottom:8px" />
+      <textarea class="adm-textarea blog-section-body" rows="4"
+        placeholder="Section body text">${esc(sec.body || '')}</textarea>
+    </div>
+  `;
+}
+
+function bindSectionRemove(item) {
+  const btn = item.querySelector('.blog-section-remove');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const list = document.getElementById('blog-sections-list');
+    if (list && list.querySelectorAll('.adm-blog-section-item').length > 1) {
+      item.remove();
+    } else {
+      toast('At least one section is required', 'error');
+    }
+  });
+}
+
+async function savePost(id = null) {
+  const titleEl = document.getElementById('blog-title');
+  const slugEl  = document.getElementById('blog-slug');
+
+  const title = titleEl.value.trim();
+  let   slug  = slugEl.value.trim();
+
+  if (!title) { toast('Title is required', 'error'); titleEl.focus(); return; }
+  if (!slug)  { slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); slugEl.value = slug; }
+  if (!slug)  { toast('Slug is required', 'error'); slugEl.focus(); return; }
+
+  const sectionItems = document.querySelectorAll('#blog-sections-list .adm-blog-section-item');
+  const sections = Array.from(sectionItems).map(item => ({
+    heading: item.querySelector('.blog-section-heading')?.value?.trim() || '',
+    body:    item.querySelector('.blog-section-body')?.value?.trim()    || '',
+  }));
+
+  const payload = {
+    title,
+    slug,
+    tag:             document.getElementById('blog-tag').value.trim(),
+    tagColor:        document.getElementById('blog-tag-color').value,
+    playlist:        document.getElementById('blog-playlist').value,
+    metaDescription: document.getElementById('blog-meta-desc').value.trim(),
+    readTime:        document.getElementById('blog-read-time').value.trim(),
+    intro:           document.getElementById('blog-intro').value.trim(),
+    sections,
+    ctaLine:         document.getElementById('blog-cta').value.trim(),
+    published:       document.getElementById('blog-published').checked,
+  };
+
+  const btn = document.getElementById('btn-save-post');
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+
+  try {
+    const method = id ? 'PATCH' : 'POST';
+    const url    = id ? `/api/admin/blog-posts/${encodeURIComponent(id)}` : '/api/admin/blog-posts';
+    const res = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (res.ok) {
+      toast('Post saved', 'success');
+      showBlog();
+    } else {
+      const d = await res.json().catch(() => ({}));
+      toast(d.error || 'Save failed', 'error');
+      btn.disabled = false;
+      btn.textContent = 'Save Post';
+    }
+  } catch {
+    toast('Request failed', 'error');
+    btn.disabled = false;
+    btn.textContent = 'Save Post';
+  }
+}
+
+async function deletePost(id, title) {
+  if (!confirm(`Delete "${title || 'this post'}"? This cannot be undone.`)) return;
+  try {
+    const res = await fetch(`/api/admin/blog-posts/${encodeURIComponent(id)}`, { method: 'DELETE' });
+    if (!res.ok) {
+      const d = await res.json().catch(() => ({}));
+      toast(d.error || 'Delete failed', 'error');
+      return;
+    }
+    toast('Post deleted', 'success');
+    showBlog();
   } catch {
     toast('Request failed', 'error');
   }
