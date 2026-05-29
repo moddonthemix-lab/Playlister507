@@ -95,6 +95,7 @@ document.querySelectorAll('.tmpl-size-btn').forEach(btn => {
 
 document.getElementById('render-btn').addEventListener('click', render);
 document.getElementById('download-btn').addEventListener('click', download);
+document.getElementById('download-spotify-btn').addEventListener('click', downloadForSpotify);
 
 // Auto-render on any control change
 ['playlist-pick','custom-headline','custom-sub','custom-cta',
@@ -565,10 +566,24 @@ function render() {
 // ── Download ───────────────────────────────────────────────────────────
 function download() {
   const key = document.getElementById('playlist-pick').value;
-  const pl = PLAYLISTS[key];
   const link = document.createElement('a');
   link.download = `playlist-engine-${key}-${currentStyle}-${currentW}x${currentH}.png`;
   link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+function downloadForSpotify() {
+  const key = document.getElementById('playlist-pick').value;
+  // Render to a 640x640 offscreen canvas — stays under Spotify's 256KB limit
+  const size = 640;
+  const offscreen = document.createElement('canvas');
+  offscreen.width  = size;
+  offscreen.height = size;
+  const octx = offscreen.getContext('2d');
+  octx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, size, size);
+  const link = document.createElement('a');
+  link.download = `spotify-cover-${key}.jpg`;
+  link.href = offscreen.toDataURL('image/jpeg', 0.85);
   link.click();
 }
 
