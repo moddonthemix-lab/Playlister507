@@ -276,122 +276,148 @@ app.delete('/api/admin/submission/:id', requireAdmin, async (req, res) => {
 //   updated_at TIMESTAMPTZ DEFAULT now()
 // );
 
+function mapRowToPost(row) {
+  return {
+    id: row.id,
+    slug: row.slug,
+    title: row.title,
+    tag: row.tag,
+    tagColor: row.tag_color,
+    playlist: row.playlist_id,
+    playlistSpotifyId: row.playlist_spotify_id,
+    metaDescription: row.meta_desc,
+    readTime: row.read_time,
+    intro: row.intro,
+    sections: row.sections || [],
+    ctaLine: row.cta,
+    published: row.published,
+    createdAt: row.published_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+function buildDbRow(body) {
+  const { title, slug, tag, tagColor, playlist, metaDescription, readTime, intro, sections, ctaLine, published } = body;
+  return {
+    title,
+    slug,
+    tag: tag || null,
+    tag_color: tagColor || null,
+    playlist_id: playlist || null,
+    meta_desc: metaDescription || null,
+    read_time: readTime || null,
+    intro: intro || null,
+    sections: sections || null,
+    cta: ctaLine || null,
+    published: published !== undefined ? published : true,
+  };
+}
+
 async function getBlogPosts(includeUnpublished = false) {
   if (!store.useSupabase()) return [];
   const filter = includeUnpublished
     ? '?order=published_at.desc'
     : '?published=eq.true&order=published_at.desc';
-  return await store.sbGet('blog_posts', filter);
+  const rows = await store.sbGet('blog_posts', filter);
+  return rows.map(mapRowToPost);
 }
 
-// GET /api/blog-posts — public
+// GET /api/blog-posts — public (raw snake_case for blog-data.js mapper)
 app.get('/api/blog-posts', async (req, res) => {
   try {
-    const dynamic = await getBlogPosts(false);
-    res.json(dynamic);
+    if (!store.useSupabase()) return res.json([]);
+    const rows = await store.sbGet('blog_posts', '?published=eq.true&order=published_at.desc');
+    res.json(rows);
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
 });
 
-// GET /api/admin/blog-posts — admin, includes unpublished
+// GET /api/admin/blog-posts — admin, includes unpublished, returns camelCase
 app.get('/api/admin/blog-posts', requireAdmin, async (req, res) => {
   try {
-    const dynamic = await getBlogPosts(true);
-    res.json(dynamic);
+    const posts = await getBlogPosts(true);
+    res.json(posts);
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
 });
 
-// POST /api/admin/blog-posts — create a post
+// GET /api/admin/blog-posts/:id — fetch single post for editing
+app.get('/api/admin/blog-posts/:id', requireAdmin, async (req, res) => {
+  if (!store.useSupabase()) return res.status(503).json({ error: 'Supabase not configured' });
+  try {
+    const { id } = req.params;
+    const filter = isNaN(id)
+      ? `?slug=eq.${encodeURIComponent(id)}&limit=1`
+      : `?id=eq.${id}&limit=1`;
+    const rows = await store.sbGet('blog_posts', filter);
+    if (!rows.length) return res.status(404).json({ error: 'Not found' });
+    res.json(mapRowToPost(rows[0]));
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// POST /api/admin/blog-posts — create or upsert by slug
 app.post('/api/admin/blog-posts', requireAdmin, async (req, res) => {
-  const { title, slug, tag, tagColor, playlistId, playlistSpotifyId, metaDesc, readTime, intro, sections, cta, published } = req.body;
-  if (!title || !slug) {
-    return res.status(400).json({ error: 'title and slug are required' });
-  }
-  if (!/^[a-z0-9-]+$/.test(slug)) {
-    return res.status(400).json({ error: 'slug must be URL-safe (lowercase letters, numbers, and hyphens only)' });
-  }
-  if (!store.useSupabase()) {
-    return res.status(503).json({ error: 'Supabase not configured' });
-  }
+  const { title, slug } = req.body;
+  if (!title || !slug) return res.status(400).json({ error: 'title and slug are required' });
+  if (!/^[a-z0-9-]+$/.test(slug)) return res.status(400).json({ error: 'slug must be URL-safe' });
+  if (!store.useSupabase()) return res.status(503).json({ error: 'Supabase not configured' });
   try {
     const axios = require('axios');
-    const SUPABASE_URL = process.env.SUPABASE_URL;
-    const SUPABASE_KEY = process.env.SUPABASE_KEY;
     const headers = {
-      apikey: SUPABASE_KEY,
-      Authorization: `Bearer ${SUPABASE_KEY}`,
+      apikey: process.env.SUPABASE_KEY,
+      Authorization: `Bearer ${process.env.SUPABASE_KEY}`,
       'Content-Type': 'application/json',
-      Prefer: 'return=representation',
+      Prefer: 'resolution=merge-duplicates,return=representation',
     };
-    const row = {
-      title,
-      slug,
-      tag: tag || null,
-      tag_color: tagColor || null,
-      playlist_id: playlistId || null,
-      playlist_spotify_id: playlistSpotifyId || null,
-      meta_desc: metaDesc || null,
-      read_time: readTime || null,
-      intro: intro || null,
-      sections: sections || null,
-      cta: cta || null,
-      published: published !== undefined ? published : true,
-    };
-    const r = await axios.post(`${SUPABASE_URL}/rest/v1/blog_posts`, row, { headers });
+    const row = buildDbRow(req.body);
+    const r = await axios.post(`${process.env.SUPABASE_URL}/rest/v1/blog_posts`, row, { headers });
     const created = Array.isArray(r.data) ? r.data[0] : r.data;
     res.json({ ok: true, id: created?.id });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.status(500).json({ error: e.response?.data?.message || e.message });
   }
 });
 
 // PATCH /api/admin/blog-posts/:id — update a post
 app.patch('/api/admin/blog-posts/:id', requireAdmin, async (req, res) => {
-  const { id } = req.params;
-  if (!store.useSupabase()) {
-    return res.status(503).json({ error: 'Supabase not configured' });
-  }
+  if (!store.useSupabase()) return res.status(503).json({ error: 'Supabase not configured' });
   try {
+    const { id } = req.params;
     const axios = require('axios');
-    const SUPABASE_URL = process.env.SUPABASE_URL;
-    const SUPABASE_KEY = process.env.SUPABASE_KEY;
     const headers = {
-      apikey: SUPABASE_KEY,
-      Authorization: `Bearer ${SUPABASE_KEY}`,
+      apikey: process.env.SUPABASE_KEY,
+      Authorization: `Bearer ${process.env.SUPABASE_KEY}`,
       'Content-Type': 'application/json',
       Prefer: 'return=minimal',
     };
-    const updates = { ...req.body, updated_at: new Date().toISOString() };
-    await axios.patch(`${SUPABASE_URL}/rest/v1/blog_posts?id=eq.${id}`, updates, { headers });
+    const updates = { ...buildDbRow(req.body), updated_at: new Date().toISOString() };
+    await axios.patch(`${process.env.SUPABASE_URL}/rest/v1/blog_posts?id=eq.${id}`, updates, { headers });
     res.json({ ok: true });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.status(500).json({ error: e.response?.data?.message || e.message });
   }
 });
 
 // DELETE /api/admin/blog-posts/:id — delete a post
 app.delete('/api/admin/blog-posts/:id', requireAdmin, async (req, res) => {
-  const { id } = req.params;
-  if (!store.useSupabase()) {
-    return res.status(503).json({ error: 'Supabase not configured' });
-  }
+  if (!store.useSupabase()) return res.status(503).json({ error: 'Supabase not configured' });
   try {
+    const { id } = req.params;
     const axios = require('axios');
-    const SUPABASE_URL = process.env.SUPABASE_URL;
-    const SUPABASE_KEY = process.env.SUPABASE_KEY;
     const headers = {
-      apikey: SUPABASE_KEY,
-      Authorization: `Bearer ${SUPABASE_KEY}`,
+      apikey: process.env.SUPABASE_KEY,
+      Authorization: `Bearer ${process.env.SUPABASE_KEY}`,
       'Content-Type': 'application/json',
       Prefer: 'return=minimal',
     };
-    await axios.delete(`${SUPABASE_URL}/rest/v1/blog_posts?id=eq.${id}`, { headers });
+    await axios.delete(`${process.env.SUPABASE_URL}/rest/v1/blog_posts?id=eq.${id}`, { headers });
     res.json({ ok: true });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.status(500).json({ error: e.response?.data?.message || e.message });
   }
 });
 

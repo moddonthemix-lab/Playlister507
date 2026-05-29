@@ -583,6 +583,27 @@ async function deleteSubmission(id) {
 }
 
 // ── Blog Manager ─────────────────────────────────────────────────
+// Normalize static post (blog-data.js format) to admin form format
+function normalizeStaticPost(p) {
+  return {
+    _static: true,
+    id: null,
+    slug: p.slug,
+    title: p.title,
+    tag: p.tag,
+    tagColor: p.tagColor,
+    playlist: p.playlistId,
+    playlistSpotifyId: p.playlistSpotifyId,
+    metaDescription: p.metaDesc,
+    readTime: p.readTime,
+    intro: p.intro,
+    sections: p.sections || [],
+    ctaLine: p.cta,
+    published: p.published !== false,
+    createdAt: p.date,
+  };
+}
+
 async function showBlog() {
   document.querySelectorAll('.adm-pl-btn').forEach(b => b.classList.remove('active'));
   currentKey = null;
@@ -598,9 +619,16 @@ async function showBlog() {
   document.getElementById('btn-new-post').addEventListener('click', () => showNewPostForm());
 
   try {
-    const res  = await fetch('/api/admin/blog-posts');
-    const posts = await res.json();
-    renderBlogList(posts);
+    const res   = await fetch('/api/admin/blog-posts');
+    const dbPosts = await res.json();
+
+    // Merge: DB posts take precedence; show remaining static posts below
+    const dbSlugs = new Set(dbPosts.map(p => p.slug));
+    const staticPosts = (window.BLOG_POSTS || [])
+      .filter(p => !dbSlugs.has(p.slug))
+      .map(normalizeStaticPost);
+
+    renderBlogList([...dbPosts, ...staticPosts]);
   } catch {
     toast('Failed to load blog posts', 'error');
   }
@@ -615,25 +643,31 @@ function renderBlogList(posts) {
     return;
   }
 
+  // Store posts by slug for edit-by-slug lookup
+  window._blogPostsCache = {};
+  posts.forEach(p => { if (p.slug) window._blogPostsCache[p.slug] = p; });
+
   el.innerHTML = `<div class="adm-blog-list">${posts.map(p => {
     const dateStr = p.createdAt
       ? new Date(p.createdAt).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })
       : '—';
     const tagStyle = p.tagColor ? `background:${esc(p.tagColor)}22;color:${esc(p.tagColor)};border:1px solid ${esc(p.tagColor)}44` : '';
+    const rowId = p.id ? String(p.id) : '';
+    const rowSlug = esc(p.slug || '');
     return `
       <div class="adm-blog-item">
         <div class="adm-blog-item__body">
-          <div class="adm-blog-item__title">${esc(p.title || '(Untitled)')}</div>
+          <div class="adm-blog-item__title">${esc(p.title || '(Untitled)')}${p._static ? ' <span style="font-size:10px;color:rgba(255,255,255,0.25);font-weight:400;letter-spacing:1px">BUILT-IN</span>' : ''}</div>
           <div class="adm-blog-item__meta">
             ${p.tag ? `<span class="adm-blog-tag" style="${tagStyle}">${esc(p.tag)}</span>` : ''}
             ${dateStr}
             &nbsp;·&nbsp;
-            <span style="color:${p.published ? '#1DB954' : 'rgba(255,255,255,0.3)'}">${p.published ? 'Published' : 'Draft'}</span>
+            <span style="color:${p.published !== false ? '#1DB954' : 'rgba(255,255,255,0.3)'}">${p.published !== false ? 'Published' : 'Draft'}</span>
           </div>
         </div>
         <div class="adm-blog-item__actions">
-          <button class="adm-btn blog-btn-edit" data-id="${esc(String(p.id || p._id || ''))}">Edit</button>
-          <button class="adm-btn adm-btn--red blog-btn-delete" data-id="${esc(String(p.id || p._id || ''))}" data-title="${esc(p.title || '')}">Delete</button>
+          <button class="adm-btn blog-btn-edit" data-id="${rowId}" data-slug="${rowSlug}">Edit</button>
+          ${p._static ? '' : `<button class="adm-btn adm-btn--red blog-btn-delete" data-id="${rowId}" data-title="${esc(p.title || '')}">Delete</button>`}
         </div>
       </div>
     `;
@@ -641,8 +675,17 @@ function renderBlogList(posts) {
 
   el.querySelectorAll('.blog-btn-edit').forEach(btn => {
     btn.addEventListener('click', async () => {
+      const slug = btn.dataset.slug;
+      const id   = btn.dataset.id;
+
+      // Static post — data already in cache, no need to fetch
+      if (!id && slug && window._blogPostsCache[slug]) {
+        showNewPostForm(window._blogPostsCache[slug]);
+        return;
+      }
+      // DB post — fetch full record
       try {
-        const res = await fetch(`/api/admin/blog-posts/${encodeURIComponent(btn.dataset.id)}`);
+        const res = await fetch(`/api/admin/blog-posts/${encodeURIComponent(id || slug)}`);
         const post = await res.json();
         showNewPostForm(post);
       } catch {
