@@ -104,6 +104,34 @@ document.getElementById('playlist-nav').addEventListener('click', (e) => {
 
 document.getElementById('btn-submissions').addEventListener('click', showSubmissions);
 
+document.getElementById('btn-update-all').addEventListener('click', async () => {
+  const btn = document.getElementById('btn-update-all');
+  if (!confirm('Update all 7 playlists now? This runs in the background and takes ~2 minutes.')) return;
+  btn.disabled = true;
+  btn.textContent = 'Starting…';
+  try {
+    const res = await fetch('/api/admin/trigger-update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ playlistKey: 'all' }),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      toast('All playlists updating — takes ~2 minutes', 'success');
+      btn.textContent = 'Running…';
+      setTimeout(() => { btn.disabled = false; btn.textContent = '⚡ Update All Playlists'; }, 120_000);
+    } else {
+      toast(data.error || 'Failed', 'error');
+      btn.disabled = false;
+      btn.textContent = '⚡ Update All Playlists';
+    }
+  } catch {
+    toast('Request failed', 'error');
+    btn.disabled = false;
+    btn.textContent = '⚡ Update All Playlists';
+  }
+});
+
 function selectPlaylist(key) {
   currentKey = key;
   const playlist = allPlaylists[key];

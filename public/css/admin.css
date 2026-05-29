@@ -180,6 +180,8 @@ body {
 }
 .adm-pl-btn:hover, .adm-tool-btn:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.9); }
 .adm-pl-btn.active { background: rgba(255,255,255,0.08); color: #fff; }
+.adm-tool-btn--green { background: rgba(29,185,84,0.12); border-color: rgba(29,185,84,0.3); color: #1DB954; }
+.adm-tool-btn--green:hover { background: rgba(29,185,84,0.2); border-color: rgba(29,185,84,0.5); color: #1DB954; }
 
 .adm-pl-dot {
   width: 8px;
