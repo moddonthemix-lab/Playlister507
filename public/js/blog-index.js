@@ -6,8 +6,6 @@
 (function () {
   'use strict';
 
-  const BLOG_POSTS = window.BLOG_POSTS || [];
-
   function buildTagStyle(color) {
     return (
       `background:${hexToRgba(color, 0.15)};` +
@@ -58,13 +56,16 @@
     const grid = document.getElementById('blog-grid');
     if (!grid) return;
 
-    if (!BLOG_POSTS.length) {
+    const posts = window.BLOG_POSTS || [];
+    if (!posts.length) {
       grid.innerHTML = '<div class="blog-loading">No posts yet — check back soon.</div>';
       return;
     }
 
-    grid.innerHTML = BLOG_POSTS.map(buildCard).join('');
+    grid.innerHTML = posts.map(buildCard).join('');
   }
+
+  window.__reRenderBlog = render;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', render);

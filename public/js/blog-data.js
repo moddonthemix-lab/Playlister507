@@ -247,3 +247,36 @@ const BLOG_POSTS = window.BLOG_POSTS = [
 ];
 
 if (typeof module !== 'undefined') module.exports = { BLOG_POSTS };
+
+async function loadDynamicPosts() {
+  try {
+    const res = await fetch('/api/blog-posts');
+    const dynamic = await res.json();
+    if (!Array.isArray(dynamic)) return;
+    // Map Supabase snake_case to camelCase
+    const mapped = dynamic.map(p => ({
+      slug: p.slug,
+      title: p.title,
+      tag: p.tag,
+      tagColor: p.tag_color,
+      playlistId: p.playlist_id,
+      playlistSpotifyId: p.playlist_spotify_id,
+      metaDesc: p.meta_desc,
+      readTime: p.read_time,
+      date: p.published_at ? new Date(p.published_at).toISOString().split('T')[0] : '',
+      intro: p.intro,
+      sections: p.sections || [],
+      cta: p.cta,
+      _dynamic: true,
+    }));
+    // Merge: dynamic posts first, then static ones not already covered
+    const dynamicSlugs = new Set(mapped.map(p => p.slug));
+    const merged = [...mapped, ...window.BLOG_POSTS.filter(p => !dynamicSlugs.has(p.slug))];
+    window.BLOG_POSTS = merged;
+    // Re-render if blog-index already ran
+    if (typeof window.__reRenderBlog === 'function') window.__reRenderBlog();
+  } catch (e) {
+    console.warn('[blog] Could not load dynamic posts:', e.message);
+  }
+}
+loadDynamicPosts();

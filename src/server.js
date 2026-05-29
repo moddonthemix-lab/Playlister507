@@ -256,6 +256,145 @@ app.delete('/api/admin/submission/:id', requireAdmin, async (req, res) => {
   }
 });
 
+// ── Blog management ─────────────────────────────────────────────────
+// Run in Supabase SQL Editor:
+// CREATE TABLE blog_posts (
+//   id SERIAL PRIMARY KEY,
+//   slug TEXT UNIQUE NOT NULL,
+//   title TEXT NOT NULL,
+//   tag TEXT,
+//   tag_color TEXT,
+//   playlist_id TEXT,
+//   playlist_spotify_id TEXT,
+//   meta_desc TEXT,
+//   read_time TEXT,
+//   intro TEXT,
+//   sections JSONB,
+//   cta TEXT,
+//   published BOOLEAN DEFAULT true,
+//   published_at TIMESTAMPTZ DEFAULT now(),
+//   updated_at TIMESTAMPTZ DEFAULT now()
+// );
+
+async function getBlogPosts(includeUnpublished = false) {
+  if (!store.useSupabase()) return [];
+  const filter = includeUnpublished
+    ? '?order=published_at.desc'
+    : '?published=eq.true&order=published_at.desc';
+  return await store.sbGet('blog_posts', filter);
+}
+
+// GET /api/blog-posts — public
+app.get('/api/blog-posts', async (req, res) => {
+  try {
+    const dynamic = await getBlogPosts(false);
+    res.json(dynamic);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// GET /api/admin/blog-posts — admin, includes unpublished
+app.get('/api/admin/blog-posts', requireAdmin, async (req, res) => {
+  try {
+    const dynamic = await getBlogPosts(true);
+    res.json(dynamic);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// POST /api/admin/blog-posts — create a post
+app.post('/api/admin/blog-posts', requireAdmin, async (req, res) => {
+  const { title, slug, tag, tagColor, playlistId, playlistSpotifyId, metaDesc, readTime, intro, sections, cta, published } = req.body;
+  if (!title || !slug) {
+    return res.status(400).json({ error: 'title and slug are required' });
+  }
+  if (!/^[a-z0-9-]+$/.test(slug)) {
+    return res.status(400).json({ error: 'slug must be URL-safe (lowercase letters, numbers, and hyphens only)' });
+  }
+  if (!store.useSupabase()) {
+    return res.status(503).json({ error: 'Supabase not configured' });
+  }
+  try {
+    const axios = require('axios');
+    const SUPABASE_URL = process.env.SUPABASE_URL;
+    const SUPABASE_KEY = process.env.SUPABASE_KEY;
+    const headers = {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      Prefer: 'return=representation',
+    };
+    const row = {
+      title,
+      slug,
+      tag: tag || null,
+      tag_color: tagColor || null,
+      playlist_id: playlistId || null,
+      playlist_spotify_id: playlistSpotifyId || null,
+      meta_desc: metaDesc || null,
+      read_time: readTime || null,
+      intro: intro || null,
+      sections: sections || null,
+      cta: cta || null,
+      published: published !== undefined ? published : true,
+    };
+    const r = await axios.post(`${SUPABASE_URL}/rest/v1/blog_posts`, row, { headers });
+    const created = Array.isArray(r.data) ? r.data[0] : r.data;
+    res.json({ ok: true, id: created?.id });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// PATCH /api/admin/blog-posts/:id — update a post
+app.patch('/api/admin/blog-posts/:id', requireAdmin, async (req, res) => {
+  const { id } = req.params;
+  if (!store.useSupabase()) {
+    return res.status(503).json({ error: 'Supabase not configured' });
+  }
+  try {
+    const axios = require('axios');
+    const SUPABASE_URL = process.env.SUPABASE_URL;
+    const SUPABASE_KEY = process.env.SUPABASE_KEY;
+    const headers = {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      Prefer: 'return=minimal',
+    };
+    const updates = { ...req.body, updated_at: new Date().toISOString() };
+    await axios.patch(`${SUPABASE_URL}/rest/v1/blog_posts?id=eq.${id}`, updates, { headers });
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// DELETE /api/admin/blog-posts/:id — delete a post
+app.delete('/api/admin/blog-posts/:id', requireAdmin, async (req, res) => {
+  const { id } = req.params;
+  if (!store.useSupabase()) {
+    return res.status(503).json({ error: 'Supabase not configured' });
+  }
+  try {
+    const axios = require('axios');
+    const SUPABASE_URL = process.env.SUPABASE_URL;
+    const SUPABASE_KEY = process.env.SUPABASE_KEY;
+    const headers = {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      Prefer: 'return=minimal',
+    };
+    await axios.delete(`${SUPABASE_URL}/rest/v1/blog_posts?id=eq.${id}`, { headers });
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // ── Shared update helper ────────────────────────────────────────────
 async function runUpdateJob(key) {
   try {
