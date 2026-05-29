@@ -20,6 +20,17 @@ async function ensurePlaylist(userId, key, name, description) {
     return existing.id;
   }
 
+  // Re-hydrate from Supabase before creating — guards against race conditions
+  if (store.useSupabase()) {
+    console.warn(`[Playlists] No ID in cache for "${key}", re-checking Supabase...`);
+    await store.hydrate();
+    const recheck = store.getPlaylist(key);
+    if (recheck?.id) {
+      console.log(`[Playlists] Found ID after re-hydrate: ${recheck.id}`);
+      return recheck.id;
+    }
+  }
+
   console.log(`[Playlists] Creating new playlist: "${name}"`);
   const playlist = await spotify.createPlaylist(userId, name, description);
   store.setPlaylist(key, { id: playlist.id, tracks: [], lastUpdated: null });
