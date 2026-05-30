@@ -7,7 +7,7 @@ const CONFIGS = {
     key:        'floridaWave',
     name:       'FRESH\nFLORIDA\nWAVE',
     eyebrow:    '— Florida Rap Only —',
-    desc:       'Only Florida MCs. The Sunshine State\'s finest, rotating every two weeks based on real traction data.',
+    desc:       'Only Florida MCs. The Sunshine State\'s finest, hand-picked and refreshed every two weeks.',
     tags:       ['Florida Rap Only', '20 Tracks', 'Bi-Weekly'],
     heroClass:  'florida',
     btnClass:   '',
@@ -95,21 +95,21 @@ const OTHER_INFO = {
 const SEO_DATA = {
   'florida-wave': {
     title:    'Fresh Florida Wave — Best Florida Rap Playlist on Spotify',
-    desc:     'Fresh Florida Wave is Playlist Engine\'s curated Florida rap playlist featuring the best Florida artists right now. Updated every two weeks with rising and established Florida MCs — from Miami to Jacksonville. The only Florida hip-hop playlist driven by real listener traction data.',
+    desc:     'Fresh Florida Wave is Playlist Engine\'s personally curated Florida rap playlist featuring the best Florida artists right now. Updated every two weeks with rising and established Florida MCs — from Miami to Jacksonville. Real ears, real picks, every time.',
     keywords: 'florida rap playlist spotify, florida hip hop playlist, best florida rappers, miami rap music, jacksonville hip hop, florida rap 2025, fresh florida wave playlist engine, curated florida music',
     ogTitle:  'Fresh Florida Wave — Florida Rap Playlist | Playlist Engine',
     ogDesc:   'The best Florida rap playlist on Spotify. 20 tracks, updated every 2 weeks. Only the Sunshine State\'s finest.',
   },
   'gaming': {
     title:    'Unstoppable Gaming — Best Gaming Music Playlist on Spotify 2025',
-    desc:     'Unstoppable Gaming is Playlist Engine\'s high-energy gaming playlist. EDM, metal, trap, synthwave, hip-hop — every genre that hits hardest. Whether you\'re grinding ranked, streaming, or just need music to match your focus level, this playlist evolves every two weeks based on listener traction. No filler. Only bangers.',
+    desc:     'Unstoppable Gaming is Playlist Engine\'s personally curated high-energy gaming playlist. EDM, metal, trap, synthwave, hip-hop — every genre that hits hardest. Whether you\'re grinding ranked, streaming, or just need music to match your focus level, this playlist gets hand-picked every two weeks. No filler. Only bangers.',
     keywords: 'gaming playlist spotify, best gaming music 2025, music for gaming, high energy gaming songs, edm gaming playlist, trap gaming music, gaming background music spotify, unstoppable gaming playlist engine',
     ogTitle:  'Unstoppable Gaming — Best Gaming Playlist | Playlist Engine',
     ogDesc:   'EDM, metal, trap, synthwave. High-energy gaming music updated bi-weekly. 20 tracks, no filler.',
   },
   'underground': {
     title:    'The Slept On Underground — Best Underrated Artists Playlist 2025',
-    desc:     'The Slept On Underground is where Playlist Engine finds the next wave before everyone else does. Independent and rising artists from across genres — hip-hop, R&B, indie, pop, and beyond. These are the artists trending before the world catches on. Updated every two weeks with fresh traction data.',
+    desc:     'The Slept On Underground is where Playlist Engine finds the next wave before everyone else does. Independent and rising artists from across genres — hip-hop, R&B, indie, pop, and beyond. These are the artists our curators believe in before the world catches on. Updated every two weeks.',
     keywords: 'underground music playlist spotify, best underrated artists 2025, rising artists playlist, indie hip hop playlist, slept on music, hidden gem artists spotify, new artists to listen to, underground rap playlist 2025',
     ogTitle:  'The Slept On Underground — Rising Artists Playlist | Playlist Engine',
     ogDesc:   'The next wave before everyone knows. 20 rising artists, updated every 2 weeks.',
@@ -300,7 +300,7 @@ async function loadData() {
       if (noteEl && playlist.lastUpdated) {
         const next = new Date(playlist.lastUpdated);
         next.setDate(next.getDate() + 14);
-        noteEl.textContent = `Next auto-refresh: ${next.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+        noteEl.textContent = `Next refresh: ${next.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
       }
     }
   } catch {
